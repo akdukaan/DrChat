@@ -9,12 +9,11 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-public class DiscordSRVListener extends ChatManager{
+public class DiscordSRVListener extends ChatManager {
 
     public DiscordSRVListener(ConfigManager configManager) {
         super(configManager);
     }
-
     @Subscribe
     public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
         String id = event.getMember().getUser().getId();
@@ -30,18 +29,48 @@ public class DiscordSRVListener extends ChatManager{
         if (uuid == null) {
             linked = false;
         }
-        if (linked) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+        OfflinePlayer player = null;
+        String spamExemptRole = configManager.get().getString("discord.bypass-role");
+        boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getName().equals(spamExemptRole));
+        if (linked && !spamExempt) {
+            player = Bukkit.getOfflinePlayer(uuid);
             if (isTooFrequent(player)) {
+                String emote = configManager.get().getString("discord.cancelled-reaction");
+                if (emote != null) {
+                    event.getMessage().addReaction(emote).queue();
+                }
+                notifyCancelledMessage(player, event.getMessage().getContentRaw());
                 event.setCancelled(true);
+                useTooFrequentCommand(player);
                 return;
             }
             increment(player);
-            System.out.println("incremented player " + player.getName() +" to " + getCount(player));
         }
-        event.setProcessedMessage(fixFont(event.getProcessedMessage()));
-        event.setProcessedMessage(fixSpacing(event.getProcessedMessage()));
-        event.setProcessedMessage(fixCapital(event.getProcessedMessage()));
-        event.setProcessedMessage(fixCharacter(event.getProcessedMessage()));
+        String originalMessage = event.getProcessedMessage();
+        if (!spamExempt) {
+            boolean checkFont = configManager.get().getBoolean("discord.checks.font");
+            boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
+            boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
+            boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
+            if (checkFont) {
+                event.setProcessedMessage(fixFont(event.getProcessedMessage()));
+            }
+            if (checkSpacing) {
+                event.setProcessedMessage(fixSpacing(event.getProcessedMessage()));
+            }
+            if (checkCapital) {
+                event.setProcessedMessage(fixCapital(event.getProcessedMessage()));
+            }
+            if (checkCharacter) {
+                event.setProcessedMessage(fixCharacter(event.getProcessedMessage()));
+            }
+            if (!originalMessage.equals(event.getProcessedMessage())) {
+                String emote = configManager.get().getString("discord.modified-reaction");
+                if (emote != null) {
+                    event.getMessage().addReaction(emote).queue();
+                }
+                notifyModifiedMessage(player, originalMessage);
+            }
+        }
     }
 }

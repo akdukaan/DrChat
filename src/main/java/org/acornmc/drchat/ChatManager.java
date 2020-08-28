@@ -1,5 +1,7 @@
 package org.acornmc.drchat;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -28,14 +30,14 @@ public class ChatManager {
             newMessage.append(message.charAt(i));
         }
         for (int i = limit; i < message.length(); i++) {
-            boolean allthesame = true;
+            boolean allTheSame = true;
             for (int j = i-limit; j < i; j++) {
                 if (message.charAt(j) != message.charAt(i)) {
-                    allthesame = false;
+                    allTheSame = false;
                     break;
                 }
             }
-            if (!allthesame) {
+            if (!allTheSame) {
                 newMessage.append(message.charAt(i));
             }
         }
@@ -149,15 +151,10 @@ public class ChatManager {
 
     public boolean isTooFrequent(OfflinePlayer player) {
         if (!recentlyTalked.containsKey(player)) {
-            increment(player);
             return false;
         }
         int limit = configManager.get().getInt("checks.frequency.limit");
-        if (recentlyTalked.get(player) < limit) {
-            increment(player);
-            return false;
-        }
-        return true;
+        return recentlyTalked.get(player) >= limit;
     }
 
     public void increment(OfflinePlayer player) {
@@ -178,7 +175,46 @@ public class ChatManager {
         }.runTaskLater(configManager.plugin, interval);
     }
 
-    public int getCount(OfflinePlayer player) {
-        return recentlyTalked.get(player);
+    public void notifyModifiedMessage(OfflinePlayer player, String message) {
+        String notifyMessage = configManager.get().getString("messages.modify-notification");
+        if (notifyMessage != null) {
+            notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
+            String playerName = player.getName();
+            if (playerName == null) {
+                playerName = "unknown";
+            }
+            notifyMessage = notifyMessage.replace("%player%", playerName);
+            notifyMessage = notifyMessage.replace("%original-message%", message);
+            Bukkit.broadcast(notifyMessage, "drchat.notify.modify");
+            Bukkit.getLogger().info(notifyMessage);
+        }
+    }
+
+    public void notifyCancelledMessage(OfflinePlayer player, String message) {
+        String cancelMessage = configManager.get().getString("messages.cancel-notification");
+        if (cancelMessage != null) {
+            cancelMessage = ChatColor.translateAlternateColorCodes('&', cancelMessage);
+            String playerName = player.getName();
+            if (playerName == null) {
+                playerName = "unknown";
+            }
+            cancelMessage = cancelMessage.replace("%player%", playerName);
+            cancelMessage = cancelMessage.replace("%original-message%", message);
+            Bukkit.broadcast(cancelMessage, "drchat.notify.cancel");
+        }
+    }
+
+    public void useTooFrequentCommand(OfflinePlayer player) {
+        String command = configManager.get().getString("checks.frequency.command");
+        if (command != null) {
+            String playerName = player.getName();
+            if (playerName == null) {
+                playerName = "unknown";
+            }
+            command = command.replace("%player%", playerName);
+            final String finalCommand = command;
+            Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+            Bukkit.getScheduler().runTask(configManager.plugin, runnable);
+        }
     }
 }
