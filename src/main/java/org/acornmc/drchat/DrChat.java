@@ -32,6 +32,8 @@ public final class DrChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        DiscordSRV.api.unsubscribe(new PlayerChatListener(configManager));
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            DiscordSRV.api.unsubscribe(new DiscordSRVListener(configManager));
+        }
     }
 }
