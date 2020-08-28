@@ -64,26 +64,26 @@ public class DiscordSRVListener extends ChatManager {
             }
             increment(player);
         }
-        String originalMessage = event.getProcessedMessage();
-        String originalMessageRaw = event.getMessage().getContentRaw();
+        String originalFullMessage = event.getProcessedMessage();
+        String originalRawMessage = event.getMessage().getContentRaw();
         if (!spamExempt) {
             boolean checkFont = configManager.get().getBoolean("discord.checks.font");
             boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
             boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
             boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
-            if (checkFont && !fixFont(originalMessage).equals(originalMessage)) {
+            if (checkFont && !fixFont(originalRawMessage).equals(originalRawMessage)) {
                 event.setProcessedMessage(fixFont(event.getProcessedMessage()));
             }
-            if (checkSpacing && !fixSpacing(originalMessage).equals(originalMessage)) {
+            if (checkSpacing && !fixSpacing(originalRawMessage).equals(originalRawMessage)) {
                 event.setProcessedMessage(fixSpacing(event.getProcessedMessage()));
             }
-            if (checkCapital && !fixCapital(originalMessage).equals(originalMessage)) {
+            if (checkCapital && !fixCapital(originalRawMessage).equals(originalRawMessage)) {
                 event.setProcessedMessage(fixCapital(event.getProcessedMessage()));
             }
-            if (checkCharacter && !fixCharacter(originalMessage).equals(originalMessage)) {
+            if (checkCharacter && !fixCharacter(originalRawMessage).equals(originalRawMessage)) {
                 event.setProcessedMessage(fixCharacter(event.getProcessedMessage()));
             }
-            if (!originalMessage.equals(event.getProcessedMessage())) {
+            if (!originalFullMessage.equals(event.getProcessedMessage())) {
                 String emote = configManager.get().getString("discord.modified-reaction");
                 if (emote != null) {
                     event.getMessage().addReaction(emote).queue();
@@ -92,7 +92,7 @@ public class DiscordSRVListener extends ChatManager {
                 if (player != null) {
                     playerName = player.getName();
                 }
-                notifyModifiedMessage(playerName, originalMessageRaw);
+                notifyModifiedMessage(playerName, originalRawMessage);
             }
         }
     }
