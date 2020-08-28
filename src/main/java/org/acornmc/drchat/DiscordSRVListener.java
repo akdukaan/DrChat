@@ -40,7 +40,8 @@ public class DiscordSRVListener extends ChatManager {
         boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getName().equals(spamExemptRole));
         if (linked && !spamExempt) {
             player = Bukkit.getOfflinePlayer(uuid);
-            if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
+            boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
+            if (muteSync && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 if (essentialsUtil.isMuted(uuid)) {
                     notifyCancelledMessage(player, event.getMessage().getContentRaw());
                     String emote = configManager.get().getString("discord.cancelled-reaction");
