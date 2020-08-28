@@ -8,8 +8,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class ChatManager {
     ConfigManager configManager;
     public static HashMap<OfflinePlayer, Integer> recentlyTalked = new HashMap<>();
@@ -182,13 +180,13 @@ public class ChatManager {
     }
 
     public void notifyModifiedMessage(OfflinePlayer player, String message) {
-        String notifyMessage = configManager.get().getString("messages.modify-notification");
-        if (notifyMessage != null) {
+        List<String> notifyMessages = configManager.get().getStringList("messages.modify-notification");
+        String playerName = player.getName();
+        if (playerName == null) {
+            playerName = "unknown";
+        }
+        for (String notifyMessage : notifyMessages) {
             notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
-            String playerName = player.getName();
-            if (playerName == null) {
-                playerName = "unknown";
-            }
             notifyMessage = notifyMessage.replace("%player%", playerName);
             notifyMessage = notifyMessage.replace("%original-message%", message);
             Bukkit.broadcast(notifyMessage, "drchat.notify.modify");
@@ -197,16 +195,17 @@ public class ChatManager {
     }
 
     public void notifyCancelledMessage(OfflinePlayer player, String message) {
-        String cancelMessage = configManager.get().getString("messages.cancel-notification");
-        if (cancelMessage != null) {
-            cancelMessage = ChatColor.translateAlternateColorCodes('&', cancelMessage);
-            String playerName = player.getName();
-            if (playerName == null) {
-                playerName = "unknown";
-            }
-            cancelMessage = cancelMessage.replace("%player%", playerName);
-            cancelMessage = cancelMessage.replace("%original-message%", message);
-            Bukkit.broadcast(cancelMessage, "drchat.notify.cancel");
+        List<String> notifyMessages = configManager.get().getStringList("messages.cancel-notification");
+        String playerName = player.getName();
+        if (playerName == null) {
+            playerName = "unknown";
+        }
+        for (String notifyMessage : notifyMessages) {
+            notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
+            notifyMessage = notifyMessage.replace("%player%", playerName);
+            notifyMessage = notifyMessage.replace("%original-message%", message);
+            Bukkit.broadcast(notifyMessage, "drchat.notify.cancel");
+            Bukkit.getLogger().info(notifyMessage);
         }
     }
 

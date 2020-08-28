@@ -7,7 +7,7 @@ import org.bstats.bukkit.Metrics;
 import github.scarsz.discordsrv.DiscordSRV;
 
 public final class DrChat extends JavaPlugin {
-    public static DrChat plugin;
+    public DrChat plugin;
     ConfigManager configManager;
 
     @Override

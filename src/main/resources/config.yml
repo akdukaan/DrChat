@@ -1,27 +1,32 @@
 checks:
   frequency:
-    limit: 5 # sending this many messages within the interval will count as an offense.
-    interval: 100 # in ticks
+    limit: 5 # Sending this many messages within the interval will count as an offense.
+    interval: 100 # The interval in ticks
     commands:
-    - "mute %player% 1m spam" # command to execute when someone passes the limit
-    - "kick %player% spam"
+    - "mute %player% 1m spam" # commands to execute when someone passes the limit
   character:
-    limit: 3 # maximum number of repeating characters
+    limit: 3 # Maximum number of repeating characters
   capital:
-    limit: 15 # maximum number of capital letters in a message
+    limit: 15 # Maximum number of capital letters in a message
+
 messages:
   no-permission: "&cNo Permission"
   reload: "&6DrChat config reloaded"
-  modify-notification: "&7%player%'s message was modified.\nOriginal message: %original-message%"
-  cancel-notification: "&7%player%'s message was cancelled.\nOriginal message: %original-message%"
+  modify-notification:
+  - "&7%player%'s message was modified by DrChat."
+  - "&7Original message: %original-message%"
+  cancel-notification:
+  - "&7%player%'s message was cancelled by DrChat."
+  - "&7Original message: %original-message%"
+
 discord:
-  modified-reaction: "U+2702"
-  cancelled-reaction: "U+274C"
-  checks:
+  modified-reaction: "U+2702" # Messages which were sent from Discord and were modified will be reacted with this emote
+  cancelled-reaction: "U+274C" # Messages which were sent from Discord and were cancelled will be reacted with this emote
+  checks: # Which of these checks should be made when sending the message from Discord to MC
     frequency: true
     font: true
     spacing: true
     capital: true
     character: false
-  bypass-role: "Admin"
-  mute-sync: true
+  bypass-role: "Admin" # This role will be allowed to bypass all checks when sending messages through Discord
+  mute-sync: true # Should DrChat prevent players who are muted ingame from talking in the chat channel
