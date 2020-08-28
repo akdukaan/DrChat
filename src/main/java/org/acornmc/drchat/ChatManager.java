@@ -6,6 +6,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.List;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class ChatManager {
     ConfigManager configManager;
@@ -208,12 +211,12 @@ public class ChatManager {
     }
 
     public void useTooFrequentCommand(OfflinePlayer player) {
-        String command = configManager.get().getString("checks.frequency.command");
-        if (command != null) {
-            String playerName = player.getName();
-            if (playerName == null) {
-                playerName = "unknown";
-            }
+        List<String> stringList = configManager.get().getStringList("checks.frequency.commands");
+        String playerName = player.getName();
+        if (playerName == null) {
+            playerName = "unknown";
+        }
+        for (String command : stringList) {
             command = command.replace("%player%", playerName);
             final String finalCommand = command;
             Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);

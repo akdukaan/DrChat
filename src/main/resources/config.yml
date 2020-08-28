@@ -2,7 +2,9 @@ checks:
   frequency:
     limit: 5 # sending this many messages within the interval will count as an offense.
     interval: 100 # in ticks
-    command: "mute %player% 1m spam" # command to execute when someone passes the limit
+    commands:
+    - "mute %player% 1m spam" # command to execute when someone passes the limit
+    - "kick %player% spam"
   character:
     limit: 3 # maximum number of repeating characters
   capital:
