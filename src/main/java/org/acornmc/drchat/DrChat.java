@@ -1,5 +1,7 @@
 package org.acornmc.drchat;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
@@ -17,8 +19,13 @@ public final class DrChat extends JavaPlugin {
         plugin = this;
         configManager = new ConfigManager(this);
         this.getServer().getPluginManager().registerEvents(new PlayerChatListener(configManager), this);
-        DiscordSRV.api.subscribe(new PlayerChatListener(configManager));
-        getCommand("drchat").setExecutor(new CommandDrChat(configManager));
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            DiscordSRV.api.subscribe(new DiscordSRVListener(configManager));
+        }
+        PluginCommand drchatCommand = getCommand("drchat");
+        if (drchatCommand != null) {
+            drchatCommand.setExecutor(new CommandDrChat(configManager));
+        }
         int pluginId = 8683;
         new Metrics(this, pluginId);
     }

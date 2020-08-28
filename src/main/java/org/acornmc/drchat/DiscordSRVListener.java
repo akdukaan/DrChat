@@ -1,103 +1,21 @@
 package org.acornmc.drchat;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import github.scarsz.discordsrv.api.Subscribe;
+import github.scarsz.discordsrv.api.events.*;
 
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.HashMap;
-
-public class PlayerChatListener implements Listener {
-    HashMap<Player, Integer> playerMap;
+public class DiscordSRVListener {
     ConfigManager configManager;
 
-    public PlayerChatListener(ConfigManager configManager) {
+    public DiscordSRVListener(ConfigManager configManager) {
         this.configManager = configManager;
-        this.playerMap = DrChat.playerSet;
     }
 
-    @EventHandler
-    public void eventsMessageSend(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        if (!player.hasPermission("drchat.bypass.frequency") && tooFrequent(player)) {
-            event.setCancelled(true);
-            String command = configManager.get().getString("checks.frequency.command");
-            if (command != null) {
-                command = command.replace("<player>", player.getName());
-                final String finalCommand = command;
-                Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
-                Bukkit.getScheduler().runTask(configManager.plugin, runnable);
-            }
-            Bukkit.getLogger().info(player.getName() + " tried speaking too fast.\nMessage: " + event.getMessage());
-            String cancelMessage = configManager.get().getString("messages.cancel-notification");
-            if (cancelMessage != null) {
-                cancelMessage = ChatColor.translateAlternateColorCodes('&', cancelMessage);
-                cancelMessage = cancelMessage.replace("%player%", player.getName());
-                cancelMessage = cancelMessage.replace("%original-message%", event.getMessage());
-                Bukkit.broadcast(cancelMessage, "drchat.notify.cancel");
-            }
-        } else {
-            String newMessage = event.getMessage();
-            if (!player.hasPermission("drchat.bypass.font")) {
-                newMessage = fixFont(newMessage);
-            }
-            if (!player.hasPermission("drchat.bypass.spacing")) {
-                newMessage = fixSpacing(newMessage);
-            }
-            if (!player.hasPermission("drchat.bypass.capital")) {
-                newMessage = fixCapital(newMessage);
-            }
-            if (!player.hasPermission("drchat.bypass.character")) {
-                newMessage = fixCharacter(newMessage);
-            }
-            if (!newMessage.equals(event.getMessage())) {
-                Bukkit.getLogger().info("DrChat modified " + player.getName() + "'s message.");
-                Bukkit.getLogger().info("Original message: " + event.getMessage());
-                String notifyMessage = configManager.get().getString("messages.modify-notification");
-                if (notifyMessage != null) {
-                    notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
-                    notifyMessage = notifyMessage.replace("%player%", player.getName());
-                    notifyMessage = notifyMessage.replace("%original-message%", event.getMessage());
-                    Bukkit.broadcast(notifyMessage, "drchat.notify.modify");
-                }
-                event.setMessage(newMessage);
-            }
-        }
-    }
-
-    public boolean tooFrequent(Player player) {
-        if (!playerMap.containsKey(player)) {
-            addcount(player);
-            return false;
-        }
-        int limit = configManager.get().getInt("checks.frequency.limit");
-        if (playerMap.get(player) < limit) {
-            addcount(player);
-            return false;
-        }
-        return true;
-    }
-
-    private void addcount(Player player) {
-        int newCount = 1;
-        if (playerMap.containsKey(player)) {
-            newCount = playerMap.get(player) + 1;
-        }
-        playerMap.put(player, newCount);
-        int interval = configManager.get().getInt("checks.frequency.interval");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                playerMap.put(player, playerMap.get(player) - 1);
-                if (playerMap.get(player) == 0) {
-                    playerMap.remove(player);
-                }
-            }
-        }.runTaskLater(configManager.plugin, interval);
+    @Subscribe
+    public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
+        event.setProcessedMessage(fixFont(event.getProcessedMessage()));
+        event.setProcessedMessage(fixSpacing(event.getProcessedMessage()));
+        event.setProcessedMessage(fixCapital(event.getProcessedMessage()));
+        event.setProcessedMessage(fixCharacter(event.getProcessedMessage()));
     }
 
     public String fixSpacing(String message) {
@@ -231,4 +149,5 @@ public class PlayerChatListener implements Listener {
                 .replace("\uff09", ")")
                 .replace("\uff0c", ",");
     }
+
 }
