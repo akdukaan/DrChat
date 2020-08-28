@@ -22,3 +22,4 @@ discord:
     capital: true
     character: false
   bypass-role: "Admin"
+  mute-sync: true

@@ -1,5 +1,6 @@
 package org.acornmc.drchat;
 
+
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
@@ -10,10 +11,15 @@ import org.bukkit.OfflinePlayer;
 import java.util.UUID;
 
 public class DiscordSRVListener extends ChatManager {
+    EssentialsUtil essentialsUtil;
 
     public DiscordSRVListener(ConfigManager configManager) {
         super(configManager);
+        if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
+            essentialsUtil = new EssentialsUtil();
+        }
     }
+
     @Subscribe
     public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
         String id = event.getMember().getUser().getId();
@@ -34,6 +40,18 @@ public class DiscordSRVListener extends ChatManager {
         boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getName().equals(spamExemptRole));
         if (linked && !spamExempt) {
             player = Bukkit.getOfflinePlayer(uuid);
+            if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
+                if (essentialsUtil.isMuted(uuid)) {
+                    notifyCancelledMessage(player, event.getMessage().getContentRaw());
+                    String emote = configManager.get().getString("discord.cancelled-reaction");
+                    if (emote != null) {
+                        event.getMessage().addReaction(emote).queue();
+                    }
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+
             if (isTooFrequent(player)) {
                 String emote = configManager.get().getString("discord.cancelled-reaction");
                 if (emote != null) {

@@ -154,7 +154,10 @@ public class ChatManager {
             return false;
         }
         int limit = configManager.get().getInt("checks.frequency.limit");
-        return recentlyTalked.get(player) >= limit;
+        if (recentlyTalked.get(player) < limit) {
+            return false;
+        }
+        return true;
     }
 
     public void increment(OfflinePlayer player) {
