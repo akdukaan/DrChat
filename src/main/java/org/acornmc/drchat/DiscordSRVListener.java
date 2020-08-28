@@ -24,26 +24,25 @@ public class DiscordSRVListener extends ChatManager {
     public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
         String id = event.getMember().getUser().getId();
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
-        boolean linked = true;
-        if (alm == null) {
-            linked = false;
-        }
+        boolean linked = false;
         UUID uuid = null;
         if (alm != null) {
             uuid = alm.getUuid(id);
+            if (uuid != null) {
+                linked = true;
+            }
         }
-        if (uuid == null) {
-            linked = false;
-        }
+
         OfflinePlayer player = null;
         String spamExemptRole = configManager.get().getString("discord.bypass-role");
         boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getName().equals(spamExemptRole));
         if (linked && !spamExempt) {
             player = Bukkit.getOfflinePlayer(uuid);
+            String playerName = player.getName();
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             if (muteSync && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 if (essentialsUtil.isMuted(uuid)) {
-                    notifyCancelledMessage(player, event.getMessage().getContentRaw());
+                    notifyCancelledMessage(playerName, event.getMessage().getContentRaw());
                     String emote = configManager.get().getString("discord.cancelled-reaction");
                     if (emote != null) {
                         event.getMessage().addReaction(emote).queue();
@@ -58,7 +57,7 @@ public class DiscordSRVListener extends ChatManager {
                 if (emote != null) {
                     event.getMessage().addReaction(emote).queue();
                 }
-                notifyCancelledMessage(player, event.getMessage().getContentRaw());
+                notifyCancelledMessage(playerName, event.getMessage().getContentRaw());
                 event.setCancelled(true);
                 useTooFrequentCommand(player);
                 return;
@@ -66,21 +65,22 @@ public class DiscordSRVListener extends ChatManager {
             increment(player);
         }
         String originalMessage = event.getProcessedMessage();
+        String originalMessageRaw = event.getMessage().getContentRaw();
         if (!spamExempt) {
             boolean checkFont = configManager.get().getBoolean("discord.checks.font");
             boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
             boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
             boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
-            if (checkFont) {
+            if (checkFont && !fixFont(originalMessage).equals(originalMessage)) {
                 event.setProcessedMessage(fixFont(event.getProcessedMessage()));
             }
-            if (checkSpacing) {
+            if (checkSpacing && !fixSpacing(originalMessage).equals(originalMessage)) {
                 event.setProcessedMessage(fixSpacing(event.getProcessedMessage()));
             }
-            if (checkCapital) {
+            if (checkCapital && !fixCapital(originalMessage).equals(originalMessage)) {
                 event.setProcessedMessage(fixCapital(event.getProcessedMessage()));
             }
-            if (checkCharacter) {
+            if (checkCharacter && !fixCharacter(originalMessage).equals(originalMessage)) {
                 event.setProcessedMessage(fixCharacter(event.getProcessedMessage()));
             }
             if (!originalMessage.equals(event.getProcessedMessage())) {
@@ -88,7 +88,11 @@ public class DiscordSRVListener extends ChatManager {
                 if (emote != null) {
                     event.getMessage().addReaction(emote).queue();
                 }
-                notifyModifiedMessage(player, originalMessage);
+                String playerName = "unknown";
+                if (player != null) {
+                    playerName = player.getName();
+                }
+                notifyModifiedMessage(playerName, originalMessageRaw);
             }
         }
     }

@@ -14,10 +14,11 @@ public class PlayerChatListener extends ChatManager implements Listener {
     @EventHandler
     public void eventsMessageSend(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+        String playerName = player.getName();
         if (!player.hasPermission("drchat.bypass.frequency") && isTooFrequent(player)) {
             event.setCancelled(true);
             useTooFrequentCommand(player);
-            notifyCancelledMessage(player, event.getMessage());
+            notifyCancelledMessage(playerName, event.getMessage());
         } else {
             increment(player);
             String newMessage = event.getMessage();
@@ -34,7 +35,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 newMessage = fixCharacter(newMessage);
             }
             if (!newMessage.equals(event.getMessage())) {
-                notifyModifiedMessage(player, event.getMessage());
+                notifyModifiedMessage(playerName, event.getMessage());
                 event.setMessage(newMessage);
             }
         }

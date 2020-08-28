@@ -155,10 +155,7 @@ public class ChatManager {
             return false;
         }
         int limit = configManager.get().getInt("checks.frequency.limit");
-        if (recentlyTalked.get(player) < limit) {
-            return false;
-        }
-        return true;
+        return recentlyTalked.get(player) >= limit;
     }
 
     public void increment(OfflinePlayer player) {
@@ -179,12 +176,8 @@ public class ChatManager {
         }.runTaskLater(configManager.plugin, interval);
     }
 
-    public void notifyModifiedMessage(OfflinePlayer player, String message) {
+    public void notifyModifiedMessage(String playerName, String message) {
         List<String> notifyMessages = configManager.get().getStringList("messages.modify-notification");
-        String playerName = player.getName();
-        if (playerName == null) {
-            playerName = "unknown";
-        }
         for (String notifyMessage : notifyMessages) {
             notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
             notifyMessage = notifyMessage.replace("%player%", playerName);
@@ -194,12 +187,8 @@ public class ChatManager {
         }
     }
 
-    public void notifyCancelledMessage(OfflinePlayer player, String message) {
+    public void notifyCancelledMessage(String playerName, String message) {
         List<String> notifyMessages = configManager.get().getStringList("messages.cancel-notification");
-        String playerName = player.getName();
-        if (playerName == null) {
-            playerName = "unknown";
-        }
         for (String notifyMessage : notifyMessages) {
             notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
             notifyMessage = notifyMessage.replace("%player%", playerName);
