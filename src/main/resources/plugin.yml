@@ -1,0 +1,13 @@
+name: DrChat
+version: ${project.version}
+main: org.acornmc.drchat.DrChat
+api-version: "1.13"
+authors: [DrBot]
+softdepend: [DiscordSRV]
+description: Spam Management Tool
+commands:
+  drchat:
+    description: drchat reload command
+    usage: /<command> reload
+    permission-message: §cNo permission
+    permission: drchat.reload

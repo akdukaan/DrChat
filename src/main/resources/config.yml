@@ -1,0 +1,14 @@
+checks:
+  frequency:
+    limit: 5 # sending this many messages within the interval will count as an offense.
+    interval: 100 # in ticks
+    command: "mute <player> 1m spam" # command to execute when someone passes the limit
+  character:
+    limit: 3 # maximum number of repeating characters
+  capital:
+    limit: 15 # maximum number of capital letters in a message
+messages:
+  no-permission: "&cNo Permission"
+  reload: "&6DrChat config reloaded"
+  modify-notification: "&7%player%'s message was modified.\nOriginal message: %original-message%"
+  cancel-notification: "&7%player%'s message was cancelled.\nOriginal message: %original-message%"
