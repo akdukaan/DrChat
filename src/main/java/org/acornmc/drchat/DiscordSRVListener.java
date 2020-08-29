@@ -106,7 +106,6 @@ public class DiscordSRVListener extends ChatManager {
 
     @Subscribe
     public void discordStaffMessage(DiscordGuildMessageReceivedEvent event) {
-        System.out.println("hello?");
         String staffchatChannel = configManager.get().getString("discord.staffchat.channel-id");
         if (event.getChannel().getId().equals(staffchatChannel)) {
             String discordToMc = configManager.get().getString("discord.staffchat.discord-to-mc-format");
@@ -116,9 +115,6 @@ public class DiscordSRVListener extends ChatManager {
                 discordToMc = ChatColor.translateAlternateColorCodes('&', discordToMc);
                 Bukkit.broadcast(discordToMc, "drchat.staffchat");
             }
-        } else {
-            System.out.println(event.getChannel().getId());
-            System.out.println(staffchatChannel);
         }
     }
 }
