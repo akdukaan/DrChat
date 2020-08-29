@@ -66,36 +66,40 @@ public class DiscordSRVListener extends ChatManager {
         }
         if (!spamExempt) {
             String originalFullMessage = event.getProcessedMessage();
-            String originalRawMessage = event.getMessage().getContentRaw();
-            String format = originalFullMessage.substring(0, originalFullMessage.lastIndexOf(originalRawMessage));
-            String modifiedMessage = originalRawMessage;
-            boolean checkFont = configManager.get().getBoolean("discord.checks.font");
-            boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
-            boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
-            boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
-            if (checkFont) {
-                modifiedMessage = fixFont(modifiedMessage);
-            }
-            if (checkSpacing) {
-                modifiedMessage = fixSpacing(modifiedMessage);
-            }
-            if (checkCapital) {
-                modifiedMessage = fixCapital(modifiedMessage);
-            }
-            if (checkCharacter) {
-                modifiedMessage = fixCharacter(modifiedMessage);
-            }
-            event.setProcessedMessage(format + modifiedMessage);
-            if (!originalFullMessage.equals(event.getProcessedMessage())) {
-                String emote = configManager.get().getString("discord.modified-reaction");
-                if (emote != null) {
-                    event.getMessage().addReaction(emote).queue();
+            String barrier = configManager.get().getString("discord.barrier");
+            if (barrier != null) {
+                int barrierPosition = originalFullMessage.indexOf(barrier);
+                String postBarrier = event.getProcessedMessage().substring(barrierPosition);
+                String preBarrier = event.getProcessedMessage().substring(0, barrierPosition);
+                boolean checkFont = configManager.get().getBoolean("discord.checks.font");
+                boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
+                boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
+                boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
+                String originalPostBarrier = postBarrier;
+                if (checkFont) {
+                    postBarrier = fixFont(postBarrier);
                 }
-                String playerName = "unknown";
-                if (player != null) {
-                    playerName = player.getName();
+                if (checkSpacing) {
+                    postBarrier = fixSpacing(postBarrier);
                 }
-                notifyModifiedMessage(playerName, originalRawMessage);
+                if (checkCapital) {
+                    postBarrier = fixCapital(postBarrier);
+                }
+                if (checkCharacter) {
+                    postBarrier = fixCharacter(postBarrier);
+                }
+                if (!originalPostBarrier.equals(postBarrier)) {
+                    String emote = configManager.get().getString("discord.modified-reaction");
+                    if (emote != null) {
+                        event.getMessage().addReaction(emote).queue();
+                    }
+                    String playerName = "unknown";
+                    if (player != null) {
+                        playerName = player.getName();
+                    }
+                    notifyModifiedMessage(playerName, originalPostBarrier);
+                }
+                event.setProcessedMessage(preBarrier + barrier + postBarrier);
             }
         }
     }

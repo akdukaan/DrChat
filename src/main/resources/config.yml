@@ -30,3 +30,4 @@ discord:
     character: false
   bypass-role: "Admin" # This role will be allowed to bypass all checks when sending messages through Discord
   mute-sync: true # Should DrChat prevent players who are muted ingame from talking in the chat channel
+  barrier: " » " # Discord -> MC will only filter chat to the right of the first occurrence of this String
