@@ -32,7 +32,9 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 newMessage = fixCapital(newMessage);
             }
             if (!player.hasPermission("drchat.bypass.character")) {
+                System.out.println("before: " + newMessage);
                 newMessage = fixCharacter(newMessage);
+                System.out.println("after: " + newMessage);
             }
             if (!newMessage.equals(event.getMessage())) {
                 notifyModifiedMessage(playerName, event.getMessage());

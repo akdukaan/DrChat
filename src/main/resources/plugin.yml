@@ -10,3 +10,7 @@ commands:
     description: drchat reload command
     usage: /<command> reload
     permission: drchat.reload
+  staffchat:
+    description: drchat's staff chat
+    usage: /<command> message
+    permission: drchat.staffchat

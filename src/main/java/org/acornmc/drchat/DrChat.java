@@ -22,6 +22,10 @@ public final class DrChat extends JavaPlugin {
         if (drchatCommand != null) {
             drchatCommand.setExecutor(new CommandDrChat(configManager));
         }
+        PluginCommand staffchatCommand = getCommand("staffchat");
+        if (staffchatCommand != null) {
+            staffchatCommand.setExecutor(new CommandStaffchat(configManager));
+        }
         int pluginId = 8683;
         new Metrics(this, pluginId);
     }

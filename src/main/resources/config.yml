@@ -5,6 +5,7 @@ checks:
     commands:
     - "mute %player% 1m spam" # commands to execute when someone passes the limit
   character:
+    limit: 3
     exceptions: # These characters will not be removed for character-spam.
       - '0'
   capital:
@@ -32,3 +33,8 @@ discord:
   bypass-role: "Admin" # This role will be allowed to bypass all checks when sending messages through Discord
   mute-sync: true # Should DrChat prevent players who are muted ingame from talking in the chat channel
   barrier: " » " # Discord -> MC will only filter chat to the right of the first occurrence of this String
+  staffchat:
+    channel-id: 000000000000000000
+    mc-to-mc-format: "&a&l[Staff] &4%name% &7» &f%message%"
+    mc-to-discord-format: "**[Staff] %name%** » %message%"
+    discord-to-mc-format: "&a&l[Staff] &r%nickname% &9» &f%message%"

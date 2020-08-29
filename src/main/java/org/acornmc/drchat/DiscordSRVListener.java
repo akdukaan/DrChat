@@ -1,11 +1,11 @@
 package org.acornmc.drchat;
 
-
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
@@ -42,7 +42,7 @@ public class DiscordSRVListener extends ChatManager {
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             if (muteSync && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 if (essentialsUtil.isMuted(uuid)) {
-                    notifyCancelledMessage(playerName, event.getMessage().getContentRaw());
+                    notifyCancelledMessage(playerName, event.getMessage().getContentDisplay());
                     String emote = configManager.get().getString("discord.cancelled-reaction");
                     if (emote != null) {
                         event.getMessage().addReaction(emote).queue();
@@ -57,7 +57,7 @@ public class DiscordSRVListener extends ChatManager {
                 if (emote != null) {
                     event.getMessage().addReaction(emote).queue();
                 }
-                notifyCancelledMessage(playerName, event.getMessage().getContentRaw());
+                notifyCancelledMessage(playerName, event.getMessage().getContentDisplay());
                 event.setCancelled(true);
                 useTooFrequentCommand(player);
                 return;
@@ -69,7 +69,7 @@ public class DiscordSRVListener extends ChatManager {
             String barrier = configManager.get().getString("discord.barrier");
             if (barrier != null) {
                 int barrierPosition = originalFullMessage.indexOf(barrier);
-                String postBarrier = event.getProcessedMessage().substring(barrierPosition);
+                String postBarrier = event.getProcessedMessage().substring(barrierPosition + barrier.length());
                 String preBarrier = event.getProcessedMessage().substring(0, barrierPosition);
                 boolean checkFont = configManager.get().getBoolean("discord.checks.font");
                 boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
@@ -101,6 +101,24 @@ public class DiscordSRVListener extends ChatManager {
                 }
                 event.setProcessedMessage(preBarrier + barrier + postBarrier);
             }
+        }
+    }
+
+    @Subscribe
+    public void discordStaffMessage(DiscordGuildMessageReceivedEvent event) {
+        System.out.println("hello?");
+        String staffchatChannel = configManager.get().getString("discord.staffchat.channel-id");
+        if (event.getChannel().getId().equals(staffchatChannel)) {
+            String discordToMc = configManager.get().getString("discord.staffchat.discord-to-mc-format");
+            if (discordToMc != null) {
+                discordToMc = discordToMc.replace("%nickname%", event.getMember().getEffectiveName());
+                discordToMc = discordToMc.replace("%message%", event.getMessage().getContentDisplay());
+                discordToMc = ChatColor.translateAlternateColorCodes('&', discordToMc);
+                Bukkit.broadcast(discordToMc, "drchat.staffchat");
+            }
+        } else {
+            System.out.println(event.getChannel().getId());
+            System.out.println(staffchatChannel);
         }
     }
 }
