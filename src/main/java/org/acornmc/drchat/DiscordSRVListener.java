@@ -64,25 +64,28 @@ public class DiscordSRVListener extends ChatManager {
             }
             increment(player);
         }
-        String originalFullMessage = event.getProcessedMessage();
-        String originalRawMessage = event.getMessage().getContentRaw();
         if (!spamExempt) {
+            String originalFullMessage = event.getProcessedMessage();
+            String originalRawMessage = event.getMessage().getContentRaw();
+            String format = originalFullMessage.substring(0, originalFullMessage.lastIndexOf(originalRawMessage));
+            String modifiedMessage = originalRawMessage;
             boolean checkFont = configManager.get().getBoolean("discord.checks.font");
             boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
             boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
             boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
-            if (checkFont && !fixFont(originalRawMessage).equals(originalRawMessage)) {
-                event.setProcessedMessage(fixFont(event.getProcessedMessage()));
+            if (checkFont) {
+                modifiedMessage = fixFont(modifiedMessage);
             }
-            if (checkSpacing && !fixSpacing(originalRawMessage).equals(originalRawMessage)) {
-                event.setProcessedMessage(fixSpacing(event.getProcessedMessage()));
+            if (checkSpacing) {
+                modifiedMessage = fixSpacing(modifiedMessage);
             }
-            if (checkCapital && !fixCapital(originalRawMessage).equals(originalRawMessage)) {
-                event.setProcessedMessage(fixCapital(event.getProcessedMessage()));
+            if (checkCapital) {
+                modifiedMessage = fixCapital(modifiedMessage);
             }
-            if (checkCharacter && !fixCharacter(originalRawMessage).equals(originalRawMessage)) {
-                event.setProcessedMessage(fixCharacter(event.getProcessedMessage()));
+            if (checkCharacter) {
+                modifiedMessage = fixCharacter(modifiedMessage);
             }
+            event.setProcessedMessage(format + modifiedMessage);
             if (!originalFullMessage.equals(event.getProcessedMessage())) {
                 String emote = configManager.get().getString("discord.modified-reaction");
                 if (emote != null) {
