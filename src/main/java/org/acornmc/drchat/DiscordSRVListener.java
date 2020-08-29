@@ -40,20 +40,21 @@ public class DiscordSRVListener extends ChatManager {
             player = Bukkit.getOfflinePlayer(uuid);
             String playerName = player.getName();
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
+            String emote = configManager.get().getString("discord.reactions.cancelled");
             if (muteSync && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 if (essentialsUtil.isMuted(uuid)) {
                     notifyCancelledMessage(playerName, event.getMessage().getContentDisplay());
-                    String emote = configManager.get().getString("discord.cancelled-reaction");
-                    if (emote != null) {
+                    boolean discordDeleteCancelled = configManager.get().getBoolean("discord.delete-cancelled");
+                    if (discordDeleteCancelled) {
+                        event.getMessage().delete().queue();
+                    } else if (emote != null) {
                         event.getMessage().addReaction(emote).queue();
                     }
                     event.setCancelled(true);
                     return;
                 }
             }
-
             if (isTooFrequent(player)) {
-                String emote = configManager.get().getString("discord.cancelled-reaction");
                 if (emote != null) {
                     event.getMessage().addReaction(emote).queue();
                 }
@@ -89,7 +90,7 @@ public class DiscordSRVListener extends ChatManager {
                     postBarrier = fixCharacter(postBarrier);
                 }
                 if (!originalPostBarrier.equals(postBarrier)) {
-                    String emote = configManager.get().getString("discord.modified-reaction");
+                    String emote = configManager.get().getString("discord.reactions.modified");
                     if (emote != null) {
                         event.getMessage().addReaction(emote).queue();
                     }
