@@ -4,8 +4,6 @@ checks:
     interval: 100 # The interval in ticks
     commands:
     - "mute %player% 1m spam" # commands to execute when someone passes the limit
-  character:
-    limit: 3 # Maximum number of repeating characters
   capital:
     limit: 15 # Maximum number of capital letters in a message
 
