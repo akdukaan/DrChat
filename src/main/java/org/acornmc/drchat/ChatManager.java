@@ -40,6 +40,11 @@ public class ChatManager {
             }
             if (!allTheSame) {
                 newMessage.append(message.charAt(i));
+            } else {
+                List<Character> ignoredCharacters = configManager.get().getCharacterList("checks.character.exceptions");
+                if (ignoredCharacters.contains(message.charAt(i))) {
+                    newMessage.append(message.charAt(i));
+                }
             }
         }
         return newMessage.toString();
