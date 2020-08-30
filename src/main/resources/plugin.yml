@@ -12,5 +12,7 @@ commands:
     permission: drchat.reload
   staffchat:
     description: drchat's staff chat
-    usage: /<command> message
+    usage: /<command> <message>
     permission: drchat.staffchat
+    aliases:
+      - sc
