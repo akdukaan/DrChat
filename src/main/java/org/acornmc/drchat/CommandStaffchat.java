@@ -1,7 +1,6 @@
 package org.acornmc.drchat;
 
 import github.scarsz.discordsrv.DiscordSRV;
-import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,7 +13,7 @@ public class CommandStaffchat implements CommandExecutor {
         ConfigManager configManager;
 
     public CommandStaffchat(ConfigManager configManager) {
-            this.configManager = configManager;
+        this.configManager = configManager;
     }
 
     @Override
@@ -34,26 +33,14 @@ public class CommandStaffchat implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String arg : args) {
-            stringBuilder.append(arg).append(" ");
-        }
-        String message = stringBuilder.toString();
-        String mcToMc = configManager.get().getString("discord.staffchat.mc-to-mc-format");
+        String message = String.join(" ", args);
+        String mcToMc = configManager.get().getString("messages.staffchat.mc-to-mc-format");
         mcToMc = addPlaceholders(mcToMc, player, message);
         mcToMc = ChatColor.translateAlternateColorCodes('&', mcToMc);
         Bukkit.broadcast(mcToMc, "drchat.staffchat");
-        String configChannel = configManager.get().getString("discord.staffchat.channel-id");
-        if (configChannel != null) {
-            TextChannel textChannel = DiscordSRV.getPlugin().getMainGuild().getTextChannelById(configChannel);
-            if (textChannel != null) {
-                String mcToDiscord = configManager.get().getString("discord.staffchat.mc-to-discord-format");
-                if (mcToDiscord != null) {
-                    mcToDiscord = addPlaceholders(mcToDiscord, player, message);
-                    mcToDiscord = ChatColor.stripColor(mcToDiscord);
-                    textChannel.sendMessage(mcToDiscord).queue();
-                }
-            }
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            Bukkit.getServer().getScheduler().runTaskAsynchronously(configManager.plugin, () ->
+                DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false));
         }
         return true;
     }

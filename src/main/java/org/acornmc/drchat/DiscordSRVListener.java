@@ -3,6 +3,7 @@ package org.acornmc.drchat;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -107,9 +108,9 @@ public class DiscordSRVListener extends ChatManager {
 
     @Subscribe
     public void discordStaffMessage(DiscordGuildMessageReceivedEvent event) {
-        String staffchatChannel = configManager.get().getString("discord.staffchat.channel-id");
-        if (event.getChannel().getId().equals(staffchatChannel)) {
-            String discordToMc = configManager.get().getString("discord.staffchat.discord-to-mc-format");
+        TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
+        if (event.getChannel().getId().equals(staffchatChannel.getId())) {
+            String discordToMc = configManager.get().getString("messages.staffchat.discord-to-mc-format");
             if (discordToMc != null) {
                 discordToMc = discordToMc.replace("%nickname%", event.getMember().getEffectiveName());
                 discordToMc = discordToMc.replace("%message%", event.getMessage().getContentDisplay());
