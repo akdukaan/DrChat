@@ -22,19 +22,22 @@ messages:
   - "&7Original message: %original-message%"
 
 discord:
-  reactions:
-    modified: "U+2702" # Messages which were sent from Discord and were modified will be reacted with this emote
-    cancelled: "U+274C" # Messages which were sent from Discord and were cancelled will be reacted with this emote
   checks: # Which of these checks should be made when sending the message from Discord to MC
     frequency: true
     font: true
     spacing: true
     capital: true
     character: false
+  reactions:
+    modified: "U+2702" # Messages which were sent from Discord and were modified will be reacted with this emote
+    cancelled: "U+274C" # Messages which were sent from Discord and were cancelled will be reacted with this emote
   delete-cancelled: true # Should DrChat delete discord messages that were cancelled
   bypass-role: "Admin" # This role will be allowed to bypass all checks when sending messages through Discord
   mute-sync: true # Should DrChat prevent players who are muted ingame from talking in the chat channel
   barrier: " » " # Discord -> MC will only filter chat to the right of the first occurrence of this String
+  lock-when-offline:
+    role-id: 000000000000000000
+    channels-id: 000000000000000000
   staffchat:
     channel-id: 000000000000000000
     mc-to-mc-format: "&a&l[Staff] &f%name% &7» &f%message%"
