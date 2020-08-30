@@ -23,6 +23,11 @@ public class DiscordSRVListener extends ChatManager {
 
     @Subscribe
     public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
+        String staffchatChannelId = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat").getId();
+        if (event.getChannel().getId().equals(staffchatChannelId)) {
+            event.setCancelled(true);
+            return;
+        }
         String id = event.getMember().getUser().getId();
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
         boolean linked = false;
