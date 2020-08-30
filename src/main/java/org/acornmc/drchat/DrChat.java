@@ -27,8 +27,8 @@ public final class DrChat extends JavaPlugin {
                     Role role = DiscordSRV.getPlugin().getMainGuild().getRoleById(roleId);
                     TextChannel textChannel = DiscordSRV.getPlugin().getMainGuild().getTextChannelById(channelId);
                     Permission permission = Permission.MESSAGE_WRITE;
-                    if (role != null && textChannel != null && role.hasPermission(textChannel, permission)) {
-                        textChannel.getManager().getChannel().createPermissionOverride(role).setAllow(Permission.VIEW_CHANNEL).queue();
+                    if (role != null && textChannel != null && !role.hasPermission(textChannel, permission)) {
+                        textChannel.getManager().getChannel().createPermissionOverride(role).setAllow(permission).queue();
                     }
                 }
             }
@@ -57,7 +57,7 @@ public final class DrChat extends JavaPlugin {
                     TextChannel textChannel = DiscordSRV.getPlugin().getMainGuild().getTextChannelById(channelId);
                     Permission permission = Permission.MESSAGE_WRITE;
                     if (role != null && textChannel != null && role.hasPermission(textChannel, permission)) {
-                        textChannel.getManager().getChannel().createPermissionOverride(role).setDeny(Permission.VIEW_CHANNEL).queue();
+                        textChannel.getManager().getChannel().createPermissionOverride(role).setDeny(permission).queue();
                     }
                 }
             }
