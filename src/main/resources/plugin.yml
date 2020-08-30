@@ -14,5 +14,3 @@ commands:
     description: drchat's staff chat
     usage: /<command> <message>
     permission: drchat.staffchat
-    aliases:
-      - sc
