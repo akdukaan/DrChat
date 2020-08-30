@@ -1,14 +1,14 @@
 package org.acornmc.drchat;
 
-import com.earth2me.essentials.Essentials;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.earth2me.essentials.IEssentials;
+import org.bukkit.Bukkit;
 
 import java.util.UUID;
 
 public class EssentialsUtil {
-    Essentials essentials = JavaPlugin.getPlugin(Essentials.class);
+    IEssentials iess = (IEssentials) Bukkit.getPluginManager().getPlugin("Essentials");
 
     public boolean isMuted(UUID uuid) {
-        return essentials.getUser(uuid).isMuted();
+        return iess.getUser(uuid).isMuted();
     }
 }
