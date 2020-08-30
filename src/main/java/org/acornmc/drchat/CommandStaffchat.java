@@ -20,11 +20,13 @@ public class CommandStaffchat implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("drchat.staffchat")) {
-            sender.sendMessage("no perms");
+            String noPerms = configManager.get().getString("messages.no-permission");
+            if (noPerms != null) {
+                sender.sendMessage(noPerms);
+            }
             return true;
         }
         if (args.length < 1) {
-            sender.sendMessage("too few args");
             return false;
         }
         if (!(sender instanceof Player)) {
