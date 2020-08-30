@@ -52,7 +52,8 @@ public class ChatManager {
 
     public String fixCapital(String message) {
         int uppercaseCount = 0;
-        for (int i = 0; i < message.length(); i++) {
+        String colorlessMessage = ChatColor.stripColor(message);
+        for (int i = 0; i < colorlessMessage.length(); i++) {
             if (Character.isUpperCase(message.charAt(i))) {
                 uppercaseCount++;
             }
