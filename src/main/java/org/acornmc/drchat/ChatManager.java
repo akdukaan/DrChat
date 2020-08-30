@@ -54,7 +54,7 @@ public class ChatManager {
         int uppercaseCount = 0;
         String colorlessMessage = ChatColor.stripColor(message);
         for (int i = 0; i < colorlessMessage.length(); i++) {
-            if (Character.isUpperCase(message.charAt(i))) {
+            if (Character.isUpperCase(colorlessMessage.charAt(i))) {
                 uppercaseCount++;
             }
         }
