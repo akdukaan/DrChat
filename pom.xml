@@ -6,7 +6,7 @@
 
     <groupId>org.acornmc</groupId>
     <artifactId>DrChat</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>DrChat</name>
@@ -109,6 +109,11 @@
             <artifactId>EssentialsX</artifactId>
             <version>2.17.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
