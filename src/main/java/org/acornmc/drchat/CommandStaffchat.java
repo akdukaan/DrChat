@@ -41,10 +41,12 @@ public class CommandStaffchat implements CommandExecutor {
         String mcToMc = configManager.get().getString("messages.staffchat.mc-to-mc-format");
         mcToMc = addPlaceholders(mcToMc, player, message);
         mcToMc = convertHex(mcToMc);
+        mcToMc = ChatColor.translateAlternateColorCodes('&', mcToMc);
         Bukkit.broadcast(mcToMc, "drchat.staffchat");
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            String finalMessage = convertHex(message);
             Bukkit.getServer().getScheduler().runTaskAsynchronously(configManager.plugin, () ->
-                    DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false));
+                    DiscordSRV.getPlugin().processChatMessage(player, finalMessage, "staff-chat", false));
         }
         return true;
     }
