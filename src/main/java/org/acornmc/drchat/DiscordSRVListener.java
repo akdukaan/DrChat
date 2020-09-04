@@ -76,8 +76,12 @@ public class DiscordSRVListener extends ChatManager {
             String barrier = configManager.get().getString("discord.barrier");
             if (barrier != null) {
                 int barrierPosition = originalFullMessage.indexOf(barrier);
-                String postBarrier = event.getProcessedMessage().substring(barrierPosition + barrier.length());
-                String preBarrier = event.getProcessedMessage().substring(0, barrierPosition);
+                String preBarrier = "";
+                String postBarrier = event.getProcessedMessage();
+                if (barrierPosition != -1) {
+                    preBarrier = event.getProcessedMessage().substring(0, barrierPosition);
+                    postBarrier = event.getProcessedMessage().substring(barrierPosition + barrier.length());
+                }
                 boolean checkFont = configManager.get().getBoolean("discord.checks.font");
                 boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
                 boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");

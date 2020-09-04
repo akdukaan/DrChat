@@ -16,7 +16,6 @@ public class CommandStaffchat implements CommandExecutor {
     ConfigManager configManager;
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9A-F]{6})", Pattern.CASE_INSENSITIVE);
 
-
     public CommandStaffchat(ConfigManager configManager) {
         this.configManager = configManager;
     }
@@ -45,7 +44,7 @@ public class CommandStaffchat implements CommandExecutor {
         Bukkit.broadcast(mcToMc, "drchat.staffchat");
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             Bukkit.getServer().getScheduler().runTaskAsynchronously(configManager.plugin, () ->
-                DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false));
+                    DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false));
         }
         return true;
     }

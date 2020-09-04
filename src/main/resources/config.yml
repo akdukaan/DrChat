@@ -31,8 +31,8 @@ discord:
     spacing: true
     capital: true
     character: false
-  reactions:
-    modified: "U+2702" # Messages which were sent from Discord and were modified will be reacted with this emote
+  reactions: # For custom emotes, use the format name:id. Example: "pepe:123123123123"
+    modified: "U+2702" # Messages which were sent from Discord and were modified will be reacted with this emote.
     cancelled: "U+274C" # Messages which were sent from Discord and were cancelled will be reacted with this emote
   delete-cancelled: true # Should DrChat delete discord messages that were cancelled
   bypass-role: "Admin" # This role will be allowed to bypass all checks when sending messages through Discord

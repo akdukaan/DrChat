@@ -13,6 +13,9 @@ public class PlayerChatListener extends ChatManager implements Listener {
 
     @EventHandler
     public void eventsMessageSend(AsyncPlayerChatEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         Player player = event.getPlayer();
         String playerName = player.getName();
         if (!player.hasPermission("drchat.bypass.frequency") && isTooFrequent(player)) {
