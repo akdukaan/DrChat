@@ -34,6 +34,7 @@ public class DiscordSRVListener extends ChatManager {
         String id = event.getMember().getUser().getId();
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
         boolean linked = false;
+        OfflinePlayer player = null;
         UUID uuid = null;
         if (alm != null) {
             uuid = alm.getUuid(id);
@@ -41,13 +42,17 @@ public class DiscordSRVListener extends ChatManager {
                 linked = true;
             }
         }
+        String playerName;
+        if (linked) {
+            player = Bukkit.getOfflinePlayer(uuid);
+            playerName = player.getName();
+        } else {
+            playerName = "unknown";
+        }
 
-        OfflinePlayer player = null;
         String spamExemptRole = configManager.get().getString("discord.bypass-role");
         boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getName().equals(spamExemptRole));
         if (linked && !spamExempt) {
-            player = Bukkit.getOfflinePlayer(uuid);
-            String playerName = player.getName();
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             String emote = configManager.get().getString("discord.reactions.cancelled");
             if (muteSync && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
@@ -107,10 +112,6 @@ public class DiscordSRVListener extends ChatManager {
                     if (emote != null) {
                         event.getMessage().addReaction(emote).queue();
                     }
-                    String playerName = "unknown";
-                    if (player != null) {
-                        playerName = player.getName();
-                    }
                     notifyModifiedMessage(playerName, originalPostBarrier);
                 }
                 event.setProcessedMessage(preBarrier + barrier + postBarrier);
@@ -119,7 +120,29 @@ public class DiscordSRVListener extends ChatManager {
     }
 
     @Subscribe
-    public void discordStaffMessage(DiscordGuildMessageReceivedEvent event) {
+    public void discordMessage(DiscordGuildMessageReceivedEvent event) {
+        String id = event.getMember().getUser().getId();
+        AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
+        OfflinePlayer player = null;
+        UUID uuid;
+        if (alm != null) {
+            uuid = alm.getUuid(id);
+            if (uuid != null) {
+                player = Bukkit.getOfflinePlayer(uuid);
+            }
+        }
+        if (player != null) {
+            boolean rewardAllChats = configManager.get().getBoolean("reward.discord.all-messages");
+            if (rewardAllChats) {
+                reward(player);
+            } else {
+                boolean rewardDiscordToMC = configManager.get().getBoolean("reward.discord.mc-messages");
+                 String mcChannelId = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("global").getId();
+                if (rewardDiscordToMC && event.getChannel().getId().equals(mcChannelId)) {
+                    reward(player);
+                }
+            }
+        }
         TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
         if (event.getChannel().getId().equals(staffchatChannel.getId())) {
             String discordToMc = configManager.get().getString("messages.staffchat.discord-to-mc-format");
