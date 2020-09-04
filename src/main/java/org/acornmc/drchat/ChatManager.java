@@ -5,12 +5,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ChatManager {
     ConfigManager configManager;
-    public static HashMap<OfflinePlayer, Integer> recentlyTalked = new HashMap<>();
+    public static HashMap<OfflinePlayer, Integer> spamCheck = new HashMap<>();
+    public static Set<OfflinePlayer> ecoCheck = new HashSet<>();
 
     public ChatManager (ConfigManager configManager) {
         this.configManager = configManager;
@@ -157,26 +157,26 @@ public class ChatManager {
     }
 
     public boolean isTooFrequent(OfflinePlayer player) {
-        if (!recentlyTalked.containsKey(player)) {
+        if (!spamCheck.containsKey(player)) {
             return false;
         }
         int limit = configManager.get().getInt("checks.frequency.limit");
-        return recentlyTalked.get(player) >= limit;
+        return spamCheck.get(player) >= limit;
     }
 
     public void increment(OfflinePlayer player) {
         int newCount = 1;
-        if (recentlyTalked.containsKey(player)) {
-            newCount = recentlyTalked.get(player) + 1;
+        if (spamCheck.containsKey(player)) {
+            newCount = spamCheck.get(player) + 1;
         }
-        recentlyTalked.put(player, newCount);
+        spamCheck.put(player, newCount);
         int interval = configManager.get().getInt("checks.frequency.interval");
         new BukkitRunnable() {
             @Override
             public void run() {
-                recentlyTalked.put(player, recentlyTalked.get(player) - 1);
-                if (recentlyTalked.get(player) == 0) {
-                    recentlyTalked.remove(player);
+                spamCheck.put(player, spamCheck.get(player) - 1);
+                if (spamCheck.get(player) == 0) {
+                    spamCheck.remove(player);
                 }
             }
         }.runTaskLater(configManager.plugin, interval);
@@ -215,6 +215,21 @@ public class ChatManager {
             final String finalCommand = command;
             Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
             Bukkit.getScheduler().runTask(configManager.plugin, runnable);
+        }
+    }
+
+    public void reward(OfflinePlayer player) {
+        if (!ecoCheck.contains(player)) {
+            ecoCheck.add(player);
+            int interval = configManager.get().getInt("rewards.cooldown");
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    ecoCheck.remove(player);
+                }
+            }.runTaskLater(configManager.plugin, interval);
+            double money = configManager.get().getDouble("rewards.money");
+            DrChat.getEconomy().depositPlayer(player, money);
         }
     }
 }

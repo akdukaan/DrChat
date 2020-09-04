@@ -24,6 +24,13 @@ messages:
     mc-to-mc-format: "&a&l[Staff] &f%name% &7» &f%message%"
     discord-to-mc-format: "&a&l[Staff] &f%nickname% &9» &f%message%"
 
+rewards:
+  cooldown: 15 #seconds
+  money: 1 # $ per message
+  discord:
+    mc-messages: true
+    all-messages: true
+
 discord:
   checks: # Which of these checks should be made when sending the message from Discord to MC
     frequency: true

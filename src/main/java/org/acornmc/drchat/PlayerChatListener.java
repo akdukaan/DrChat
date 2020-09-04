@@ -41,6 +41,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 notifyModifiedMessage(playerName, event.getMessage());
                 event.setMessage(newMessage);
             }
+            reward(player);
         }
     }
 }
