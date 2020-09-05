@@ -6,11 +6,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatManager {
     ConfigManager configManager;
     public static HashMap<OfflinePlayer, Integer> spamCheck = new HashMap<>();
     public static Set<OfflinePlayer> ecoCheck = new HashSet<>();
+    private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9A-F]{6})", Pattern.CASE_INSENSITIVE);
 
     public ChatManager (ConfigManager configManager) {
         this.configManager = configManager;
@@ -59,7 +62,22 @@ public class ChatManager {
             }
         }
         if (uppercaseCount > configManager.get().getInt("checks.capital.limit")) {
-            message = message.toLowerCase();
+            boolean ignoreCapitalLinks = configManager.get().getBoolean("checks.capital.ignore-links");
+            if (ignoreCapitalLinks) {
+                String[] words = message.split(" ");
+                String newMessage = "";
+                for (String word : words) {
+                    if (word.startsWith("http://") || word.startsWith("https://")) {
+                        newMessage += word;
+                    } else {
+                        newMessage += word.toLowerCase();
+                    }
+                    newMessage += " ";
+                }
+                message = newMessage;
+            } else {
+                message = message.toLowerCase();
+            }
         }
         return message;
     }
@@ -231,5 +249,21 @@ public class ChatManager {
             double money = configManager.get().getDouble("rewards.money");
             DrChat.getEconomy().depositPlayer(player, money);
         }
+    }
+
+    public static String convertHex(String in) {
+        Matcher matcher = HEX_PATTERN.matcher(in);
+        while (matcher.find()) {
+            in = matcher.replaceFirst("&x" + addBeforeAllChars(matcher.group(1)));
+        }
+        return in;
+    }
+
+    private static String addBeforeAllChars(String string) {
+        StringBuilder builder = new StringBuilder(string.length() * 2);
+        for (char existing : string.toCharArray()) {
+            builder.append('&').append(existing);
+        }
+        return builder.toString();
     }
 }

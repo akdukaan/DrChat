@@ -10,6 +10,7 @@ checks:
       - '0'
   capital:
     limit: 15 # Maximum number of capital letters in a message
+    ignore-links: true
 
 messages:
   no-permission: "&cNo Permission"
@@ -23,6 +24,8 @@ messages:
   staffchat:
     mc-to-mc-format: "&a&l[Staff] &f%name% &7» &f%message%"
     discord-to-mc-format: "&a&l[Staff] &f%nickname% &9» &f%message%"
+    toggle-on: "&6Staffchat is now on"
+    toggle-off: "&6Staffchat is now off"
 
 rewards:
   cooldown: 15 #seconds

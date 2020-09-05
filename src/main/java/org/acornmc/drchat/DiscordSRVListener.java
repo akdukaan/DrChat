@@ -149,26 +149,10 @@ public class DiscordSRVListener extends ChatManager {
             if (discordToMc != null) {
                 discordToMc = discordToMc.replace("%nickname%", event.getMember().getEffectiveName());
                 discordToMc = discordToMc.replace("%message%", event.getMessage().getContentDisplay());
-                discordToMc = convertHex(discordToMc);
+                discordToMc = ChatManager.convertHex(discordToMc);
                 discordToMc = ChatColor.translateAlternateColorCodes('&', discordToMc);
                 Bukkit.broadcast(discordToMc, "drchat.staffchat");
             }
         }
-    }
-
-    public static String convertHex(String in) {
-        Matcher matcher = HEX_PATTERN.matcher(in);
-        while (matcher.find()) {
-            in = matcher.replaceFirst("&x" + addBeforeAllChars(matcher.group(1)));
-        }
-        return in;
-    }
-
-    private static String addBeforeAllChars(String string) {
-        StringBuilder builder = new StringBuilder(string.length() * 2);
-        for (char existing : string.toCharArray()) {
-            builder.append('&').append(existing);
-        }
-        return builder.toString();
     }
 }

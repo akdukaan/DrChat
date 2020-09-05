@@ -16,6 +16,10 @@ public class PlayerChatListener extends ChatManager implements Listener {
         if (event.isCancelled()) {
             return;
         }
+        if (ManagerStaffchat.isToggled(event.getPlayer().getUniqueId())) {
+            event.setCancelled(true);
+            return;
+        }
         Player player = event.getPlayer();
         String playerName = player.getName();
         if (!player.hasPermission("drchat.bypass.frequency") && isTooFrequent(player)) {
