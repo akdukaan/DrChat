@@ -28,8 +28,8 @@ messages:
     toggle-off: "&6Staffchat is now off"
 
 rewards: #requires vault
-  cooldown: 300 #ticks
-  money: 1 # $ per message
+  cooldown: 300 # in ticks
+  money: 0 # $ per message
   discord:
     mc-messages: true
     all-messages: true

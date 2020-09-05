@@ -18,6 +18,9 @@ public class PlayerChatListener extends ChatManager implements Listener {
         }
         if (ManagerStaffchat.isToggled(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
+            String mcToMc = configManager.get().getString("messages.staffchat.mc-to-mc-format");
+            ManagerStaffchat.sendMinecraft(event.getMessage(), event.getPlayer(), mcToMc);
+            ManagerStaffchat.sendDiscord(event.getMessage(), event.getPlayer());
             return;
         }
         Player player = event.getPlayer();

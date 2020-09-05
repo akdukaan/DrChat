@@ -1,6 +1,5 @@
 package org.acornmc.drchat;
 
-import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -42,26 +41,12 @@ public class CommandStaffchat implements CommandExecutor {
                 toggleMessage = ChatColor.translateAlternateColorCodes('&', toggleMessage);
                 player.sendMessage(toggleMessage);
             }
+            return true;
         }
         String message = String.join(" ", args);
         String mcToMc = configManager.get().getString("messages.staffchat.mc-to-mc-format");
-        mcToMc = addPlaceholders(mcToMc, player, message);
-        ManagerStaffchat.send(mcToMc, player);
-        mcToMc = ChatManager.convertHex(mcToMc);
-        mcToMc = ChatColor.translateAlternateColorCodes('&', mcToMc);
-        Bukkit.broadcast(mcToMc, "drchat.staffchat");
-        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
-            String finalMessage = ChatManager.convertHex(message);
-            Bukkit.getServer().getScheduler().runTaskAsynchronously(configManager.plugin, () ->
-                    DiscordSRV.getPlugin().processChatMessage(player, finalMessage, "staff-chat", false));
-        }
+        ManagerStaffchat.sendMinecraft(message, player, mcToMc);
+        ManagerStaffchat.sendDiscord(message, player);
         return true;
-    }
-
-    public String addPlaceholders(String format, Player player, String message) {
-        format = format.replace("%name%", player.getName());
-        format = format.replace("%nickname%", player.getDisplayName());
-        format = format.replace("%message%", message);
-        return format;
     }
 }

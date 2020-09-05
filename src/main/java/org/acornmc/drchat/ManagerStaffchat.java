@@ -29,6 +29,24 @@ public class ManagerStaffchat {
         }
     }
 
+    public static void sendMinecraft(String message, Player player, String format) {
+        format = format.replace("%name%", player.getName());
+        format = format.replace("%nickname%", player.getDisplayName());
+        format = format.replace("%message%", message);
+        format = ChatManager.convertHex(format);
+        format = ChatColor.translateAlternateColorCodes('&', format);
+        Bukkit.broadcast(format, "drchat.staffchat");
+
+    }
+
+    public static void sendDiscord(String message, Player player) {
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            message = ChatManager.convertHex(message);
+            message = ChatColor.translateAlternateColorCodes('&', message);
+            DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false);
+        }
+    }
+
     public static void send(String message, Player player) {
         message = ChatManager.convertHex(message);
         message = ChatColor.translateAlternateColorCodes('&', message);
@@ -39,9 +57,4 @@ public class ManagerStaffchat {
                     DiscordSRV.getPlugin().processChatMessage(player, finalMessage, "staff-chat", false));
         }
     }
-
-
-
-
-
 }
