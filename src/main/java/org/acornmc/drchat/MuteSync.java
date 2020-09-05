@@ -18,8 +18,6 @@ public class MuteSync implements Listener {
 
     @EventHandler
     public void muteStatus(MuteStatusChangeEvent event) {
-        System.out.println("Player's name is " + event.getAffected());
-        System.out.println("Player is muted: " + event.getValue());
         Player player = event.getAffected().getBase();
         if (event.getValue()) {
             muteOnDiscord(player);
