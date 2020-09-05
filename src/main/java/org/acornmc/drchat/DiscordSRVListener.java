@@ -10,17 +10,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DiscordSRVListener extends ChatManager {
     EssentialsUtil essentialsUtil;
-    private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9A-F]{6})", Pattern.CASE_INSENSITIVE);
 
     public DiscordSRVListener(ConfigManager configManager) {
         super(configManager);
         if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
-            essentialsUtil = new EssentialsUtil();
+            essentialsUtil = new EssentialsUtil(configManager);
         }
     }
 

@@ -24,16 +24,19 @@ public final class DrChat extends JavaPlugin {
         plugin = this;
         configManager = new ConfigManager(this);
         if (!setupEconomy() ) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            log.info(String.format("[%s] Vault not found!", getDescription().getName()));
+        } else {
+            setupPermissions();
+            setupChat();
         }
-        setupPermissions();
-        setupChat();
         this.getServer().getPluginManager().registerEvents(new PlayerChatListener(configManager), this);
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             Bukkit.getLogger().info("[DrChat] DiscordSRV found!");
             DiscordSRV.api.subscribe(new DiscordSRVListener(configManager));
+            if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
+                Bukkit.getLogger().info("[DrChat] Essentials found!");
+                this.getServer().getPluginManager().registerEvents(new MuteSync(configManager), this);
+            }
         }
         PluginCommand drchatCommand = getCommand("drchat");
         if (drchatCommand != null) {

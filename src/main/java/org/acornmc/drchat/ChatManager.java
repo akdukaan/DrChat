@@ -237,6 +237,9 @@ public class ChatManager {
     }
 
     public void reward(OfflinePlayer player) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            return;
+        }
         if (!ecoCheck.contains(player)) {
             ecoCheck.add(player);
             int interval = configManager.get().getInt("rewards.cooldown");

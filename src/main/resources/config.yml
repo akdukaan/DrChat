@@ -27,14 +27,14 @@ messages:
     toggle-on: "&6Staffchat is now on"
     toggle-off: "&6Staffchat is now off"
 
-rewards:
-  cooldown: 15 #seconds
+rewards: #requires vault
+  cooldown: 300 #ticks
   money: 1 # $ per message
   discord:
     mc-messages: true
     all-messages: true
 
-discord:
+discord: #requires DiscordSRV
   checks: # Which of these checks should be made when sending the message from Discord to MC
     frequency: true
     font: true
@@ -47,4 +47,5 @@ discord:
   delete-cancelled: true # Should DrChat delete discord messages that were cancelled
   bypass-role: "Admin" # This role will be allowed to bypass all checks when sending messages through Discord
   mute-sync: true # Should DrChat prevent players who are muted ingame from talking in the chat channel
+  mute-role-id: "000000000000000000" # This role will be added to players when they are muted
   barrier: "»" # Discord -> MC will only filter chat to the right of the first occurrence of this String

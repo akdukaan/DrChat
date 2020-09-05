@@ -3,7 +3,7 @@ version: ${project.version}
 main: org.acornmc.drchat.DrChat
 api-version: "1.13"
 authors: [DrBot]
-softdepend: [DiscordSRV, EssentialsX]
+softdepend: [DiscordSRV, EssentialsX, Vault]
 description: Spam Management Tool
 commands:
   drchat:
