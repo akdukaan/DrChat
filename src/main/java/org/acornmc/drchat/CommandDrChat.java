@@ -105,6 +105,8 @@ public class CommandDrChat implements CommandExecutor {
             for (int i = 3; i < args.length; i++) {
                 message = message + args[i] + " ";
             }
+            message = ChatManager.convertHex(message);
+            message = ChatColor.translateAlternateColorCodes('&', message);
             Bukkit.broadcast(message, perm);
             return true;
         }

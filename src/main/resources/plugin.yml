@@ -54,3 +54,12 @@ permissions:
   drchat.bypass.frequency:
     default: false
     description: bypass frequency spam
+  drchat.notify.cancel:
+    default: false
+    description: notify for cancelled messages
+  drchat.notify.modify:
+    default: false
+    description: notify for modified messages
+  drchat.staffchat:
+    default: false
+    description: use staffchat
