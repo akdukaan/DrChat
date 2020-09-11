@@ -1,9 +1,11 @@
 package org.acornmc.drchat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandDrChat implements CommandExecutor {
@@ -18,7 +20,8 @@ public class CommandDrChat implements CommandExecutor {
         if (args.length == 0) {
             return false;
         }
-        if (args[0].equals("reload")) {
+        String subcommand = args[0].toLowerCase();
+        if (subcommand.equals("reload")) {
             if (!sender.hasPermission("drchat.reload")) {
                 String noPerms = configManager.get().getString("messages.no-permission");
                 if (noPerms != null) {
@@ -36,6 +39,78 @@ public class CommandDrChat implements CommandExecutor {
             if (reloadMessage != null) {
                 reloadMessage = ChatColor.translateAlternateColorCodes('&', reloadMessage);
                 sender.sendMessage(reloadMessage);
+            }
+            return true;
+        }
+        if (subcommand.equals("freeze")) {
+            if (!sender.hasPermission("drchat.freeze")) {
+                String noPerms = configManager.get().getString("messages.no-permission");
+                if (noPerms != null) {
+                    noPerms = ChatColor.translateAlternateColorCodes('&', noPerms);
+                    sender.sendMessage(noPerms);
+                    return true;
+                }
+                if (command.getPermissionMessage() != null) {
+                    sender.sendMessage(command.getPermissionMessage());
+                }
+                return true;
+            }
+            ChatManager.toggleChatFreeze();
+            String message;
+            if (ChatManager.chatIsFrozen()) {
+                message = configManager.get().getString("messages.freeze.toggle-on");
+            } else {
+                message = configManager.get().getString("messages.freeze.toggle-off");
+            }
+            if (message != null) {
+                message = ChatColor.translateAlternateColorCodes('&', message);
+                sender.sendMessage(message);
+            }
+            return true;
+        }
+        if (subcommand.equals("clear")) {
+            if (!sender.hasPermission("drchat.clear")) {
+                String noPerms = configManager.get().getString("messages.no-permission");
+                if (noPerms != null) {
+                    noPerms = ChatColor.translateAlternateColorCodes('&', noPerms);
+                    sender.sendMessage(noPerms);
+                    return true;
+                }
+                if (command.getPermissionMessage() != null) {
+                    sender.sendMessage(command.getPermissionMessage());
+                }
+                return true;
+            }
+            if (args.length == 1) {
+                int lineCount = configManager.get().getInt("messages.clear.lines");
+                for (int i = 0; i < lineCount; i++) {
+                    Bukkit.broadcastMessage("");
+                }
+                String clearMessage = configManager.get().getString("messages.clear.all");
+                if (clearMessage != null) {
+                    clearMessage = ChatColor.translateAlternateColorCodes('&', clearMessage);
+                    sender.sendMessage(clearMessage);
+                }
+                return true;
+            }
+            Player targetPlayer = Bukkit.getPlayer(args[1]);
+            if (targetPlayer == null) {
+                String invalidPlayer = configManager.get().getString("messages.clear.invalid-player");
+                if (invalidPlayer != null) {
+                    invalidPlayer = ChatColor.translateAlternateColorCodes('&', invalidPlayer);
+                    sender.sendMessage(invalidPlayer);
+                }
+                return true;
+            }
+            int lineCount = configManager.get().getInt("messages.clear.lines");
+            for (int i = 0; i < lineCount; i++) {
+                targetPlayer.sendMessage("");
+            }
+            String clearMessage = configManager.get().getString("messages.clear.player");
+            if (clearMessage != null) {
+                clearMessage = ChatColor.translateAlternateColorCodes('&', clearMessage);
+                clearMessage = clearMessage.replace("%player%", targetPlayer.getName());
+                sender.sendMessage(clearMessage);
             }
             return true;
         }

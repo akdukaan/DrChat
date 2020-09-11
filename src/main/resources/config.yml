@@ -11,6 +11,12 @@ checks:
   capital:
     limit: 15 # Maximum number of capital letters in a message
     ignore-links: true
+  swear:
+    words:
+      - "nigger"
+      - "nigga"
+    commands:
+      - "ban %player% offensive language"
 
 messages:
   no-permission: "&cNo Permission"
@@ -26,6 +32,15 @@ messages:
     discord-to-mc-format: "&a&l[Staff] &f%nickname% &9» &f%message%"
     toggle-on: "&6Staffchat is now on"
     toggle-off: "&6Staffchat is now off"
+  clear:
+    lines: 20
+    all: "&6Chat Cleared"
+    player: "&6Chat Cleared for %player%"
+    invalid-player: "&6Invalid player"
+  freeze:
+    toggle-on: "&6Chat freeze toggled on"
+    toggle-off: "&6Chat freeze toggled off"
+    notify: "&4Chat is currently frozen"
 
 rewards: #requires vault
   cooldown: 300 # in ticks
@@ -40,7 +55,8 @@ discord: #requires DiscordSRV
     font: true
     spacing: true
     capital: true
-    character: false
+    character: true
+    swear: true
   reactions: # For custom emotes, use the format name:id. Example: "pepe:123123123123"
     modified: "U+2702" # Messages which were sent from Discord and were modified will be reacted with this emote.
     cancelled: "U+274C" # Messages which were sent from Discord and were cancelled will be reacted with this emote

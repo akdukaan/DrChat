@@ -14,6 +14,7 @@ public class ChatManager {
     public static HashMap<OfflinePlayer, Integer> spamCheck = new HashMap<>();
     public static Set<OfflinePlayer> ecoCheck = new HashSet<>();
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9A-F]{6})", Pattern.CASE_INSENSITIVE);
+    static boolean chatIsFrozen = false;
 
     public ChatManager (ConfigManager configManager) {
         this.configManager = configManager;
@@ -222,18 +223,43 @@ public class ChatManager {
         }
     }
 
-    public void useTooFrequentCommand(OfflinePlayer player) {
-        List<String> stringList = configManager.get().getStringList("checks.frequency.commands");
+    public void useTooFrequentCommands(OfflinePlayer player) {
         String playerName = player.getName();
         if (playerName == null) {
-            playerName = "unknown";
+            playerName = "?";
         }
+        List<String> stringList = configManager.get().getStringList("checks.frequency.commands");
         for (String command : stringList) {
             command = command.replace("%player%", playerName);
             final String finalCommand = command;
             Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
             Bukkit.getScheduler().runTask(configManager.plugin, runnable);
         }
+    }
+
+    public boolean hasSwear(String message) {
+        List<String> swears = configManager.get().getStringList("checks.swear.words");
+        for (String swear : swears) {
+            if (message.contains(swear)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void useSwearCommands(OfflinePlayer player) {
+        String playerName = player.getName();
+        if (playerName == null) {
+            playerName = "?";
+        }
+        List<String> cmds = configManager.get().getStringList("checks.swear.commands");
+        for (String command : cmds) {
+            command = command.replace("%player%", playerName);
+            final String finalCommand = command;
+            Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+            Bukkit.getScheduler().runTask(configManager.plugin, runnable);
+        }
+
     }
 
     public void reward(OfflinePlayer player) {
@@ -268,5 +294,13 @@ public class ChatManager {
             builder.append('&').append(existing);
         }
         return builder.toString();
+    }
+
+    public static boolean chatIsFrozen() {
+        return chatIsFrozen;
+    }
+
+    public static void toggleChatFreeze() {
+        chatIsFrozen = !chatIsFrozen;
     }
 }

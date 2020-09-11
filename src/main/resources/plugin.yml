@@ -7,11 +7,27 @@ softdepend: [DiscordSRV, EssentialsX, Vault]
 description: Spam Management Tool
 commands:
   drchat:
-    description: drchat reload command
-    usage: /<command> reload
-    permission: drchat.reload
+    description: drchat admin commands
+    usage: "/<command> reload \n/<command> clear <player> \n/<command> freeze"
+    permission: drchat.command
   staffchat:
     description: drchat's staff chat
     usage: /<command> <message>
     permission: drchat.staffchat
     aliases: [h]
+permissions:
+  drchat.reload:
+    default: false
+    description: reload command
+    children:
+      drchat.command: true
+  drchat.freeze:
+    default: false
+    description: freeze command
+    children:
+      drchat.command: true
+  drchat.clear:
+    default: false
+    description: clear command
+    children:
+      drchat.command: true

@@ -22,7 +22,7 @@ public class DiscordSRVListener extends ChatManager {
     }
 
     @Subscribe
-    public void discordMessageProcessed(DiscordGuildMessagePostProcessEvent event) {
+    public void discordMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
         String staffchatChannelId = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat").getId();
         if (event.getChannel().getId().equals(staffchatChannelId)) {
             event.setCancelled(true);
@@ -44,11 +44,20 @@ public class DiscordSRVListener extends ChatManager {
             player = Bukkit.getOfflinePlayer(uuid);
             playerName = player.getName();
         } else {
-            playerName = "unknown";
+            playerName = "?";
         }
 
         String spamExemptRole = configManager.get().getString("discord.bypass-role");
         boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getName().equals(spamExemptRole));
+        if (chatIsFrozen()) {
+            if (!spamExempt) {
+                event.setCancelled(true);
+                String emote = configManager.get().getString("discord.reactions.cancelled");
+                if (emote != null) {
+                    event.getMessage().addReaction(emote).queue();
+                }
+            }
+        }
         if (linked && !spamExempt) {
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             String emote = configManager.get().getString("discord.reactions.cancelled");
@@ -71,7 +80,7 @@ public class DiscordSRVListener extends ChatManager {
                 }
                 notifyCancelledMessage(playerName, event.getMessage().getContentDisplay());
                 event.setCancelled(true);
-                useTooFrequentCommand(player);
+                useTooFrequentCommands(player);
                 return;
             }
             increment(player);
@@ -91,6 +100,7 @@ public class DiscordSRVListener extends ChatManager {
                 boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
                 boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
                 boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
+                boolean checkSwear = configManager.get().getBoolean("discord.checks.swear");
                 String originalPostBarrier = postBarrier;
                 if (checkFont) {
                     postBarrier = fixFont(postBarrier);
@@ -103,6 +113,13 @@ public class DiscordSRVListener extends ChatManager {
                 }
                 if (checkCharacter) {
                     postBarrier = fixCharacter(postBarrier);
+                }
+                if (checkSwear && hasSwear(postBarrier)) {
+                    event.setCancelled(true);
+                    notifyCancelledMessage(playerName, event.getProcessedMessage());
+                    if (player != null) {
+                        useSwearCommands(player);
+                    }
                 }
                 if (!originalPostBarrier.equals(postBarrier)) {
                     String emote = configManager.get().getString("discord.reactions.modified");

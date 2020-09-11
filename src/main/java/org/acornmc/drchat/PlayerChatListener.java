@@ -16,18 +16,28 @@ public class PlayerChatListener extends ChatManager implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        if (ManagerStaffchat.isToggled(event.getPlayer().getUniqueId())) {
+        Player player = event.getPlayer();
+        if (chatIsFrozen()) {
+            if (!player.hasPermission("drchat.bypass.freeze")) {
+                event.setCancelled(true);
+                String chatFrozenMessage = configManager.get().getString("messages.frozen.notify");
+                if (chatFrozenMessage != null) {
+                    player.sendMessage(chatFrozenMessage);
+                }
+                return;
+            }
+        }
+        if (ManagerStaffchat.isToggled(player.getUniqueId())) {
             event.setCancelled(true);
             String mcToMc = configManager.get().getString("messages.staffchat.mc-to-mc-format");
             ManagerStaffchat.sendMinecraft(event.getMessage(), event.getPlayer(), mcToMc);
             ManagerStaffchat.sendDiscord(event.getMessage(), event.getPlayer());
             return;
         }
-        Player player = event.getPlayer();
         String playerName = player.getName();
         if (!player.hasPermission("drchat.bypass.frequency") && isTooFrequent(player)) {
             event.setCancelled(true);
-            useTooFrequentCommand(player);
+            useTooFrequentCommands(player);
             notifyCancelledMessage(playerName, event.getMessage());
         } else {
             increment(player);
@@ -43,6 +53,11 @@ public class PlayerChatListener extends ChatManager implements Listener {
             }
             if (!player.hasPermission("drchat.bypass.character")) {
                 newMessage = fixCharacter(newMessage);
+            }
+            if (!player.hasPermission("drchat.bypass.capital") && hasSwear(newMessage)) {
+                event.setCancelled(true);
+                useSwearCommands(player);
+                notifyCancelledMessage(playerName, event.getMessage());
             }
             if (!newMessage.equals(event.getMessage())) {
                 notifyModifiedMessage(playerName, event.getMessage());
