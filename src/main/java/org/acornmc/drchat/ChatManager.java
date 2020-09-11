@@ -239,8 +239,9 @@ public class ChatManager {
 
     public boolean hasSwear(String message) {
         List<String> swears = configManager.get().getStringList("checks.swear.words");
+        String lowerCaseMessage = message.toLowerCase();
         for (String swear : swears) {
-            if (message.contains(swear)) {
+            if (lowerCaseMessage.contains(swear)) {
                 return true;
             }
         }

@@ -23,15 +23,7 @@ public class CommandDrChat implements CommandExecutor {
         String subcommand = args[0].toLowerCase();
         if (subcommand.equals("reload")) {
             if (!sender.hasPermission("drchat.reload")) {
-                String noPerms = configManager.get().getString("messages.no-permission");
-                if (noPerms != null) {
-                    noPerms = ChatColor.translateAlternateColorCodes('&', noPerms);
-                    sender.sendMessage(noPerms);
-                    return true;
-                }
-                if (command.getPermissionMessage() != null) {
-                    sender.sendMessage(command.getPermissionMessage());
-                }
+                noPerms(sender);
                 return true;
             }
             configManager.reload();
@@ -44,15 +36,7 @@ public class CommandDrChat implements CommandExecutor {
         }
         if (subcommand.equals("freeze")) {
             if (!sender.hasPermission("drchat.freeze")) {
-                String noPerms = configManager.get().getString("messages.no-permission");
-                if (noPerms != null) {
-                    noPerms = ChatColor.translateAlternateColorCodes('&', noPerms);
-                    sender.sendMessage(noPerms);
-                    return true;
-                }
-                if (command.getPermissionMessage() != null) {
-                    sender.sendMessage(command.getPermissionMessage());
-                }
+                noPerms(sender);
                 return true;
             }
             ChatManager.toggleChatFreeze();
@@ -70,15 +54,7 @@ public class CommandDrChat implements CommandExecutor {
         }
         if (subcommand.equals("clear")) {
             if (!sender.hasPermission("drchat.clear")) {
-                String noPerms = configManager.get().getString("messages.no-permission");
-                if (noPerms != null) {
-                    noPerms = ChatColor.translateAlternateColorCodes('&', noPerms);
-                    sender.sendMessage(noPerms);
-                    return true;
-                }
-                if (command.getPermissionMessage() != null) {
-                    sender.sendMessage(command.getPermissionMessage());
-                }
+                noPerms(sender);
                 return true;
             }
             if (args.length == 1) {
@@ -114,6 +90,32 @@ public class CommandDrChat implements CommandExecutor {
             }
             return true;
         }
+        if (subcommand.equals("broadcast")) {
+            if (!sender.hasPermission("messages.broadcast")) {
+                noPerms(sender);
+                return true;
+            }
+            if (args.length < 3) {
+                return false;
+            }
+            String perm = args[2];
+            String o = "This is a string";
+            String[] p = o.split(" ", 2);
+            String message = "";
+            for (int i = 3; i < args.length; i++) {
+                message = message + args[i] + " ";
+            }
+            Bukkit.broadcast(message, perm);
+            return true;
+        }
         return false;
+    }
+
+    public void noPerms(CommandSender sender) {
+        String noPerms = configManager.get().getString("messages.no-permission");
+        if (noPerms != null) {
+            noPerms = ChatColor.translateAlternateColorCodes('&', noPerms);
+            sender.sendMessage(noPerms);
+        }
     }
 }

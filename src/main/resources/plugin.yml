@@ -8,7 +8,7 @@ description: Spam Management Tool
 commands:
   drchat:
     description: drchat admin commands
-    usage: "/<command> reload \n/<command> clear <player> \n/<command> freeze"
+    usage: "/<command> reload \n/<command> clear <player> \n/<command> freeze \n<command> broadcast <permission> <message>"
     permission: drchat.command
   staffchat:
     description: drchat's staff chat
@@ -31,3 +31,26 @@ permissions:
     description: clear command
     children:
       drchat.command: true
+  drchat.broadcast:
+    default: false
+    description: broadcast command
+    children:
+      drchat.command: true
+  drchat.bypass.character:
+    default: false
+    description: bypass character spam
+  drchat.bypass.swear:
+    default: false
+    description: bypass swear spam
+  drchat.bypass.capital:
+    default: false
+    description: bypass capital spam
+  drchat.bypass.spacing:
+    default: false
+    description: bypass spacing spam
+  drchat.bypass.font:
+    default: false
+    description: bypass font spam
+  drchat.bypass.frequency:
+    default: false
+    description: bypass frequency spam

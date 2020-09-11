@@ -54,7 +54,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
             if (!player.hasPermission("drchat.bypass.character")) {
                 newMessage = fixCharacter(newMessage);
             }
-            if (!player.hasPermission("drchat.bypass.capital") && hasSwear(newMessage)) {
+            if (!player.hasPermission("drchat.bypass.swear") && hasSwear(newMessage)) {
                 event.setCancelled(true);
                 useSwearCommands(player);
                 notifyCancelledMessage(playerName, event.getMessage());
