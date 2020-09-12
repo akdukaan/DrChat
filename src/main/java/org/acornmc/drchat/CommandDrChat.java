@@ -105,6 +105,15 @@ public class CommandDrChat implements CommandExecutor {
             }
             message = ChatManager.convertHex(message);
             message = ChatColor.translateAlternateColorCodes('&', message);
+            if (perm.startsWith("!")) {
+                perm = perm.replace("!", "");
+                for (Player p: Bukkit.getOnlinePlayers()) {
+                    if (!p.hasPermission(perm)) {
+                        p.sendMessage(message);
+                    }
+                }
+                return true;
+            }
             Bukkit.broadcast(message, perm);
             return true;
         }
