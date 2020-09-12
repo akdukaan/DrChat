@@ -1,5 +1,6 @@
 package org.acornmc.drchat;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +23,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 event.setCancelled(true);
                 String chatFrozenMessage = configManager.get().getString("messages.frozen.notify");
                 if (chatFrozenMessage != null) {
+                    chatFrozenMessage = ChatColor.translateAlternateColorCodes('&', chatFrozenMessage);
                     player.sendMessage(chatFrozenMessage);
                 }
                 return;

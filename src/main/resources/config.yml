@@ -5,17 +5,18 @@ checks:
     commands:
     - "mute %player% 1m spam" # commands to execute when someone passes the limit
   character:
-    limit: 3
+    limit: 3 # max number of repeating characters allowed
     exceptions: # These characters will not be removed for character-spam.
       - '0'
   capital:
     limit: 15 # Maximum number of capital letters in a message
-    ignore-links: true
+    ignore-links: true # if it looks like a link, should drchat allow it to be
   swear:
-    words:
+    words: # make sure to put the words here in all lowercase.
       - "nigger"
       - "nigga"
-    commands:
+      - "faggot"
+    commands: # commands to execute if someone uses one of these words
       - "ban %player% offensive language"
 
 messages:
@@ -46,8 +47,9 @@ rewards: #requires vault
   cooldown: 300 # in ticks
   money: 0 # $ per message
   discord:
-    mc-messages: true
-    all-messages: true
+    all-messages: true # should messages sent in any chat channel be rewarded?
+    mc-messages: true # should messages sent in the mc chat channel be rewarded? This setting is ignored if all-messages is set to true
+
 
 discord: #requires DiscordSRV
   checks: # Which of these checks should be made when sending the message from Discord to MC
