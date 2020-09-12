@@ -98,11 +98,11 @@ public class CommandDrChat implements CommandExecutor {
             if (args.length < 3) {
                 return false;
             }
-            String perm = args[2];
+            String perm = args[1];
             String o = "This is a string";
             String[] p = o.split(" ", 2);
             String message = "";
-            for (int i = 3; i < args.length; i++) {
+            for (int i = 2; i < args.length; i++) {
                 message = message + args[i] + " ";
             }
             message = ChatManager.convertHex(message);
