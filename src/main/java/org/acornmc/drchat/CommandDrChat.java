@@ -99,8 +99,6 @@ public class CommandDrChat implements CommandExecutor {
                 return false;
             }
             String perm = args[1];
-            String o = "This is a string";
-            String[] p = o.split(" ", 2);
             String message = "";
             for (int i = 2; i < args.length; i++) {
                 message = message + args[i] + " ";
