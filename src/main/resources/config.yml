@@ -42,7 +42,9 @@ messages:
     toggle-on: "&6Chat freeze toggled on"
     toggle-off: "&6Chat freeze toggled off"
     notify: "&4Chat is currently frozen"
-  search: "&6Search results: &cgoogle.com/search?q=%search%"
+  search:
+    minecraft: "&6Search results: &cgoogle.com/search?q=%search%"
+    discord: "**Search results:** google.com/search?q=%search%"
 
 rewards: # requires vault
   cooldown: 300 # in ticks

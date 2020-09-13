@@ -1,12 +1,10 @@
 package org.acornmc.drchat;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public class PlayerChatListener extends ChatManager implements Listener {
 
@@ -68,22 +66,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 event.setMessage(newMessage);
             }
             reward(player);
-            String trigger = configManager.get().getString("search.trigger");
-            if (trigger != null) {
-                if (newMessage.startsWith(trigger)) {
-                    newMessage = newMessage.substring(trigger.length());
-                    String url = configManager.get().getString("messages.search");
-                    if (url != null) {
-                        newMessage = newMessage.replace(" ", "%20");
-                        url = url.replace("%search%", newMessage);
-                        String finalUrl = ChatColor.translateAlternateColorCodes('&', url);
-                        BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
-                        scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
-                                Bukkit.broadcastMessage(finalUrl), 1L);
-                        //TODO: Make the message also send to Discord
-                    }
-                }
-            }
+            postSearchResults(newMessage);
         }
     }
 }

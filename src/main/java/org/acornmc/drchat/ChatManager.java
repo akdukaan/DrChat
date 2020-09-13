@@ -1,9 +1,11 @@
 package org.acornmc.drchat;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -303,5 +305,39 @@ public class ChatManager {
 
     public static void toggleChatFreeze() {
         chatIsFrozen = !chatIsFrozen;
+    }
+
+    public void postSearchResults(String newMessage) {
+        String trigger = configManager.get().getString("search.trigger");
+        if (trigger != null) {
+            if (newMessage.startsWith(trigger)) {
+                newMessage = newMessage.substring(trigger.length());
+                newMessage = newMessage.replace(" ", "%20");
+                minecraftSearch(newMessage);
+                discordSearch(newMessage);
+            }
+        }
+    }
+
+    public void minecraftSearch(String message) {
+        String searchFormat = configManager.get().getString("messages.search.minecraft");
+        if (searchFormat != null) {
+            searchFormat = searchFormat.replace("%search%", message);
+            String finalUrl = ChatColor.translateAlternateColorCodes('&', searchFormat);
+            BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
+            scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
+                    Bukkit.broadcastMessage(finalUrl), 1L);
+        }
+    }
+
+    public void discordSearch(String message) {
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+            String searchFormat = configManager.get().getString("messages.search.discord");
+            if (searchFormat != null) {
+                searchFormat = searchFormat.replace("%search%", message);
+                searchFormat = ChatColor.translateAlternateColorCodes('&', searchFormat);
+                DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("global").sendMessage(searchFormat).queue();
+            }
+        }
     }
 }

@@ -85,17 +85,17 @@ public class DiscordSRVListener extends ChatManager {
             }
             increment(player);
         }
-        if (!spamExempt) {
-            String originalFullMessage = event.getProcessedMessage();
-            String barrier = configManager.get().getString("discord.barrier");
-            if (barrier != null) {
-                int barrierPosition = originalFullMessage.indexOf(barrier);
-                String preBarrier = "";
-                String postBarrier = event.getProcessedMessage();
-                if (barrierPosition != -1) {
-                    preBarrier = event.getProcessedMessage().substring(0, barrierPosition);
-                    postBarrier = event.getProcessedMessage().substring(barrierPosition + barrier.length());
-                }
+        String barrier = configManager.get().getString("discord.barrier");
+        String originalFullMessage = event.getProcessedMessage();
+        if (barrier != null) {
+            int barrierPosition = originalFullMessage.indexOf(barrier);
+            String preBarrier = "";
+            String postBarrier = originalFullMessage;
+            if (barrierPosition != -1) {
+                preBarrier = originalFullMessage.substring(0, barrierPosition);
+                postBarrier = originalFullMessage.substring(barrierPosition + barrier.length());
+            }
+            if (!spamExempt) {
                 boolean checkFont = configManager.get().getBoolean("discord.checks.font");
                 boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
                 boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
@@ -130,6 +130,7 @@ public class DiscordSRVListener extends ChatManager {
                 }
                 event.setProcessedMessage(preBarrier + barrier + postBarrier);
             }
+            postSearchResults(postBarrier);
         }
         // TODO: Search the term and return the results, both to Discord and Minecraft
     }
