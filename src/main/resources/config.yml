@@ -42,16 +42,16 @@ messages:
     toggle-on: "&6Chat freeze toggled on"
     toggle-off: "&6Chat freeze toggled off"
     notify: "&4Chat is currently frozen"
-  search: "&6Here is the answer to your question: &cgoogle.com/search?q="
+  search: "&6Search results: &cgoogle.com/search?q=%search%"
 
-rewards: #requires vault
+rewards: # requires vault
   cooldown: 300 # in ticks
   money: 0 # $ per message
   discord:
     all-messages: true # should messages sent in any chat channel be rewarded?
     mc-messages: true # should messages sent in the mc chat channel be rewarded? This setting is ignored if all-messages is set to true
 
-discord: #requires DiscordSRV
+discord: # requires DiscordSRV
   checks: # Which of these checks should be made when sending the message from Discord to MC
     frequency: true
     font: true

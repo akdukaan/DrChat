@@ -46,15 +46,4 @@ public class ManagerStaffchat {
             DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false);
         }
     }
-
-    public static void send(String message, Player player) {
-        message = ChatManager.convertHex(message);
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        Bukkit.broadcast(message, "drchat.staffchat");
-        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
-            String finalMessage = ChatManager.convertHex(message);
-            Bukkit.getServer().getScheduler().runTaskAsynchronously(DrChat.getProvidingPlugin(DrChat.class), () ->
-                    DiscordSRV.getPlugin().processChatMessage(player, finalMessage, "staff-chat", false));
-        }
-    }
 }

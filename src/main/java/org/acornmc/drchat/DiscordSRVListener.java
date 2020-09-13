@@ -131,6 +131,7 @@ public class DiscordSRVListener extends ChatManager {
                 event.setProcessedMessage(preBarrier + barrier + postBarrier);
             }
         }
+        // TODO: Search the term and return the results, both to Discord and Minecraft
     }
 
     @Subscribe

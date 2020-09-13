@@ -72,13 +72,16 @@ public class PlayerChatListener extends ChatManager implements Listener {
             if (trigger != null) {
                 if (newMessage.startsWith(trigger)) {
                     newMessage = newMessage.substring(trigger.length());
-                    newMessage = newMessage.replace(" ", "%20");
                     String url = configManager.get().getString("messages.search");
-                    url = url + newMessage;
-                    String finalUrl = ChatColor.translateAlternateColorCodes('&', url);
-                    BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
-                    scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
-                            player.sendMessage(finalUrl), 1L);
+                    if (url != null) {
+                        newMessage = newMessage.replace(" ", "%20");
+                        url = url.replace("%search%", newMessage);
+                        String finalUrl = ChatColor.translateAlternateColorCodes('&', url);
+                        BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
+                        scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
+                                Bukkit.broadcastMessage(finalUrl), 1L);
+                        //TODO: Make the message also send to Discord
+                    }
                 }
             }
         }
