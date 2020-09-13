@@ -335,7 +335,6 @@ public class ChatManager {
             String searchFormat = configManager.get().getString("messages.search.discord");
             if (searchFormat != null) {
                 searchFormat = searchFormat.replace("%search%", message);
-                searchFormat = ChatColor.translateAlternateColorCodes('&', searchFormat);
                 DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("global").sendMessage(searchFormat).queue();
             }
         }
