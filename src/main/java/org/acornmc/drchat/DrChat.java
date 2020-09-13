@@ -19,6 +19,7 @@ public final class DrChat extends JavaPlugin {
     private static Economy econ = null;
     private static Permission perms = null;
     private static Chat chat = null;
+    public boolean discordExists = false;
     @Override
     public void onEnable() {
         plugin = this;
@@ -34,6 +35,7 @@ public final class DrChat extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             log.info(String.format("[%s] DiscordSRV found!", getDescription().getName()));
             DiscordSRV.api.subscribe(new DiscordSRVListener(configManager));
+            discordExists = true;
             if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 log.info(String.format("[%s] Essentials found!", getDescription().getName()));
                 this.getServer().getPluginManager().registerEvents(new EssentialsMuteSync(configManager), this);
@@ -57,7 +59,7 @@ public final class DrChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
+        if (discordExists) {
             DiscordSRV.api.unsubscribe(new DiscordSRVListener(configManager));
         }
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));

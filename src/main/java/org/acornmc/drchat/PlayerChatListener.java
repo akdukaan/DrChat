@@ -1,10 +1,12 @@
 package org.acornmc.drchat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class PlayerChatListener extends ChatManager implements Listener {
 
@@ -66,6 +68,19 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 event.setMessage(newMessage);
             }
             reward(player);
+            String trigger = configManager.get().getString("search.trigger");
+            if (trigger!=null) {
+                if (newMessage.endsWith(trigger)) {
+                    newMessage = newMessage.substring(0, newMessage.length() - trigger.length());
+                    newMessage = newMessage.replace(" ", "%20");
+                    String url = configManager.get().getString("messages.search");
+                    url = url + newMessage;
+                    String finalUrl = ChatColor.translateAlternateColorCodes('&', url);
+                    BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
+                    scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
+                            player.sendMessage(finalUrl), 1L);
+                }
+            }
         }
     }
 }
