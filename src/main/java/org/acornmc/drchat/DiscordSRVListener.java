@@ -46,11 +46,12 @@ public class DiscordSRVListener extends ChatManager {
         } else {
             playerName = "?";
         }
-
-        String spamExemptRole = configManager.get().getString("discord.bypass-role");
-        boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getName().equals(spamExemptRole));
+        String spamExemptRole = configManager.get().getString("discord.spam-bypass-role-id");
+        boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(spamExemptRole));
         if (chatIsFrozen()) {
-            if (!spamExempt) {
+            String freezeExemptRole = configManager.get().getString("discord.spam-bypass-role-id");
+            boolean freezeExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(freezeExemptRole));
+            if (!freezeExempt) {
                 event.setCancelled(true);
                 String emote = configManager.get().getString("discord.reactions.cancelled");
                 if (emote != null) {
@@ -128,11 +129,19 @@ public class DiscordSRVListener extends ChatManager {
                     }
                     notifyModifiedMessage(playerName, originalPostBarrier);
                 }
-                event.setProcessedMessage(preBarrier + barrier + postBarrier);
+                if (barrierPosition == -1) {
+                    event.setProcessedMessage(postBarrier);
+                } else {
+                    event.setProcessedMessage(preBarrier + barrier + postBarrier);
+                }
             }
-            postSearchResults(postBarrier);
+            String searchRole = configManager.get().getString("discord.search-role-id");
+            boolean searchAllowed = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(searchRole));
+            if (searchAllowed) {
+                postBarrier = ChatColor.stripColor(postBarrier);
+                postSearchResults(postBarrier);
+            }
         }
-        // TODO: Search the term and return the results, both to Discord and Minecraft
     }
 
     @Subscribe

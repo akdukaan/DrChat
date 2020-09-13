@@ -54,6 +54,9 @@ permissions:
   drchat.bypass.frequency:
     default: false
     description: bypass frequency spam
+  drchat.bypass.freeze:
+    default: false
+    description: talk while chat is frozen
   drchat.notify.cancel:
     default: false
     description: notify for cancelled messages
@@ -63,3 +66,6 @@ permissions:
   drchat.staffchat:
     default: false
     description: use staffchat
+  drchat.search:
+    default: false
+    description: allow for search

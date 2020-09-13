@@ -91,7 +91,7 @@ public class CommandDrChat implements CommandExecutor {
             return true;
         }
         if (subcommand.equals("broadcast")) {
-            if (!sender.hasPermission("messages.broadcast")) {
+            if (!sender.hasPermission("drchat.broadcast")) {
                 noPerms(sender);
                 return true;
             }

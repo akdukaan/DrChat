@@ -313,8 +313,10 @@ public class ChatManager {
             if (newMessage.startsWith(trigger)) {
                 newMessage = newMessage.substring(trigger.length());
                 newMessage = newMessage.replace(" ", "%20");
-                minecraftSearch(newMessage);
-                discordSearch(newMessage);
+                if (newMessage.length() > 1) {
+                    minecraftSearch(newMessage);
+                    discordSearch(newMessage);
+                }
             }
         }
     }
@@ -326,7 +328,7 @@ public class ChatManager {
             String finalUrl = ChatColor.translateAlternateColorCodes('&', searchFormat);
             BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
             scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
-                    Bukkit.broadcastMessage(finalUrl), 1L);
+                    Bukkit.broadcastMessage(finalUrl), 2L);
         }
     }
 
@@ -334,8 +336,10 @@ public class ChatManager {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             String searchFormat = configManager.get().getString("messages.search.discord");
             if (searchFormat != null) {
-                searchFormat = searchFormat.replace("%search%", message);
-                DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("global").sendMessage(searchFormat).queue();
+                String finalSearchFormat = searchFormat.replace("%search%", message);
+                BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
+                scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
+                        DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("global").sendMessage(finalSearchFormat).queue(), 2L);;
             }
         }
     }
