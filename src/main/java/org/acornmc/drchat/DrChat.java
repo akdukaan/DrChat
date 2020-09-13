@@ -20,6 +20,7 @@ public final class DrChat extends JavaPlugin {
     private static Permission perms = null;
     private static Chat chat = null;
     public boolean discordExists = false;
+
     @Override
     public void onEnable() {
         plugin = this;

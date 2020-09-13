@@ -69,9 +69,9 @@ public class PlayerChatListener extends ChatManager implements Listener {
             }
             reward(player);
             String trigger = configManager.get().getString("search.trigger");
-            if (trigger!=null) {
-                if (newMessage.endsWith(trigger)) {
-                    newMessage = newMessage.substring(0, newMessage.length() - trigger.length());
+            if (trigger != null) {
+                if (newMessage.startsWith(trigger)) {
+                    newMessage = newMessage.substring(trigger.length());
                     newMessage = newMessage.replace(" ", "%20");
                     String url = configManager.get().getString("messages.search");
                     url = url + newMessage;
