@@ -16,7 +16,7 @@ checks:
       - "nigger"
       - "nigga"
       - "faggot"
-    commands: # commands to execute if someone uses one of these words
+    commands: # commands to execute if someone uses any one of these words
       - "ban %player% offensive language"
 
 messages:
