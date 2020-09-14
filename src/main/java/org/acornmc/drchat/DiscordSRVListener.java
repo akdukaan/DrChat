@@ -162,9 +162,13 @@ public class DiscordSRVListener extends ChatManager {
                 reward(player);
             } else {
                 boolean rewardDiscordToMC = configManager.get().getBoolean("reward.discord.mc-messages");
-                 String mcChannelId = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("global").getId();
-                if (rewardDiscordToMC && event.getChannel().getId().equals(mcChannelId)) {
-                    reward(player);
+                String gameChannelName = configManager.get().getString("discord.channel-name");
+                TextChannel mcChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName(gameChannelName);
+                if (mcChannel != null) {
+                    String mcChannelId = mcChannel.getId();
+                    if (rewardDiscordToMC && event.getChannel().getId().equals(mcChannelId)) {
+                        reward(player);
+                    }
                 }
             }
         }

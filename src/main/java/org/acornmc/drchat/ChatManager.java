@@ -340,8 +340,10 @@ public class ChatManager {
             if (searchFormat != null) {
                 String finalSearchFormat = searchFormat.replace("%search%", message);
                 BukkitScheduler scheduler = configManager.plugin.getServer().getScheduler();
+                String gameChannelName = configManager.get().getString("discord.channel-name");
                 scheduler.scheduleSyncDelayedTask(configManager.plugin, () ->
-                        DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("global").sendMessage(finalSearchFormat).queue(), 2L);;
+                        DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName(gameChannelName).sendMessage(finalSearchFormat).queue(),
+                        2L);;
             }
         }
     }

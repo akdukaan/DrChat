@@ -54,6 +54,7 @@ rewards: # requires vault
     mc-messages: true # should messages sent in the mc chat channel be rewarded? This setting is ignored if all-messages is set to true
 
 discord: # requires DiscordSRV
+  channel-name: "global" # Checks will apply only to this channel
   checks: # Which of these checks should be made when sending the message from Discord to MC
     frequency: true
     font: true
