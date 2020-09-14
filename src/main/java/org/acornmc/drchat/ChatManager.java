@@ -204,6 +204,7 @@ public class ChatManager {
     }
 
     public void notifyModifiedMessage(String playerName, String message) {
+        message = ChatColor.stripColor(message);
         List<String> notifyMessages = configManager.get().getStringList("messages.modify-notification");
         for (String notifyMessage : notifyMessages) {
             notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
@@ -215,6 +216,7 @@ public class ChatManager {
     }
 
     public void notifyCancelledMessage(String playerName, String message) {
+        message = ChatColor.stripColor(message);
         List<String> notifyMessages = configManager.get().getStringList("messages.cancel-notification");
         for (String notifyMessage : notifyMessages) {
             notifyMessage = ChatColor.translateAlternateColorCodes('&', notifyMessage);
@@ -313,7 +315,7 @@ public class ChatManager {
             if (newMessage.startsWith(trigger)) {
                 newMessage = newMessage.substring(trigger.length());
                 newMessage = newMessage.replace(" ", "%20");
-                if (newMessage.length() > 1) {
+                if (newMessage.length() >= 1) {
                     minecraftSearch(newMessage);
                     discordSearch(newMessage);
                 }
