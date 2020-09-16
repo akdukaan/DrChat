@@ -316,8 +316,11 @@ public class ChatManager {
                 newMessage = newMessage.substring(trigger.length());
                 newMessage = newMessage.replace(" ", "%20");
                 if (newMessage.length() >= 1) {
-                    minecraftSearch(newMessage);
-                    discordSearch(newMessage);
+                    String regex = configManager.get().getString("search.regex");
+                    if (regex != null && newMessage.matches(regex)) {
+                        minecraftSearch(newMessage);
+                        discordSearch(newMessage);
+                    }
                 }
             }
         }
