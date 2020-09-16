@@ -54,8 +54,22 @@ public class CommandDrChat implements CommandExecutor {
         }
         if (subcommand.equals("clear")) {
             if (!sender.hasPermission("drchat.clear")) {
-                noPerms(sender);
-                return true;
+                if (!sender.hasPermission("drchat.clear.self")) {
+                    noPerms(sender);
+                    return true;
+                }
+                Player targetPlayer = (Player) sender;
+                int lineCount = configManager.get().getInt("messages.clear.lines");
+                for (int i = 0; i < lineCount; i++) {
+                    targetPlayer.sendMessage("");
+                }
+                String clearMessage = configManager.get().getString("messages.clear.player");
+                if (clearMessage != null) {
+                    clearMessage = ChatColor.translateAlternateColorCodes('&', clearMessage);
+                    clearMessage = clearMessage.replace("%player%", targetPlayer.getName());
+                    sender.sendMessage(clearMessage);
+                }
+
             }
             if (args.length == 1) {
                 int lineCount = configManager.get().getInt("messages.clear.lines");

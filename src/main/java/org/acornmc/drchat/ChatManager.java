@@ -24,10 +24,21 @@ public class ChatManager {
 
     public String fixSpacing(String message) {
         String[] words = message.split(" ");
-        if (message.length() >= 5 && message.length() < 2 * words.length) {
-            message = message.replace(" ", "");
+        String newMessage = "";
+        int i = 0;
+        while (i < words.length) {
+            if (words.length >= i+3 && words[i].length() == 1 && words[i+1].length() == 1 && words[i+2].length() == 1) {
+                while (words.length > i && words[i].length() == 1) {
+                    newMessage = newMessage + words[i];
+                    i++;
+                }
+            } else {
+                newMessage = newMessage + words[i];
+                i++;
+            }
+            newMessage = newMessage + " ";
         }
-        return message;
+        return newMessage;
     }
 
     public String fixCharacter(String message) {

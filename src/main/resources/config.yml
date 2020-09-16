@@ -76,3 +76,5 @@ discord: # requires DiscordSRV
 search:
   trigger: "?" # this phrase at the beginning of a message will search the rest of the message
   regex: "[a-zA-Z]" # the message must match this regex in order for it to be searched.
+
+emojis: {"+heart": "❤", "+joy": "😂"}

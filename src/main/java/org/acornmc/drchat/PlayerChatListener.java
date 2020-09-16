@@ -65,6 +65,9 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 notifyModifiedMessage(playerName, event.getMessage());
                 event.setMessage(newMessage);
             }
+            if (player.hasPermission("drchat.emoji")) {
+
+            }
             reward(player);
             if (player.hasPermission("drchat.search")) {
                 postSearchResults(newMessage);
