@@ -38,7 +38,7 @@ public class ChatManager {
             }
             newMessage = newMessage + " ";
         }
-        return newMessage;
+        return newMessage.substring(0, newMessage.length() - 1);
     }
 
     public String fixCharacter(String message) {
@@ -360,5 +360,18 @@ public class ChatManager {
                         2L);;
             }
         }
+    }
+
+    public String addReplacements(String message) {
+        ArrayList<String> replacementWords = new ArrayList<>(configManager.get().getConfigurationSection("replacements").getKeys(false));
+        for (String word : replacementWords) {
+            String replacement = configManager.get().getString("replacements." + word);
+            if (replacement != null) {
+                if (message.contains(word)) {
+                    message = message.replace(word, replacement);
+                }
+            }
+        }
+        return message;
     }
 }

@@ -72,9 +72,17 @@ discord: # requires DiscordSRV
   mute-role-id: "000000000000000000" # This role will be added to players when they are muted
   barrier: "» " # Discord -> MC will only filter chat to the right of the first occurrence of this String
   search-role-id: "000000000000000000" # This role will be allowed to search through Discord
+  replacement-role-id: "000000000000000000" # This role will have some of their words be replaced with the replacements
 
 search:
   trigger: "?" # this phrase at the beginning of a message will search the rest of the message
-  regex: "[a-zA-Z]" # the message must match this regex in order for it to be searched.
+  regex: ".*[A-Z].*" # the message must match this regex in order for it to be searched.
 
-emojis: {"+heart": "❤", "+joy": "😂"}
+replacements: # these words will turn into other words
+  +heart: ❤
+  +pickaxe: ⛏
+  +swords: ⚔
+  +hammers: ⚒
+  +bow: 🏹
+  +fire: 🔥
+  +shamrock: ☘

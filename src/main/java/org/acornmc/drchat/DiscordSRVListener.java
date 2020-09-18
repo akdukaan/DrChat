@@ -3,6 +3,7 @@ package org.acornmc.drchat;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import org.bukkit.Bukkit;
@@ -96,6 +97,13 @@ public class DiscordSRVListener extends ChatManager {
                 preBarrier = originalFullMessage.substring(0, barrierPosition);
                 postBarrier = originalFullMessage.substring(barrierPosition + barrier.length());
             }
+            String replacementRoleId = configManager.get().getString("discord.replacement-role-id");
+            if (replacementRoleId != null) {
+                boolean shouldAddReplacements = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(replacementRoleId));
+                if (shouldAddReplacements) {
+                    postBarrier = addReplacements(postBarrier);
+                }
+            }
             if (!spamExempt) {
                 boolean checkFont = configManager.get().getBoolean("discord.checks.font");
                 boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
@@ -173,7 +181,7 @@ public class DiscordSRVListener extends ChatManager {
             }
         }
         TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
-        if (event.getChannel().getId().equals(staffchatChannel.getId())) {
+        if (staffchatChannel != null && event.getChannel().getId().equals(staffchatChannel.getId())) {
             String discordToMc = configManager.get().getString("messages.staffchat.discord-to-mc-format");
             if (discordToMc != null) {
                 discordToMc = discordToMc.replace("%nickname%", event.getMember().getEffectiveName());

@@ -41,37 +41,41 @@ public class PlayerChatListener extends ChatManager implements Listener {
             event.setCancelled(true);
             useTooFrequentCommands(player);
             notifyCancelledMessage(playerName, event.getMessage());
-        } else {
-            increment(player);
-            String newMessage = event.getMessage();
-            if (!player.hasPermission("drchat.bypass.font")) {
-                newMessage = fixFont(newMessage);
-            }
-            if (!player.hasPermission("drchat.bypass.spacing")) {
-                newMessage = fixSpacing(newMessage);
-            }
-            if (!player.hasPermission("drchat.bypass.capital")) {
-                newMessage = fixCapital(newMessage);
-            }
-            if (!player.hasPermission("drchat.bypass.character")) {
-                newMessage = fixCharacter(newMessage);
-            }
-            if (!player.hasPermission("drchat.bypass.swear") && hasSwear(newMessage)) {
-                event.setCancelled(true);
-                useSwearCommands(player);
-                notifyCancelledMessage(playerName, event.getMessage());
-            }
-            if (!newMessage.equals(event.getMessage())) {
-                notifyModifiedMessage(playerName, event.getMessage());
-                event.setMessage(newMessage);
-            }
-            if (player.hasPermission("drchat.emoji")) {
-
-            }
-            reward(player);
-            if (player.hasPermission("drchat.search")) {
-                postSearchResults(newMessage);
-            }
+            return;
         }
+        increment(player);
+        String newMessage = event.getMessage();
+        if (player.hasPermission("drchat.replace")) {
+            newMessage = addReplacements(newMessage);
+        }
+        String oldMessage = newMessage;
+        if (!player.hasPermission("drchat.bypass.font")) {
+            newMessage = fixFont(newMessage);
+        }
+
+        if (!player.hasPermission("drchat.bypass.spacing")) {
+            newMessage = fixSpacing(newMessage);
+        }
+        if (!player.hasPermission("drchat.bypass.capital")) {
+            newMessage = fixCapital(newMessage);
+        }
+        if (!player.hasPermission("drchat.bypass.character")) {
+            newMessage = fixCharacter(newMessage);
+        }
+
+        if (!player.hasPermission("drchat.bypass.swear") && hasSwear(newMessage)) {
+            event.setCancelled(true);
+            useSwearCommands(player);
+            notifyCancelledMessage(playerName, oldMessage);
+        }
+        if (!newMessage.equals(oldMessage)) {
+            notifyModifiedMessage(playerName, oldMessage);
+        }
+        event.setMessage(newMessage);
+        reward(player);
+        if (player.hasPermission("drchat.search")) {
+            postSearchResults(newMessage);
+        }
+
     }
 }
