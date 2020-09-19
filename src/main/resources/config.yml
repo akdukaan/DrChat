@@ -76,13 +76,15 @@ discord: # requires DiscordSRV
 
 search:
   trigger: "?" # this phrase at the beginning of a message will search the rest of the message
-  regex: ".*[A-Z].*" # the message must match this regex in order for it to be searched.
+  regex: ".*[A-Za-z].*" # the message must match this regex in order for it to be searched.
 
 replacements: # these words will turn into other words
-  +heart: ❤
-  +pickaxe: ⛏
-  +swords: ⚔
-  +hammers: ⚒
-  +bow: 🏹
-  +fire: 🔥
-  +shamrock: ☘
+  ":relaxed:": ☺
+  ":heart:": ❤
+  ":pick:": ⛏
+  ":crossed_swords:": ⚔
+  ":hammer_pick:": ⚒
+  ":bow:": 🏹
+  ":fire:": 🔥
+  ":shamrock:": ☘
+  ":shrug:": ¯\_(ツ)_/¯

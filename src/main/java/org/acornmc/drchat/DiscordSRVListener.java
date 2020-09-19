@@ -3,7 +3,6 @@ package org.acornmc.drchat;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
-import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import org.bukkit.Bukkit;
@@ -24,8 +23,8 @@ public class DiscordSRVListener extends ChatManager {
 
     @Subscribe
     public void discordMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
-        String staffchatChannelId = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat").getId();
-        if (event.getChannel().getId().equals(staffchatChannelId)) {
+        TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
+        if (staffchatChannel != null && event.getChannel().getId().equals(staffchatChannel.getId())) {
             event.setCancelled(true);
             return;
         }
