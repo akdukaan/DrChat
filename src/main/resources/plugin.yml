@@ -69,6 +69,3 @@ permissions:
   drchat.search:
     default: false
     description: allow for search
-  drchat.replace:
-    default: false
-    description: allows for word replacement

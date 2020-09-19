@@ -361,17 +361,4 @@ public class ChatManager {
             }
         }
     }
-
-    public String addReplacements(String message) {
-        ArrayList<String> replacementWords = new ArrayList<>(configManager.get().getConfigurationSection("replacements").getKeys(false));
-        for (String word : replacementWords) {
-            String replacement = configManager.get().getString("replacements." + word);
-            if (replacement != null) {
-                if (message.contains(word)) {
-                    message = message.replace(word, replacement);
-                }
-            }
-        }
-        return message;
-    }
 }

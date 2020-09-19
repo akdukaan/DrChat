@@ -96,13 +96,6 @@ public class DiscordSRVListener extends ChatManager {
                 preBarrier = originalFullMessage.substring(0, barrierPosition);
                 postBarrier = originalFullMessage.substring(barrierPosition + barrier.length());
             }
-            String replacementRoleId = configManager.get().getString("discord.replacement-role-id");
-            if (replacementRoleId != null) {
-                boolean shouldAddReplacements = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(replacementRoleId));
-                if (shouldAddReplacements) {
-                    postBarrier = addReplacements(postBarrier);
-                }
-            }
             if (!spamExempt) {
                 boolean checkFont = configManager.get().getBoolean("discord.checks.font");
                 boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");

@@ -45,9 +45,6 @@ public class PlayerChatListener extends ChatManager implements Listener {
         }
         increment(player);
         String newMessage = event.getMessage();
-        if (player.hasPermission("drchat.replace")) {
-            newMessage = addReplacements(newMessage);
-        }
         String oldMessage = newMessage;
         if (!player.hasPermission("drchat.bypass.font")) {
             newMessage = fixFont(newMessage);
