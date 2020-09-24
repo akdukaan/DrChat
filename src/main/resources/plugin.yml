@@ -17,22 +17,25 @@ commands:
     aliases: [h]
 permissions:
   drchat.reload:
-    default: false
+    default: op
     description: reload command
     children:
       drchat.command: true
   drchat.freeze:
-    default: false
+    default: op
     description: freeze command
     children:
       drchat.command: true
   drchat.clear:
-    default: false
+    default: op
     description: clear command
     children:
       drchat.command: true
-  drchat.broadcast:
+  drchat.clear.self:
     default: false
+    description: clears own chat
+  drchat.broadcast:
+    default: op
     description: broadcast command
     children:
       drchat.command: true
