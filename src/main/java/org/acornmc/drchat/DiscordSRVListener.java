@@ -178,7 +178,6 @@ public class DiscordSRVListener extends ChatManager {
             if (discordToMc != null) {
                 discordToMc = discordToMc.replace("%nickname%", event.getMember().getEffectiveName());
                 discordToMc = discordToMc.replace("%message%", event.getMessage().getContentDisplay());
-                discordToMc = ChatManager.convertHex(discordToMc);
                 discordToMc = ChatColor.translateAlternateColorCodes('&', discordToMc);
                 Bukkit.broadcast(discordToMc, "drchat.staffchat");
             }

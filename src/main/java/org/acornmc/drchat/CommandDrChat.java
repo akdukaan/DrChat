@@ -117,7 +117,6 @@ public class CommandDrChat implements CommandExecutor {
             for (int i = 2; i < args.length; i++) {
                 message = message + args[i] + " ";
             }
-            message = ChatManager.convertHex(message);
             message = ChatColor.translateAlternateColorCodes('&', message);
             if (perm.startsWith("!")) {
                 perm = perm.replace("!", "");

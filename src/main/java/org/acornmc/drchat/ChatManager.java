@@ -8,14 +8,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChatManager {
     ConfigManager configManager;
     public static HashMap<OfflinePlayer, Integer> spamCheck = new HashMap<>();
     public static Set<OfflinePlayer> ecoCheck = new HashSet<>();
-    private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9A-F]{6})", Pattern.CASE_INSENSITIVE);
     static boolean chatIsFrozen = false;
 
     public ChatManager (ConfigManager configManager) {
@@ -294,22 +291,6 @@ public class ChatManager {
             double money = configManager.get().getDouble("rewards.money");
             DrChat.getEconomy().depositPlayer(player, money);
         }
-    }
-
-    public static String convertHex(String in) {
-        Matcher matcher = HEX_PATTERN.matcher(in);
-        while (matcher.find()) {
-            in = matcher.replaceFirst("&x" + addBeforeAllChars(matcher.group(1)));
-        }
-        return in;
-    }
-
-    private static String addBeforeAllChars(String string) {
-        StringBuilder builder = new StringBuilder(string.length() * 2);
-        for (char existing : string.toCharArray()) {
-            builder.append('&').append(existing);
-        }
-        return builder.toString();
     }
 
     public static boolean chatIsFrozen() {
