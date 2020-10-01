@@ -73,8 +73,10 @@ public class CommandDrChat implements CommandExecutor {
             }
             if (args.length == 1) {
                 int lineCount = configManager.get().getInt("messages.clear.lines");
-                for (int i = 0; i < lineCount; i++) {
-                    Bukkit.broadcastMessage("");
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    for (int i = 0; i < lineCount; i++) {
+                        p.sendMessage("");
+                    }
                 }
                 String clearMessage = configManager.get().getString("messages.clear.all");
                 if (clearMessage != null) {

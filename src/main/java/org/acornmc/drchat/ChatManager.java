@@ -276,7 +276,11 @@ public class ChatManager {
     }
 
     public void reward(OfflinePlayer player) {
-        if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+            return;
+        }
+        double money = configManager.get().getDouble("rewards.money");
+        if (money == 0) {
             return;
         }
         if (!ecoCheck.contains(player)) {
@@ -288,7 +292,6 @@ public class ChatManager {
                     ecoCheck.remove(player);
                 }
             }.runTaskLater(configManager.plugin, interval);
-            double money = configManager.get().getDouble("rewards.money");
             DrChat.getEconomy().depositPlayer(player, money);
         }
     }

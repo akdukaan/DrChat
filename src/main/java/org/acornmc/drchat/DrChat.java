@@ -25,7 +25,7 @@ public final class DrChat extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         configManager = new ConfigManager(this);
-        if (!setupEconomy() ) {
+        if (!setupEconomy()) {
             log.info(String.format("[%s] Vault not found!", getDescription().getName()));
         } else {
             log.info(String.format("[%s] Vault found!", getDescription().getName()));
@@ -72,6 +72,7 @@ public final class DrChat extends JavaPlugin {
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
+            log.warning(String.format("[%s] %s could not register economy", getDescription().getName(), getDescription().getVersion()));
             return false;
         }
         econ = rsp.getProvider();
