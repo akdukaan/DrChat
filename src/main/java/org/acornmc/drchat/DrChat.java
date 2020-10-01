@@ -67,12 +67,14 @@ public final class DrChat extends JavaPlugin {
     }
 
     private boolean setupEconomy() {
+        log.info(String.format("[%s] Setting up economy", getDescription().getName()));
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            log.warning(String.format("[%s] could not setup economy because Vault was not found", getDescription().getName()));
             return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            log.warning(String.format("[%s] %s could not register economy", getDescription().getName(), getDescription().getVersion()));
+            log.warning(String.format("[%s] could not setup economy because rsp was null", getDescription().getName()));
             return false;
         }
         econ = rsp.getProvider();
