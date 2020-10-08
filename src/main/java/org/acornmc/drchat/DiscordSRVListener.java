@@ -157,11 +157,11 @@ public class DiscordSRVListener extends ChatManager {
             }
         }
         if (player != null) {
-            boolean rewardAllChats = configManager.get().getBoolean("reward.discord.all-messages");
+            boolean rewardAllChats = configManager.get().getBoolean("rewards.discord.all-messages");
             if (rewardAllChats) {
                 reward(player);
             } else {
-                boolean rewardDiscordToMC = configManager.get().getBoolean("reward.discord.mc-messages");
+                boolean rewardDiscordToMC = configManager.get().getBoolean("rewards.discord.mc-messages");
                 String gameChannelName = configManager.get().getString("discord.channel-name");
                 TextChannel mcChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName(gameChannelName);
                 if (mcChannel != null) {
