@@ -26,9 +26,9 @@ public final class DrChat extends JavaPlugin {
         plugin = this;
         configManager = new ConfigManager(this);
         if (!setupEconomy()) {
-            log.info(String.format("[%s] Vault not found!", getDescription().getName()));
+            log.info(String.format("[%s] Vault not enabled!", getDescription().getName()));
         } else {
-            log.info(String.format("[%s] Vault found!", getDescription().getName()));
+            log.info(String.format("[%s] Vault enabled!", getDescription().getName()));
             setupPermissions();
             setupChat();
         }
@@ -69,12 +69,12 @@ public final class DrChat extends JavaPlugin {
     private boolean setupEconomy() {
         log.info(String.format("[%s] Setting up economy", getDescription().getName()));
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            log.warning(String.format("[%s] could not setup economy because Vault was not found", getDescription().getName()));
+            log.warning(String.format("[%s] Vault not found", getDescription().getName()));
             return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            log.warning(String.format("[%s] could not setup economy because rsp was null", getDescription().getName()));
+            log.warning(String.format("[%s] No economy plugin was found", getDescription().getName()));
             return false;
         }
         econ = rsp.getProvider();

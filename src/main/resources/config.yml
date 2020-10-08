@@ -46,7 +46,7 @@ messages:
     minecraft: "&6Search results: &cgoogle.com/search?q=%search%"
     discord: "**Search results:** https://google.com/search?q=%search%"
 
-rewards: # requires vault
+rewards: # requires vault and an economy plugin
   cooldown: 300 # in ticks
   money: 0 # $ per message
   discord:
