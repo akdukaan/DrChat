@@ -6,7 +6,7 @@
 
     <groupId>org.acornmc</groupId>
     <artifactId>DrChat</artifactId>
-    <version>1.0.10-pre2</version>
+    <version>1.0.10-pre3</version>
     <packaging>jar</packaging>
 
     <name>DrChat</name>
@@ -121,8 +121,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>litebans</groupId>
-            <artifactId>api</artifactId>
+            <groupId>com.gitlab.ruany</groupId>
+            <artifactId>LiteBansAPI</artifactId>
             <version>0.3.4</version>
             <scope>provided</scope>
         </dependency>

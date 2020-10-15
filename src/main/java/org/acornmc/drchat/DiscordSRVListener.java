@@ -13,11 +13,15 @@ import java.util.UUID;
 
 public class DiscordSRVListener extends ChatManager {
     EssentialsUtil essentialsUtil;
+    LitebansUtil litebansUtil;
 
     public DiscordSRVListener(ConfigManager configManager) {
         super(configManager);
         if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
             essentialsUtil = new EssentialsUtil(configManager);
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("LiteBans")) {
+            litebansUtil = new LitebansUtil(configManager);
         }
     }
 
@@ -63,7 +67,7 @@ public class DiscordSRVListener extends ChatManager {
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             String emote = configManager.get().getString("discord.reactions.cancelled");
             if (muteSync && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
-                if (essentialsUtil.isMuted(uuid)) {
+                if (essentialsUtil.isMuted(uuid) || litebansUtil.isMuted(uuid)) {
                     notifyCancelledMessage(playerName, event.getMessage().getContentDisplay());
                     boolean discordDeleteCancelled = configManager.get().getBoolean("discord.delete-cancelled");
                     if (discordDeleteCancelled) {
