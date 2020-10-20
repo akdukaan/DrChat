@@ -1,6 +1,7 @@
 package org.acornmc.drchat;
 
 import github.scarsz.discordsrv.DiscordSRV;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -13,7 +14,7 @@ public class ChatManager {
     ConfigManager configManager;
     public static HashMap<OfflinePlayer, Integer> spamCheck = new HashMap<>();
     public static Set<OfflinePlayer> ecoCheck = new HashSet<>();
-    static boolean chatIsFrozen = false;
+    public static boolean chatIsFrozen = false;
 
     public ChatManager (ConfigManager configManager) {
         this.configManager = configManager;
@@ -292,7 +293,11 @@ public class ChatManager {
                     ecoCheck.remove(player);
                 }
             }.runTaskLater(configManager.plugin, interval);
-            DrChat.getEconomy().depositPlayer(player, money);
+            Economy e = DrChat.getEconomy();
+            if (e == null) {
+                return;
+            }
+            e.depositPlayer(player, money);
         }
     }
 

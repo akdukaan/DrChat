@@ -1,7 +1,7 @@
 name: DrChat
 version: ${project.version}
 main: org.acornmc.drchat.DrChat
-api-version: "1.13"
+api-version: "1.16"
 authors: [DrBot]
 softdepend: [DiscordSRV, EssentialsX, Vault, LiteBans]
 description: Spam Management Tool

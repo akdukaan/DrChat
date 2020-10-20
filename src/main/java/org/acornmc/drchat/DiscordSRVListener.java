@@ -66,8 +66,9 @@ public class DiscordSRVListener extends ChatManager {
         if (linked && !spamExempt) {
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             String emote = configManager.get().getString("discord.reactions.cancelled");
-            if (muteSync && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
-                if (essentialsUtil.isMuted(uuid) || litebansUtil.isMuted(uuid)) {
+            if (muteSync) {
+                if ((Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) ||
+                        (Bukkit.getPluginManager().isPluginEnabled("LiteBans") && litebansUtil.isMuted(uuid))) {
                     notifyCancelledMessage(playerName, event.getMessage().getContentDisplay());
                     boolean discordDeleteCancelled = configManager.get().getBoolean("discord.delete-cancelled");
                     if (discordDeleteCancelled) {
