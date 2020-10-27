@@ -3,6 +3,7 @@ package org.acornmc.drchat;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import org.bukkit.Bukkit;
@@ -154,7 +155,7 @@ public class DiscordSRVListener extends ChatManager {
         String id = event.getMember().getUser().getId();
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
         OfflinePlayer player = null;
-        UUID uuid;
+        UUID uuid = null;
         if (alm != null) {
             uuid = alm.getUuid(id);
             if (uuid != null) {
@@ -162,6 +163,21 @@ public class DiscordSRVListener extends ChatManager {
             }
         }
         if (player != null) {
+            String mutedID = configManager.get().getString("discord.mute-role-id");
+            if (mutedID == null) {
+                return;
+            }
+            Role mutedRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(mutedID);
+            if (mutedRole != null) {
+                if (Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) {
+                    DiscordSRV.getPlugin().getMainGuild().addRoleToMember(id, mutedRole).queue();
+                }
+                if ((Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) ||
+                        (Bukkit.getPluginManager().isPluginEnabled("LiteBans") && litebansUtil.isMuted(uuid))) {
+                    event.getMessage().delete().queue();
+                    return;
+                }
+            }
             boolean rewardAllChats = configManager.get().getBoolean("rewards.discord.all-messages");
             if (rewardAllChats) {
                 reward(player);
