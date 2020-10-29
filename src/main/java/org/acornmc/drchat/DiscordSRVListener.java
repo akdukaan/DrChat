@@ -164,18 +164,17 @@ public class DiscordSRVListener extends ChatManager {
         }
         if (player != null) {
             String mutedID = configManager.get().getString("discord.mute-role-id");
-            if (mutedID == null) {
-                return;
-            }
-            Role mutedRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(mutedID);
-            if (mutedRole != null) {
-                if (Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) {
-                    DiscordSRV.getPlugin().getMainGuild().addRoleToMember(id, mutedRole).queue();
-                }
-                if ((Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) ||
-                        (Bukkit.getPluginManager().isPluginEnabled("LiteBans") && litebansUtil.isMuted(uuid))) {
-                    event.getMessage().delete().queue();
-                    return;
+            if (mutedID != null) {
+                Role mutedRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(mutedID);
+                if (mutedRole != null) {
+                    if (Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) {
+                        DiscordSRV.getPlugin().getMainGuild().addRoleToMember(id, mutedRole).queue();
+                    }
+                    if ((Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) ||
+                            (Bukkit.getPluginManager().isPluginEnabled("LiteBans") && litebansUtil.isMuted(uuid))) {
+                        event.getMessage().delete().queue();
+                        return;
+                    }
                 }
             }
             boolean rewardAllChats = configManager.get().getBoolean("rewards.discord.all-messages");
