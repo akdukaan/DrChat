@@ -170,7 +170,6 @@ public class ChatManager {
                 .replace("ᴜ", "U")
                 .replace("ᴠ", "V")
                 .replace("ᴡ", "W")
-                .replace("x", "X")
                 .replace("ʏ", "Y")
                 .replace("ᴢ", "Z")
                 .replace("？", "?")
