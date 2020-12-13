@@ -44,10 +44,13 @@ public class PlayerChatListener extends ChatManager implements Listener {
         increment(player);
         String newMessage = event.getMessage();
         String oldMessage = newMessage;
+        if (!player.hasPermission("drchat.bypass.phrase") && hasSwear(newMessage)) {
+            event.setCancelled(true);
+            notifyCancelledMessage(playerName, oldMessage);
+        }
         if (!player.hasPermission("drchat.bypass.font")) {
             newMessage = fixFont(newMessage);
         }
-
         if (!player.hasPermission("drchat.bypass.spacing")) {
             newMessage = fixSpacing(newMessage);
         }
@@ -57,7 +60,6 @@ public class PlayerChatListener extends ChatManager implements Listener {
         if (!player.hasPermission("drchat.bypass.character")) {
             newMessage = fixCharacter(newMessage);
         }
-
         if (!player.hasPermission("drchat.bypass.swear") && hasSwear(newMessage)) {
             event.setCancelled(true);
             useSwearCommands(player);

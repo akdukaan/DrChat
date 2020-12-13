@@ -27,12 +27,16 @@ public class DiscordSRVListener extends ChatManager {
     }
 
     @Subscribe
-    public void discordMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
+    public void discordMessagePreProcess(DiscordGuildMessagePreProcessEvent event) {
         TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
         if (staffchatChannel != null && event.getChannel().getId().equals(staffchatChannel.getId())) {
             event.setCancelled(true);
             return;
         }
+    }
+
+    @Subscribe
+    public void discordMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
         String id = event.getMember().getUser().getId();
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
         boolean linked = false;

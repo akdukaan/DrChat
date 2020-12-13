@@ -6,6 +6,7 @@ checks:
     - "mute %player% 1m spam" # commands to execute when someone passes the limit
   character:
     limit: 3 # max number of repeating characters allowed
+    ignore-links: true # if it looks like a link, should drchat allow it to be
     exceptions: # These characters will not be removed for character-spam.
       - '0'
   capital:
@@ -16,8 +17,15 @@ checks:
       - "nigger"
       - "nigga"
       - "faggot"
-    commands: # commands to execute if someone uses any one of these words
+    commands: # commands to execute if someone uses any one of the above words
       - "ban %player% offensive language"
+  phrase: # Cancels the message if it exactly resembles any one of these
+    - "Connected with an Android device using MineChat."
+    - "connected with an Android device using MineChat."
+    - "Connected with MineChat"
+    - "connected with a Windows Phone using MineChat"
+    - "connected with an iPhone using MineChat"
+    - "Connected using PickaxeChat for Android"
 
 messages:
   no-permission: "&cNo Permission"

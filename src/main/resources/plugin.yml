@@ -39,18 +39,21 @@ permissions:
     description: broadcast command
     children:
       drchat.command: true
+  drchat.bypass.phrase:
+    default: false
+    description: bypass phrase filter
   drchat.bypass.character:
     default: false
-    description: bypass character spam
+    description: bypass character filter
   drchat.bypass.swear:
     default: false
-    description: bypass swear spam
+    description: bypass swear filter
   drchat.bypass.capital:
     default: false
-    description: bypass capital spam
+    description: bypass capital filter
   drchat.bypass.spacing:
     default: false
-    description: bypass spacing spam
+    description: bypass spacing filter
   drchat.bypass.font:
     default: false
     description: bypass font spam

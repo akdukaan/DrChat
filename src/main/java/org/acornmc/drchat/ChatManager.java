@@ -42,6 +42,7 @@ public class ChatManager {
     public String fixCharacter(String message) {
         StringBuilder newMessage = new StringBuilder();
         int limit = configManager.get().getInt("checks.character.limit");
+        boolean doingLink = false;
         for (int i = 0; i < limit && i < message.length(); i++) {
             newMessage.append(message.charAt(i));
         }
@@ -53,7 +54,14 @@ public class ChatManager {
                     break;
                 }
             }
-            if (!allTheSame) {
+            String word = message.substring(i);
+            if (word.startsWith("http://") || word.startsWith("https://")) {
+                boolean ignoreCharacterLinks = configManager.get().getBoolean("checks.character.ignore-links");
+                if (ignoreCharacterLinks) {
+                    doingLink = true;
+                }
+            }
+            if (!allTheSame || doingLink) {
                 newMessage.append(message.charAt(i));
             } else {
                 List<Character> ignoredCharacters = configManager.get().getCharacterList("checks.character.exceptions");
@@ -61,8 +69,21 @@ public class ChatManager {
                     newMessage.append(message.charAt(i));
                 }
             }
+            if (message.charAt(i) == ' ') {
+                doingLink = false;
+            }
         }
         return newMessage.toString();
+    }
+
+    public boolean hasPhrase(String message) {
+        List<String> phrases = configManager.get().getStringList("checks.phrase");
+        for (String phrase : phrases) {
+            if (message.equals(phrase)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String fixCapital(String message) {
