@@ -6,7 +6,7 @@
 
     <groupId>org.acornmc</groupId>
     <artifactId>DrChat</artifactId>
-    <version>1.0.11-pre1</version>
+    <version>1.0.13</version>
     <packaging>jar</packaging>
 
     <name>DrChat</name>
