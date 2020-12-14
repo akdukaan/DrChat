@@ -65,7 +65,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
             useSwearCommands(player);
             notifyCancelledMessage(playerName, oldMessage);
         }
-        if (!newMessage.equals(oldMessage)) {
+        if (!event.isCancelled() && !newMessage.equals(oldMessage)) {
             notifyModifiedMessage(playerName, oldMessage);
         }
         event.setMessage(newMessage);
