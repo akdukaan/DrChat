@@ -44,7 +44,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
         increment(player);
         String newMessage = event.getMessage();
         String oldMessage = newMessage;
-        if (!player.hasPermission("drchat.bypass.phrase") && hasSwear(newMessage)) {
+        if (!player.hasPermission("drchat.bypass.phrase") && hasPhrase(newMessage)) {
             event.setCancelled(true);
             notifyCancelledMessage(playerName, oldMessage);
         }
