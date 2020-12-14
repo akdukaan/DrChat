@@ -12,7 +12,6 @@ public class LitebansUtil {
      }
 
      public boolean isMuted(UUID uuid) {
-         System.out.println("Checking to see if player with uuid " + uuid + " is muted");
          return Database.get().isPlayerMuted(uuid, null);
      }
 }
