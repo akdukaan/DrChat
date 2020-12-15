@@ -48,6 +48,9 @@ public class EssentialsMuteSync implements Listener {
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
         UUID uuid = player.getUniqueId();
         String id = alm.getDiscordId(uuid);
+        if (id == null) {
+            return;
+        }
         String mutedID = configManager.get().getString("discord.mute-role-id");
         if (mutedID == null) {
             return;
