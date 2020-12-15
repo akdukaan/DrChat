@@ -8,7 +8,7 @@ description: Spam Management Tool
 commands:
   drchat:
     description: drchat admin commands
-    usage: "/<command> reload \n/<command> clear <player> \n/<command> freeze \n<command> broadcast <permission> <message>"
+    usage: "/<command> reload \n/<command> clear <player> \n/<command> freeze \n/<command> broadcast <permission> <message>"
     permission: drchat.command
   staffchat:
     description: drchat's staff chat
