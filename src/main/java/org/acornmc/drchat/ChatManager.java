@@ -87,6 +87,7 @@ public class ChatManager {
     }
 
     public String fixCapital(String message) {
+        //Count number of capital letters
         int uppercaseCount = 0;
         String colorlessMessage = ChatColor.stripColor(message);
         for (int i = 0; i < colorlessMessage.length(); i++) {
@@ -94,22 +95,27 @@ public class ChatManager {
                 uppercaseCount++;
             }
         }
+
         if (uppercaseCount > configManager.get().getInt("checks.capital.limit")) {
             boolean ignoreCapitalLinks = configManager.get().getBoolean("checks.capital.ignore-links");
             if (ignoreCapitalLinks) {
                 String[] words = message.split(" ");
-                String newMessage = "";
+                StringBuilder newMessage = new StringBuilder();
                 for (String word : words) {
                     if (word.startsWith("http://") || word.startsWith("https://")) {
-                        newMessage += word;
+                        newMessage.append(word);
                     } else {
-                        newMessage += word.toLowerCase();
+                        newMessage.append(word.toLowerCase());
                     }
-                    newMessage += " ";
+                    newMessage.append(" ");
                 }
-                message = newMessage;
+                String str =  newMessage.toString();
+                if (str.charAt(str.length() - 1) == ' ') {
+                    str = str.substring(0, str.length() - 1);
+                }
+                return str;
             } else {
-                message = message.toLowerCase();
+                return message.toLowerCase();
             }
         }
         return message;
