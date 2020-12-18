@@ -22,19 +22,19 @@ public class ChatManager {
 
     public String fixSpacing(String message) {
         String[] words = message.split(" ");
-        String newMessage = "";
+        StringBuilder newMessage = new StringBuilder();
         int i = 0;
         while (i < words.length) {
             if (words.length >= i+3 && words[i].length() == 1 && words[i+1].length() == 1 && words[i+2].length() == 1) {
                 while (words.length > i && words[i].length() == 1) {
-                    newMessage = newMessage + words[i];
+                    newMessage.append(words[i]);
                     i++;
                 }
             } else {
-                newMessage = newMessage + words[i];
+                newMessage.append(words[i]);
                 i++;
             }
-            newMessage = newMessage + " ";
+            newMessage.append(" ");
         }
         return newMessage.substring(0, newMessage.length() - 1);
     }
