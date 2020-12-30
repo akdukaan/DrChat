@@ -31,7 +31,6 @@ public class DiscordSRVListener extends ChatManager {
         TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
         if (staffchatChannel != null && event.getChannel().getId().equals(staffchatChannel.getId())) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -66,8 +65,10 @@ public class DiscordSRVListener extends ChatManager {
                 if (emote != null) {
                     event.getMessage().addReaction(emote).queue();
                 }
+                return;
             }
         }
+
         if (linked && !spamExempt) {
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             String emote = configManager.get().getString("discord.reactions.cancelled");
@@ -96,6 +97,7 @@ public class DiscordSRVListener extends ChatManager {
             }
             increment(player);
         }
+
         String barrier = configManager.get().getString("discord.barrier");
         String originalFullMessage = event.getProcessedMessage();
         if (barrier != null) {
@@ -131,6 +133,7 @@ public class DiscordSRVListener extends ChatManager {
                     if (player != null) {
                         useSwearCommands(player);
                     }
+                    return;
                 }
                 if (!originalPostBarrier.equals(postBarrier)) {
                     String emote = configManager.get().getString("discord.reactions.modified");

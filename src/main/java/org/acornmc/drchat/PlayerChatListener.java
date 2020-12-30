@@ -16,6 +16,13 @@ public class PlayerChatListener extends ChatManager implements Listener {
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void eventsMessageSend(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+        if (ManagerStaffchat.isToggled(player.getUniqueId())) {
+            event.setCancelled(true);
+            String mcToMc = configManager.get().getString("messages.staffchat.mc-to-mc-format");
+            ManagerStaffchat.sendMinecraft(event.getMessage(), event.getPlayer(), mcToMc);
+            ManagerStaffchat.sendDiscord(event.getMessage(), event.getPlayer());
+            return;
+        }
         if (chatIsFrozen()) {
             if (!player.hasPermission("drchat.bypass.freeze")) {
                 event.setCancelled(true);
@@ -26,13 +33,6 @@ public class PlayerChatListener extends ChatManager implements Listener {
                 }
                 return;
             }
-        }
-        if (ManagerStaffchat.isToggled(player.getUniqueId())) {
-            event.setCancelled(true);
-            String mcToMc = configManager.get().getString("messages.staffchat.mc-to-mc-format");
-            ManagerStaffchat.sendMinecraft(event.getMessage(), event.getPlayer(), mcToMc);
-            ManagerStaffchat.sendDiscord(event.getMessage(), event.getPlayer());
-            return;
         }
         String playerName = player.getName();
         if (!player.hasPermission("drchat.bypass.frequency") && isTooFrequent(player)) {
@@ -47,6 +47,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
         if (!player.hasPermission("drchat.bypass.phrase") && hasPhrase(newMessage)) {
             event.setCancelled(true);
             notifyCancelledMessage(playerName, oldMessage);
+            return;
         }
         if (!player.hasPermission("drchat.bypass.font")) {
             newMessage = fixFont(newMessage);
@@ -64,8 +65,9 @@ public class PlayerChatListener extends ChatManager implements Listener {
             event.setCancelled(true);
             useSwearCommands(player);
             notifyCancelledMessage(playerName, oldMessage);
+            return;
         }
-        if (!event.isCancelled() && !newMessage.equals(oldMessage)) {
+        if (!newMessage.equals(oldMessage)) {
             notifyModifiedMessage(playerName, oldMessage);
         }
         event.setMessage(newMessage);
