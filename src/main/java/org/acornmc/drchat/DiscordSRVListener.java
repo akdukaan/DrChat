@@ -109,12 +109,17 @@ public class DiscordSRVListener extends ChatManager {
                 postBarrier = originalFullMessage.substring(barrierPosition + barrier.length());
             }
             if (!spamExempt) {
+                boolean checkPhrase = configManager.get().getBoolean("discord.checks.phrase");
                 boolean checkFont = configManager.get().getBoolean("discord.checks.font");
                 boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
                 boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
                 boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
                 boolean checkSwear = configManager.get().getBoolean("discord.checks.swear");
                 String originalPostBarrier = postBarrier;
+                if (checkPhrase && hasPhrase(postBarrier)) {
+                    event.setCancelled(true);
+                    notifyCancelledMessage(playerName, event.getProcessedMessage());
+                }
                 if (checkFont) {
                     postBarrier = fixFont(postBarrier);
                 }

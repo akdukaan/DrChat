@@ -46,9 +46,9 @@ public class ChatManager {
         for (int i = 0; i < limit && i < message.length(); i++) {
             newMessage.append(message.charAt(i));
         }
-        for (int i = limit; i < message.length(); i++) {
+        for (int i = 0; i < message.length(); i++) {
             boolean allTheSame = true;
-            for (int j = i-limit; j < i; j++) {
+            for (int j = i+1; j < i + limit; j++) {
                 if (message.charAt(j) != message.charAt(i)) {
                     allTheSame = false;
                     break;
