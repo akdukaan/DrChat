@@ -13,7 +13,7 @@ public class PlayerChatListener extends ChatManager implements Listener {
         super(configManager);
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.HIGH, ignoreCancelled = true)
     public void eventsMessageSend(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (ManagerStaffchat.isToggled(player.getUniqueId())) {
