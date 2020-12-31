@@ -48,8 +48,8 @@ public class ChatManager {
         }
         for (int i = 0; i < message.length(); i++) {
             boolean allTheSame = true;
-            for (int j = i+1; j < i + limit - 1; j++) {
-                if (message.charAt(j) != message.charAt(i)) {
+            for (int j = i+1; j < i + limit; j++) {
+                if (j >= message.length() || message.charAt(j) != message.charAt(i)) {
                     allTheSame = false;
                     break;
                 }
