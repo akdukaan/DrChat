@@ -43,12 +43,9 @@ public class ChatManager {
         StringBuilder newMessage = new StringBuilder();
         int limit = configManager.get().getInt("checks.character.limit");
         boolean doingLink = false;
-        for (int i = 0; i < limit && i < message.length(); i++) {
-            newMessage.append(message.charAt(i));
-        }
         for (int i = 0; i < message.length(); i++) {
             boolean allTheSame = true;
-            for (int j = i+1; j < i + limit; j++) {
+            for (int j = i+1; j < i + limit + 1; j++) {
                 if (j >= message.length() || message.charAt(j) != message.charAt(i)) {
                     allTheSame = false;
                     break;
