@@ -3,11 +3,11 @@ package org.acornmc.drchat;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bstats.bukkit.Metrics;
 import github.scarsz.discordsrv.DiscordSRV;
 
 import java.util.logging.Logger;
@@ -54,8 +54,7 @@ public final class DrChat extends JavaPlugin {
         if (staffchatCommand != null) {
             staffchatCommand.setExecutor(new CommandStaffchat(configManager));
         }
-        int pluginId = 8683;
-        new Metrics(this, pluginId);
+        new Metrics(this, 8683);
     }
 
     @Override
