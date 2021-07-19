@@ -72,9 +72,5 @@ public class PlayerChatListener extends ChatManager implements Listener {
         }
         event.setMessage(newMessage);
         reward(player);
-        if (player.hasPermission("drchat.search")) {
-            postSearchResults(newMessage);
-        }
-
     }
 }

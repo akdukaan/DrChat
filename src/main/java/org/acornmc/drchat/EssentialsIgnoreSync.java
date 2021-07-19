@@ -10,9 +10,9 @@ import org.bukkit.event.Listener;
 
 import java.util.UUID;
 
-public class EssentialsMuteSync implements Listener {
+public class EssentialsIgnoreSync implements Listener {
     ConfigManager configManager;
-    public EssentialsMuteSync(ConfigManager configManager) {
+    public EssentialsIgnoreSync(ConfigManager configManager) {
         this.configManager = configManager;
     }
 

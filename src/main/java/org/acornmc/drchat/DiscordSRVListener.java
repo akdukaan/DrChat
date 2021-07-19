@@ -6,23 +6,23 @@ import github.scarsz.discordsrv.api.events.*;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
+import net.kyori.adventure.text.Component;
+import github.scarsz.discordsrv.dependencies.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class DiscordSRVListener extends ChatManager {
     EssentialsUtil essentialsUtil;
-    LitebansUtil litebansUtil;
 
     public DiscordSRVListener(ConfigManager configManager) {
         super(configManager);
         if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
             essentialsUtil = new EssentialsUtil(configManager);
-        }
-        if (Bukkit.getPluginManager().isPluginEnabled("LiteBans")) {
-            litebansUtil = new LitebansUtil(configManager);
         }
     }
 
@@ -33,6 +33,26 @@ public class DiscordSRVListener extends ChatManager {
             event.setCancelled(true);
         }
     }
+
+    /*
+    @Subscribe
+    public void discordMessagePreBroadcast(DiscordGuildMessagePreBroadcastEvent e) {
+        String plainMessage = LegacyComponentSerializer.legacySection().serialize(e.getMessage());
+        String plainMessage2 = LegacyComponentSerializer.legacyAmpersand().serialize(e.getMessage());
+        System.out.println(plainMessage);
+        System.out.println(plainMessage2);
+        String senderName = plainMessage.split(" ")[1].replace("⭐", "");
+        System.out.println(senderName);
+        UUID messageSender = Bukkit.getOfflinePlayer(senderName).getUniqueId();
+        for (CommandSender s : e.getRecipients()) {
+            if (s instanceof Player) {
+                Player p = (Player) s;
+                if (essentialsUtil.isIgnoring(p.getUniqueId(), messageSender)) {
+                    e.getRecipients().remove(s);
+                }
+            }
+        }
+    } */
 
     @Subscribe
     public void discordMessagePostProcess(DiscordGuildMessagePostProcessEvent event) {
@@ -57,7 +77,7 @@ public class DiscordSRVListener extends ChatManager {
         String spamExemptRole = configManager.get().getString("discord.spam-bypass-role-id");
         boolean spamExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(spamExemptRole));
         if (chatIsFrozen()) {
-            String freezeExemptRole = configManager.get().getString("discord.spam-bypass-role-id");
+            String freezeExemptRole = configManager.get().getString("discord.frozen-bypass-role-id");
             boolean freezeExempt = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(freezeExemptRole));
             if (!freezeExempt) {
                 event.setCancelled(true);
@@ -73,8 +93,7 @@ public class DiscordSRVListener extends ChatManager {
             boolean muteSync = configManager.get().getBoolean("discord.mute-sync");
             String emote = configManager.get().getString("discord.reactions.cancelled");
             if (muteSync) {
-                if ((Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) ||
-                        (Bukkit.getPluginManager().isPluginEnabled("LiteBans") && litebansUtil.isMuted(uuid))) {
+                if (Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) {
                     notifyCancelledMessage(playerName, event.getMessage().getContentDisplay());
                     boolean discordDeleteCancelled = configManager.get().getBoolean("discord.delete-cancelled");
                     if (discordDeleteCancelled) {
@@ -97,69 +116,6 @@ public class DiscordSRVListener extends ChatManager {
             }
             increment(player);
         }
-
-        String barrier = configManager.get().getString("discord.barrier");
-        String originalFullMessage = event.getProcessedMessage();
-        if (barrier != null) {
-            int barrierPosition = originalFullMessage.indexOf(barrier);
-            String preBarrier = "";
-            String postBarrier = originalFullMessage;
-            if (barrierPosition != -1) {
-                preBarrier = originalFullMessage.substring(0, barrierPosition);
-                postBarrier = originalFullMessage.substring(barrierPosition + barrier.length());
-            }
-            if (!spamExempt) {
-                boolean checkPhrase = configManager.get().getBoolean("discord.checks.phrase");
-                boolean checkFont = configManager.get().getBoolean("discord.checks.font");
-                boolean checkSpacing = configManager.get().getBoolean("discord.checks.spacing");
-                boolean checkCapital = configManager.get().getBoolean("discord.checks.capital");
-                boolean checkCharacter = configManager.get().getBoolean("discord.checks.character");
-                boolean checkSwear = configManager.get().getBoolean("discord.checks.swear");
-                String originalPostBarrier = postBarrier;
-                if (checkPhrase && hasPhrase(postBarrier)) {
-                    event.setCancelled(true);
-                    notifyCancelledMessage(playerName, event.getProcessedMessage());
-                }
-                if (checkFont) {
-                    postBarrier = fixFont(postBarrier);
-                }
-                if (checkSpacing) {
-                    postBarrier = fixSpacing(postBarrier);
-                }
-                if (checkCapital) {
-                    postBarrier = fixCapital(postBarrier);
-                }
-                if (checkCharacter) {
-                    postBarrier = fixCharacter(postBarrier);
-                }
-                if (checkSwear && hasSwear(postBarrier)) {
-                    event.setCancelled(true);
-                    notifyCancelledMessage(playerName, event.getProcessedMessage());
-                    if (player != null) {
-                        useSwearCommands(player);
-                    }
-                    return;
-                }
-                if (!originalPostBarrier.equals(postBarrier)) {
-                    String emote = configManager.get().getString("discord.reactions.modified");
-                    if (emote != null) {
-                        event.getMessage().addReaction(emote).queue();
-                    }
-                    notifyModifiedMessage(playerName, originalPostBarrier);
-                }
-                if (barrierPosition == -1) {
-                    event.setProcessedMessage(postBarrier);
-                } else {
-                    event.setProcessedMessage(preBarrier + barrier + postBarrier);
-                }
-            }
-            String searchRole = configManager.get().getString("discord.search-role-id");
-            boolean searchAllowed = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(searchRole));
-            if (searchAllowed) {
-                postBarrier = ChatColor.stripColor(postBarrier);
-                postSearchResults(postBarrier);
-            }
-        }
     }
 
     @Subscribe
@@ -167,7 +123,7 @@ public class DiscordSRVListener extends ChatManager {
         String id = event.getMember().getUser().getId();
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
         OfflinePlayer player = null;
-        UUID uuid = null;
+        UUID uuid;
         if (alm != null) {
             uuid = alm.getUuid(id);
             if (uuid != null) {
@@ -175,23 +131,6 @@ public class DiscordSRVListener extends ChatManager {
             }
         }
         if (player != null) {
-            String mutedID = configManager.get().getString("discord.mute-role-id");
-            if (mutedID != null) {
-                Role mutedRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(mutedID);
-                if (mutedRole != null) {
-                    boolean hasMutedRole = event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals(mutedID));
-                    if (!hasMutedRole) {
-                        if (Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) {
-                            DiscordSRV.getPlugin().getMainGuild().addRoleToMember(id, mutedRole).queue();
-                        }
-                        if ((Bukkit.getPluginManager().isPluginEnabled("Essentials") && essentialsUtil.isMuted(uuid)) ||
-                                (Bukkit.getPluginManager().isPluginEnabled("LiteBans") && litebansUtil.isMuted(uuid))) {
-                            event.getMessage().delete().queue();
-                            return;
-                        }
-                    }
-                }
-            }
             boolean rewardAllChats = configManager.get().getBoolean("rewards.discord.all-messages");
             if (rewardAllChats) {
                 reward(player);

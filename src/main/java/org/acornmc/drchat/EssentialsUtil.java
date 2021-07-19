@@ -16,4 +16,8 @@ public class EssentialsUtil {
     public boolean isMuted(UUID uuid) {
         return iess.getUser(uuid).isMuted();
     }
+
+    public boolean isIgnoring(UUID player, UUID messagesender) {
+        return iess.getUser(player).isIgnoredPlayer(iess.getUser(messagesender));
+    }
 }

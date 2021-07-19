@@ -39,7 +39,7 @@ public final class DrChat extends JavaPlugin {
             discordExists = true;
             if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 log.info(String.format("[%s] Essentials found!", getDescription().getName()));
-                this.getServer().getPluginManager().registerEvents(new EssentialsMuteSync(configManager), this);
+                this.getServer().getPluginManager().registerEvents(new EssentialsIgnoreSync(configManager), this);
             } else {
                 log.info(String.format("[%s] Essentials not found!", getDescription().getName()));
             }
