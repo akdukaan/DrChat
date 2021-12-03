@@ -14,9 +14,13 @@ import java.util.List;
 public class CommandDrchat implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!sender.hasPermission("drchat.reload")) {
+            Util.send(sender, Lang.COMMAND_NO_PERMISSION);
+            return true;
+        }
         Config.reload(DrChat.getInstance());
         Lang.reload(DrChat.getInstance());
-        return false;
+        return true;
     }
 
     @Override
