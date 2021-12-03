@@ -1,77 +1,19 @@
 name: DrChat
 version: ${project.version}
 main: org.acornmc.drchat.DrChat
-api-version: "1.16"
-authors: [DrBot]
-softdepend: [DiscordSRV, EssentialsX, Vault, LiteBans]
-description: Spam Management Tool
+api-version: 1.17
+authors: [ DrBot ]
+description: antispam with DiscordSRV support
+softdepend:
+  - DiscordSRV
+  - Essentials
 commands:
   drchat:
-    description: drchat admin commands
-    usage: "/<command> reload \n/<command> clear <player> \n/<command> freeze \n/<command> broadcast <permission> <message>"
-    permission: drchat.command
+    description: reload drchat
+    usage: /<command> reload
+    permission: drchat.reload
   staffchat:
-    description: drchat's staff chat
-    usage: /<command> <message>
+    desciption: use staffchat
+    usage: /<command> message
     permission: drchat.staffchat
     aliases: [h]
-permissions:
-  drchat.reload:
-    default: op
-    description: reload command
-    children:
-      drchat.command: true
-  drchat.freeze:
-    default: op
-    description: freeze command
-    children:
-      drchat.command: true
-  drchat.clear:
-    default: op
-    description: clear command
-    children:
-      drchat.command: true
-  drchat.clear.self:
-    default: false
-    description: clears own chat
-  drchat.broadcast:
-    default: op
-    description: broadcast command
-    children:
-      drchat.command: true
-  drchat.bypass.phrase:
-    default: false
-    description: bypass phrase filter
-  drchat.bypass.character:
-    default: false
-    description: bypass character filter
-  drchat.bypass.swear:
-    default: false
-    description: bypass swear filter
-  drchat.bypass.capital:
-    default: false
-    description: bypass capital filter
-  drchat.bypass.spacing:
-    default: false
-    description: bypass spacing filter
-  drchat.bypass.font:
-    default: false
-    description: bypass font spam
-  drchat.bypass.frequency:
-    default: false
-    description: bypass frequency spam
-  drchat.bypass.freeze:
-    default: false
-    description: talk while chat is frozen
-  drchat.notify.cancel:
-    default: false
-    description: notify for cancelled messages
-  drchat.notify.modify:
-    default: false
-    description: notify for modified messages
-  drchat.staffchat:
-    default: false
-    description: use staffchat
-  drchat.search:
-    default: false
-    description: allow for search
