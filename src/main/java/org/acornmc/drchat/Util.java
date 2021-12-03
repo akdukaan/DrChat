@@ -152,8 +152,10 @@ public class Util {
     }
 
     public static void notifyCancelled(String author, String message) {
-        Bukkit.broadcast(Util.componentOf(colorize(author + "'s message was cancelled")), "drchat.notify");
+        Bukkit.broadcast(Util.componentOf(colorize("&7" + author + "'s message was cancelled")), "drchat.notify");
         Bukkit.broadcast(Util.componentOf(colorize("&7Original: " + message)), "drchat.notify");
+        log("&7" + author + "'s message was cancelled");
+        log("&7Original: " + message);
     }
 
     public static void notifyModified(String author, String message) {

@@ -27,6 +27,7 @@ public class Config {
         SWEARS = getStringList("swears", SWEARS);
         DISCORD_TO_MC_FORMAT = getString("discord-to-mc-format", DISCORD_TO_MC_FORMAT);
         MC_TO_MC_FORMAT = getString("mc-to-mc-format", MC_TO_MC_FORMAT);
+        MUTED_ROLE_ID = getInt("mute-role-id", MUTED_ROLE_ID);
     }
 
     // ########################################################
