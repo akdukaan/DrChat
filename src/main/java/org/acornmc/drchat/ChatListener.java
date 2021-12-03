@@ -13,6 +13,7 @@ public class ChatListener implements Listener {
         if (Util.isStaffchatToggled(player.getUniqueId())) {
             Util.sendStaffchatMCToDiscord(player, event.getMessage());
             Util.sendStaffchatMCToMC(player, event.getMessage());
+            event.setCancelled(true);
             return;
         }
 

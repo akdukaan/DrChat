@@ -184,11 +184,11 @@ public class Util {
 
     public static void toggleStaffchat(Player player) {
         if (isStaffchatToggled(player.getUniqueId())) {
-            send(player, Lang.STAFFCHAT_TOGGLED_ON);
+            send(player, Lang.STAFFCHAT_TOGGLED_OFF);
             staffchatToggled.remove(player.getUniqueId());
 
         } else {
-            send(player, Lang.STAFFCHAT_TOGGLED_OFF);
+            send(player, Lang.STAFFCHAT_TOGGLED_ON);
             staffchatToggled.add(player.getUniqueId());
 
         }

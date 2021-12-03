@@ -48,10 +48,9 @@ public final class DrChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
     }
 
-    public DrChat getInstance() {
+    public static DrChat getInstance() {
         return instance;
     }
 }
