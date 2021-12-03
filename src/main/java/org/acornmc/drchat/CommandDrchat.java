@@ -26,7 +26,9 @@ public class CommandDrchat implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> list = new ArrayList<>();
-        list.add("reload");
+        if (sender.hasPermission("drchat.reload")) {
+            list.add("reload");
+        }
         return StringUtil.copyPartialMatches(args[args.length - 1], list, new ArrayList<>());
     }
 }
