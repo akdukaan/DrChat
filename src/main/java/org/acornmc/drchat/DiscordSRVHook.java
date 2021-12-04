@@ -48,6 +48,8 @@ public class DiscordSRVHook {
         // Split the message into parts
         String eventMessage = Util.legacyOf(event.getMinecraftMessage());
         String messageSplitter;
+
+        // Not nearly the best way to do this. Will fix soon
         try {
             messageSplitter = Config.DISCORD_TO_MC_FORMAT.split("%")[2];
         } catch (ArrayIndexOutOfBoundsException e) {
