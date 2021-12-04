@@ -36,7 +36,7 @@ public class Util {
      * @param message
      */
     public static void log(String message) {
-        Bukkit.getConsoleSender().sendMessage(colorize("[DrChat] " + message));
+        Bukkit.getLogger().info(colorize("[DrChat] " + message));
     }
 
     /**
