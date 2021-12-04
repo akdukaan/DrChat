@@ -248,6 +248,7 @@ public class Util {
     }
 
     public static void punishForSwearing(OfflinePlayer player) {
+        if (player == null) return;
         if (player.getName() == null) return;
         final String command = Config.SWEAR_PUNISHMENT
                 .replace("%player%", player.getName());

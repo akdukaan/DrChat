@@ -34,7 +34,7 @@ public class DiscordSRVHook {
         }
 
         // If the player is muted or banned ingame, cancel the message and mute them on Discord
-        User user = event.getMember().getUser();
+        User user = event.getAuthor();
         if (!Util.canUseDiscord(user)) {
             event.setCancelled(true);
             event.getMessage().delete().queue();
@@ -48,10 +48,10 @@ public class DiscordSRVHook {
 
         // Handle swears in the message
         if (Util.containsSwears(messagePart2)) {
-            String username = Util.usernameOf(event.getAuthor());
+            String username = Util.usernameOf(user);
             Util.notifyCancelled(username, messagePart2);
             event.setCancelled(true);
-            Util.punishForSwearing(Util.getOfflinePlayer(event.getAuthor()));
+            Util.punishForSwearing(Util.getOfflinePlayer(user));
             return;
         }
 
