@@ -3,6 +3,7 @@ package org.acornmc.drchat;
 import com.earth2me.essentials.IEssentials;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
@@ -14,6 +15,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.awt.*;
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -169,13 +171,18 @@ public class Util {
         Bukkit.broadcast(Util.componentOf(colorize("&7Original: " + message)), "drchat.notify");
     }
 
-    public static void sendStaffchatDiscordToMC(Member member, String message) {
-        String discordToMc = Config.DISCORD_TO_MC_FORMAT;
-        discordToMc = discordToMc.replace("%name%", member.getUser().getName());
-        discordToMc = discordToMc.replace("%nickname%", member.getEffectiveName());
-        discordToMc = discordToMc.replace("%message%", message);
-        Bukkit.broadcast(Util.componentOf(discordToMc), "drchat.staffchat");
-
+    public static void sendStaffchatDiscordToMC(Member member, String message, List<Message.Attachment> attachments) {
+        StringBuilder discordToMc = new StringBuilder(Config.DISCORD_TO_MC_FORMAT);
+        discordToMc = new StringBuilder(discordToMc.toString().replace("%name%", member.getUser().getName()));
+        discordToMc = new StringBuilder(discordToMc.toString().replace("%nickname%", member.getEffectiveName()));
+        discordToMc = new StringBuilder(discordToMc.toString().replace("%message%", message));
+        if (discordToMc.charAt(discordToMc.length() - 1) != ' ') {
+            discordToMc.append(" ");
+        }
+        for (Message.Attachment a : attachments) {
+            discordToMc.append("<").append(a.getUrl()).append("> ");
+        }
+        Bukkit.broadcast(Util.componentOf(discordToMc.toString()), "drchat.staffchat");
     }
 
     public static void sendStaffchatMCToMC(Player player, String message) {

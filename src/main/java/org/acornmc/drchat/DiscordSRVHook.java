@@ -4,10 +4,13 @@ package org.acornmc.drchat;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.*;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import org.bukkit.OfflinePlayer;
+
+import java.util.List;
 
 public class DiscordSRVHook {
 
@@ -28,7 +31,8 @@ public class DiscordSRVHook {
         // If it was sent in staffchat channel, send it in staffchat
         TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
         if (staffchatChannel != null && event.getChannel().getId().equals(staffchatChannel.getId())) {
-            Util.sendStaffchatDiscordToMC(event.getMember(), event.getMessage().getContentDisplay());
+            List<Message.Attachment> attachments = event.getMessage().getAttachments();
+            Util.sendStaffchatDiscordToMC(event.getMember(), event.getMessage().getContentDisplay(), attachments);
             event.setCancelled(true);
             return;
         }
