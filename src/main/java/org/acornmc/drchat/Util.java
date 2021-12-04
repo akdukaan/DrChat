@@ -30,7 +30,7 @@ public class Util {
      * @param message
      */
     public static void log(String message) {
-        Bukkit.getConsoleSender().sendMessage(colorize("[DrChat] "+ message));
+        Bukkit.getConsoleSender().sendMessage(colorize("[DrChat] " + message));
     }
 
     /**
@@ -117,7 +117,7 @@ public class Util {
         for (int i = 1; i < string.length(); i++) {
             if (string.charAt(i) == currentChar) {
                 repeatCounter++;
-                if (repeatCounter >= 3) {
+                if (repeatCounter >= 3 && !Character.isDigit(currentChar)) {
                     string = string.substring(0, i) + string.substring(i + 1);
                     i--;
                 }
@@ -175,7 +175,7 @@ public class Util {
     public static void sendStaffchatMCToMC(Player player, String message) {
         String mcToMc = Config.MC_TO_MC_FORMAT;
         Bukkit.broadcast(Util.componentOf(mcToMc
-                .replace("%displayname%", player.getDisplayName())
+                .replace("%displayname%", Util.legacyOf(player.displayName()))
                 .replace("%name%", player.getName())
                 .replace("%message%", message)), "drchat.staffchat");
     }
@@ -227,7 +227,6 @@ public class Util {
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
         UUID uuid = player.getUniqueId();
         return alm.getDiscordId(uuid);
-
     }
 
     public static void discordMute(OfflinePlayer player) {
@@ -242,9 +241,23 @@ public class Util {
         DiscordSRV.getPlugin().getMainGuild().addRoleToMember(getMemberID(player), muteRole).queue();
     }
 
-    public static boolean isMuted(UUID uuid) {
+    public static boolean isMuted(User user) {
         IEssentials iess = (IEssentials) Bukkit.getPluginManager().getPlugin("Essentials");
         if (iess == null) return false;
+        UUID uuid = uuidOf(user);
         return iess.getUser(uuid).isMuted();
+    }
+
+    public static boolean isBanned(User user) {
+        UUID uuid = uuidOf(user);
+        if (uuid == null) return false;
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+        return player.isBanned();
+    }
+
+    public static OfflinePlayer getOfflinePlayer(User user) {
+        UUID uuid = uuidOf(user);
+        if (uuid == null) return null;
+        return Bukkit.getOfflinePlayer(uuid);
     }
 }

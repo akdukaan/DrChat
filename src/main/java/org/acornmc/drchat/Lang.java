@@ -21,9 +21,7 @@ public class Lang {
         COMMAND_NO_PERMISSION = getString("command-no-permission", COMMAND_NO_PERMISSION);
         STAFFCHAT_TOGGLED_ON = getString("staffchat-toggled-on", STAFFCHAT_TOGGLED_ON);
         STAFFCHAT_TOGGLED_OFF = getString("staffchat-toggled-off", STAFFCHAT_TOGGLED_OFF);
-
     }
-
 
     // ########################################################
 

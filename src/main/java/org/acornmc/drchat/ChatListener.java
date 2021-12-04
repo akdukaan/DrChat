@@ -10,6 +10,8 @@ public class ChatListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+
+        // If the message was sent to staffchat, send it in staffchat
         if (Util.isStaffchatToggled(player.getUniqueId())) {
             Util.sendStaffchatMCToDiscord(player, event.getMessage());
             Util.sendStaffchatMCToMC(player, event.getMessage());
@@ -17,6 +19,7 @@ public class ChatListener implements Listener {
             return;
         }
 
+        // Handle swears in the message
         String message = event.getMessage();
         if (Util.containsSwears(message)) {
             Util.notifyCancelled(player.getName(), message);
@@ -24,6 +27,7 @@ public class ChatListener implements Listener {
             return;
         }
 
+        // Handle spam in the message
         String modifiedMessage = Util.modifySpam(message);
         if (!modifiedMessage.equals(message)) {
             Util.notifyModified(player.getName(), message);
