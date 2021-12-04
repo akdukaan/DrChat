@@ -46,6 +46,9 @@ public class DiscordSRVHook {
         String messagePart1 = eventMessage.split("> ", 2)[0];
         String messagePart2 = eventMessage.split("> ", 2)[1];
 
+        // Remove fancychat
+        String modifiedMessage = Util.filterMessage(messagePart2);
+
         // Handle swears in the message
         if (Util.containsSwears(messagePart2)) {
             String username = Util.usernameOf(user);
@@ -56,7 +59,6 @@ public class DiscordSRVHook {
         }
 
         // Handle spam in the message
-        String modifiedMessage = Util.filterMessage(messagePart2);
         if (!modifiedMessage.equals(messagePart2)) {
             String username = Util.usernameOf(event.getAuthor());
             Util.notifyModified(username, messagePart2);
