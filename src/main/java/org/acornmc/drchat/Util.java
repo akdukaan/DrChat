@@ -241,10 +241,10 @@ public class Util {
     }
 
     public static boolean canUseDiscord(User user) {
-        return EssentialsHook.isBanned(user) ||
-                EssentialsHook.isMuted(user) ||
-                LitebansHook.isBanned(user) ||
-                LitebansHook.isMuted(user);
+        return !EssentialsHook.isBanned(user) &&
+                !EssentialsHook.isMuted(user) &&
+                !LitebansHook.isBanned(user) &&
+                !LitebansHook.isMuted(user);
     }
 
     public static void punishForSwearing(OfflinePlayer player) {
