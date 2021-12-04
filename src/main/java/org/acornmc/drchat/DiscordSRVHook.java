@@ -43,6 +43,8 @@ public class DiscordSRVHook {
             event.setCancelled(true);
             event.getMessage().delete().queue();
             DiscordSRVHook.discordMute(Util.getOfflinePlayer(user));
+            String content = "Your message was cancelled because you are banned/muted on the Minecraft server.";
+            user.openPrivateChannel().flatMap(channel -> channel.sendMessage(content)).queue();
         }
 
         // Split the message into parts
