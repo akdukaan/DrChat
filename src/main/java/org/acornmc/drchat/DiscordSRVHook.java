@@ -47,8 +47,15 @@ public class DiscordSRVHook {
 
         // Split the message into parts
         String eventMessage = Util.legacyOf(event.getMinecraftMessage());
-        String messagePart1 = eventMessage.split("> ", 2)[0];
-        String messagePart2 = eventMessage.split("> ", 2)[1];
+        String messageSplitter;
+        try {
+            messageSplitter = Config.DISCORD_TO_MC_FORMAT.split("%")[2];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Util.log("Cannot parse the barrier between the username and the message in \"" + eventMessage + "\"");
+            return;
+        }
+        String messagePart1 = eventMessage.split(messageSplitter, 2)[0];
+        String messagePart2 = eventMessage.split(messageSplitter, 2)[1];
 
         // Remove fancychat
         String modifiedMessage = Util.filterMessage(messagePart2);
@@ -66,7 +73,7 @@ public class DiscordSRVHook {
         if (!modifiedMessage.equals(messagePart2)) {
             String username = Util.usernameOf(event.getAuthor());
             Util.notifyModified(username, messagePart2);
-            event.setMinecraftMessage(Util.componentOf(messagePart1 + "> " + modifiedMessage));
+            event.setMinecraftMessage(Util.componentOf(messagePart1 + messageSplitter + modifiedMessage));
         }
     }
 }
