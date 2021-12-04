@@ -14,6 +14,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -139,7 +145,7 @@ public class Util {
         return false;
     }
 
-    public static String modifySpam(String string) {
+    public static String filterMessage(String string) {
         if (Util.countCaps(string) > 15) {
             string = Util.removeCaps(string);
         }
@@ -228,36 +234,217 @@ public class Util {
         return alm.getDiscordId(uuid);
     }
 
-    public static void discordMute(OfflinePlayer player) {
-        Role muteRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(Config.MUTED_ROLE_ID);
-        if (muteRole == null) return;
-        DiscordSRV.getPlugin().getMainGuild().addRoleToMember(getMemberID(player), muteRole).queue();
-    }
-
-    public static void discordUnmute(OfflinePlayer player) {
-        Role muteRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(Config.MUTED_ROLE_ID);
-        if (muteRole == null) return;
-        DiscordSRV.getPlugin().getMainGuild().removeRoleFromMember(getMemberID(player), muteRole).queue();
-    }
-
-    public static boolean isMuted(User user) {
-        IEssentials iess = (IEssentials) Bukkit.getPluginManager().getPlugin("Essentials");
-        if (iess == null) return false;
-        UUID uuid = uuidOf(user);
-        if (uuid == null) return false;
-        return iess.getUser(uuid).isMuted();
-    }
-
-    public static boolean isBanned(User user) {
-        UUID uuid = uuidOf(user);
-        if (uuid == null) return false;
-        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-        return player.isBanned();
-    }
-
     public static OfflinePlayer getOfflinePlayer(User user) {
         UUID uuid = uuidOf(user);
         if (uuid == null) return null;
         return Bukkit.getOfflinePlayer(uuid);
+    }
+
+    public static boolean canUseDiscord(User user) {
+        return EssentialsHook.isBanned(user) ||
+                EssentialsHook.isMuted(user) ||
+                LitebansHook.isBanned(user) ||
+                LitebansHook.isMuted(user);
+    }
+
+    public static void punishForSwearing(OfflinePlayer player) {
+        if (player.getName() == null) return;
+        final String command = Config.SWEAR_PUNISHMENT
+                .replace("%player%", player.getName());
+        Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        Bukkit.getScheduler().runTask(DrChat.getInstance(), runnable);
+    }
+
+    public static String removeFancyChat(String string) {
+        return string
+                .replace("ᵃ", "a")
+                .replace("ᵇ", "b")
+                .replace("ᶜ", "c")
+                .replace("ᵈ", "d")
+                .replace("ᵉ", "e")
+                .replace("ᶠ", "f")
+                .replace("ᵍ", "g")
+                .replace("ʰ", "h")
+                .replace("ᶦ", "i")
+                .replace("ʲ", "j")
+                .replace("ᵏ", "k")
+                .replace("ˡ", "l")
+                .replace("ᵐ", "m")
+                .replace("ⁿ", "n")
+                .replace("ᵒ", "o")
+                .replace("ᵖ", "p")
+                .replace("ᵠ", "q")
+                .replace("ʳ", "r")
+                .replace("ˢ", "s")
+                .replace("ᵗ", "t")
+                .replace("ᵘ", "u")
+                .replace("ᵛ", "v")
+                .replace("ʷ", "w")
+                .replace("ˣ", "x")
+                .replace("ʸ", "y")
+                .replace("ᶻ", "z")
+                .replace("ａ", "a")
+                .replace("ｂ", "b")
+                .replace("ｃ", "c")
+                .replace("ｄ", "d")
+                .replace("ｅ", "e")
+                .replace("ｆ", "f")
+                .replace("ｇ", "g")
+                .replace("ｈ", "h")
+                .replace("ｉ", "i")
+                .replace("ｊ", "j")
+                .replace("ｋ", "k")
+                .replace("ｌ", "l")
+                .replace("ｍ", "m")
+                .replace("ｎ", "n")
+                .replace("ｏ", "o")
+                .replace("ｐ", "p")
+                .replace("ｑ", "q")
+                .replace("ｒ", "r")
+                .replace("ｓ", "s")
+                .replace("ｔ", "t")
+                .replace("ｕ", "u")
+                .replace("ｖ", "v")
+                .replace("ｗ", "w")
+                .replace("ｘ", "x")
+                .replace("ｙ", "y")
+                .replace("ｚ", "z")
+                .replace("Ａ", "a")
+                .replace("Ｂ", "b")
+                .replace("Ｃ", "c")
+                .replace("Ｄ", "d")
+                .replace("Ｅ", "e")
+                .replace("Ｆ", "f")
+                .replace("Ｇ", "g")
+                .replace("Ｈ", "h")
+                .replace("Ｉ", "i")
+                .replace("Ｊ", "j")
+                .replace("Ｋ", "k")
+                .replace("Ｌ", "l")
+                .replace("Ｍ", "m")
+                .replace("Ｎ", "n")
+                .replace("Ｏ", "o")
+                .replace("Ｐ", "p")
+                .replace("Ｑ", "q")
+                .replace("Ｒ", "r")
+                .replace("Ｓ", "s")
+                .replace("Ｔ", "t")
+                .replace("Ｕ", "u")
+                .replace("Ｖ", "v")
+                .replace("Ｗ", "w")
+                .replace("Ｘ", "x")
+                .replace("Ｙ", "y")
+                .replace("Ｚ", "z")
+                .replace("ᴀ", "a")
+                .replace("ʙ", "b")
+                .replace("ᴄ", "c")
+                .replace("ᴅ", "d")
+                .replace("ᴇ", "e")
+                .replace("ꜰ", "f")
+                .replace("ɢ", "g")
+                .replace("ʜ", "h")
+                .replace("ɪ", "i")
+                .replace("ᴊ", "j")
+                .replace("ᴋ", "k")
+                .replace("ʟ", "l")
+                .replace("ᴍ", "m")
+                .replace("ɴ", "n")
+                .replace("ᴏ", "o")
+                .replace("ᴘ", "p")
+                .replace("ʀ", "r")
+                .replace("ꜱ", "s")
+                .replace("ᴛ", "t")
+                .replace("ᴜ", "u")
+                .replace("ᴠ", "v")
+                .replace("ᴡ", "w")
+                .replace("ʏ", "y")
+                .replace("ᴢ", "z")
+                .replace("ⓐ", "a")
+                .replace("ⓑ", "b")
+                .replace("ⓒ", "c")
+                .replace("ⓓ", "d")
+                .replace("ⓔ", "e")
+                .replace("ⓕ", "f")
+                .replace("ⓖ", "g")
+                .replace("ⓗ", "h")
+                .replace("ⓘ", "i")
+                .replace("ⓙ", "j")
+                .replace("ⓚ", "k")
+                .replace("ⓛ", "l")
+                .replace("ⓜ", "m")
+                .replace("ⓝ", "n")
+                .replace("ⓞ", "o")
+                .replace("ⓟ", "p")
+                .replace("ⓠ", "q")
+                .replace("ⓡ", "r")
+                .replace("ⓢ", "s")
+                .replace("ⓣ", "t")
+                .replace("ⓤ", "u")
+                .replace("ⓥ", "v")
+                .replace("ⓦ", "w")
+                .replace("ⓧ", "x")
+                .replace("ⓨ", "y")
+                .replace("ⓩ", "z")
+                .replace("Ⓐ", "a")
+                .replace("Ⓑ", "b")
+                .replace("Ⓒ", "c")
+                .replace("Ⓓ", "d")
+                .replace("Ⓔ", "e")
+                .replace("Ⓕ", "f")
+                .replace("Ⓖ", "g")
+                .replace("Ⓗ", "h")
+                .replace("Ⓘ", "i")
+                .replace("Ⓙ", "j")
+                .replace("Ⓚ", "k")
+                .replace("Ⓛ", "l")
+                .replace("Ⓜ", "m")
+                .replace("Ⓝ", "n")
+                .replace("Ⓞ", "o")
+                .replace("Ⓟ", "p")
+                .replace("Ⓠ", "q")
+                .replace("Ⓡ", "r")
+                .replace("Ⓢ", "s")
+                .replace("Ⓣ", "t")
+                .replace("Ⓤ", "u")
+                .replace("Ⓥ", "v")
+                .replace("Ⓦ", "w")
+                .replace("Ⓧ", "x")
+                .replace("Ⓨ", "y")
+                .replace("？", "?")
+                .replace("．", ".")
+                .replace("［", "[")
+                .replace("］", "]")
+                .replace("｛", "{")
+                .replace("｝", "}")
+                .replace("＋", "+")
+                .replace("＝", "=")
+                .replace("！", "!")
+                .replace("＠", "@")
+                .replace("＃", "#")
+                .replace("＄", "$")
+                .replace("％", "%")
+                .replace("＾", "^")
+                .replace("＆", "&")
+                .replace("＊", "*")
+                .replace("－", "-")
+                .replace("＿", "_")
+                .replace("｜", "|")
+                .replace("；", ";")
+                .replace("：", ":")
+                .replace("｀", "`")
+                .replace("＇", "'")
+                .replace("１", "1")
+                .replace("２", "2")
+                .replace("３", "3")
+                .replace("４", "4")
+                .replace("５", "5")
+                .replace("６", "6")
+                .replace("７", "7")
+                .replace("８", "8")
+                .replace("９", "9")
+                .replace("０", "0")
+                .replace("（", "(")
+                .replace("）", ")")
+                .replace("，", ",");
     }
 }

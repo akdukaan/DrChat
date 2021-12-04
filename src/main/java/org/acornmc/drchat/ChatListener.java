@@ -19,16 +19,23 @@ public class ChatListener implements Listener {
             return;
         }
 
-        // Handle swears in the message
+        // If the player talked, we know they shouldn't be muted on Discord
+        DiscordSRVHook.discordUnmute(player);
+
+        // Remove fancychat
         String message = event.getMessage();
+        Util.removeFancyChat(message);
+
+        // Handle swears in the message
         if (Util.containsSwears(message)) {
             Util.notifyCancelled(player.getName(), message);
             event.setCancelled(true);
+            Util.punishForSwearing(event.getPlayer());
             return;
         }
 
         // Handle spam in the message
-        String modifiedMessage = Util.modifySpam(message);
+        String modifiedMessage = Util.filterMessage(message);
         if (!modifiedMessage.equals(message)) {
             Util.notifyModified(player.getName(), message);
             event.setMessage(modifiedMessage);

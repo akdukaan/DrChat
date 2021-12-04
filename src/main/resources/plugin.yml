@@ -7,6 +7,7 @@ description: antispam with DiscordSRV support
 softdepend:
   - DiscordSRV
   - Essentials
+  - Litebans
 commands:
   drchat:
     description: reload drchat

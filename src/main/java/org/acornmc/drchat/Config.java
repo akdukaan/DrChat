@@ -15,10 +15,11 @@ import java.util.logging.Level;
 public class Config {
     public static String LANGUAGE_FILE = "lang-en.yml";
     public static boolean ENABLE_BSTATS = true;
-    public static List<String> SWEARS = Arrays.asList("nigger", "nigga");
+    public static List<String> SWEARS = Arrays.asList("nigger", "nigga", "niqqer", "niqqa", "ni99a", "ni99er");
     public static String DISCORD_TO_MC_FORMAT = "&x&e&d&8&0&a&7&l[Staff] &f%nickname% &9> &f%message%";
     public static String MC_TO_MC_FORMAT = "&x&e&d&8&0&a&7&l[Staff] &f%name% &7> &f%message%";
     public static long MUTED_ROLE_ID = 0;
+    public static String SWEAR_PUNISHMENT = "ban %player% offensive language";
     private static YamlConfiguration config;
 
     private static void init() {
@@ -27,7 +28,8 @@ public class Config {
         SWEARS = getStringList("swears", SWEARS);
         DISCORD_TO_MC_FORMAT = getString("discord-to-mc-format", DISCORD_TO_MC_FORMAT);
         MC_TO_MC_FORMAT = getString("mc-to-mc-format", MC_TO_MC_FORMAT);
-        MUTED_ROLE_ID = getLong("mute-role-id", 0);
+        MUTED_ROLE_ID = getLong("mute-role-id", MUTED_ROLE_ID);
+        SWEAR_PUNISHMENT = getString("command-punishment-for-swears", SWEAR_PUNISHMENT);
     }
 
     // ########################################################
@@ -77,7 +79,7 @@ public class Config {
         return config.getInt(path, config.getInt(path));
     }
 
-    private static long getLong(String path, int def) {
+    private static long getLong(String path, long def) {
         config.addDefault(path, def);
         return config.getLong(path, config.getLong(path));
     }
