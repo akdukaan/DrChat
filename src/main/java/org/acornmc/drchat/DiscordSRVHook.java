@@ -12,7 +12,7 @@ public class DiscordSRVHook {
     public void postProcess(DiscordGuildMessagePostProcessEvent event) {
         TextChannel staffchatChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName("staff-chat");
         if (staffchatChannel != null && event.getChannel().getId().equals(staffchatChannel.getId())) {
-            Util.sendStaffchatDiscordToMC(event.getMessage().getAuthor().getName(), event.getMessage().getContentDisplay());
+            Util.sendStaffchatDiscordToMC(event.getMember(), event.getMessage().getContentDisplay());
             event.setCancelled(true);
             return;
         }

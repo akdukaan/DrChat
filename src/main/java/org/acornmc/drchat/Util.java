@@ -163,9 +163,10 @@ public class Util {
         Bukkit.broadcast(Util.componentOf(colorize("&7Original: " + message)), "drchat.notify");
     }
 
-    public static void sendStaffchatDiscordToMC(String author, String message) {
+    public static void sendStaffchatDiscordToMC(Member member, String message) {
         String discordToMc = Config.DISCORD_TO_MC_FORMAT;
-        discordToMc = discordToMc.replace("%nickname%", author);
+        discordToMc = discordToMc.replace("%name%", member.getUser().getName());
+        discordToMc = discordToMc.replace("%nickname%", member.getEffectiveName());
         discordToMc = discordToMc.replace("%message%", message);
         Bukkit.broadcast(Util.componentOf(discordToMc), "drchat.staffchat");
 
