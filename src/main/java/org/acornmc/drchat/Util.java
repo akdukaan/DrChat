@@ -181,7 +181,7 @@ public class Util {
     }
 
     public static void sendStaffchatMCToDiscord(Player player, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        message = colorize(message);
         DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false);
     }
 
@@ -189,7 +189,6 @@ public class Util {
         if (isStaffchatToggled(player.getUniqueId())) {
             send(player, Lang.STAFFCHAT_TOGGLED_OFF);
             staffchatToggled.remove(player.getUniqueId());
-
         } else {
             send(player, Lang.STAFFCHAT_TOGGLED_ON);
             staffchatToggled.add(player.getUniqueId());
@@ -238,13 +237,14 @@ public class Util {
     public static void discordUnmute(OfflinePlayer player) {
         Role muteRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(Config.MUTED_ROLE_ID);
         if (muteRole == null) return;
-        DiscordSRV.getPlugin().getMainGuild().addRoleToMember(getMemberID(player), muteRole).queue();
+        DiscordSRV.getPlugin().getMainGuild().removeRoleFromMember(getMemberID(player), muteRole).queue();
     }
 
     public static boolean isMuted(User user) {
         IEssentials iess = (IEssentials) Bukkit.getPluginManager().getPlugin("Essentials");
         if (iess == null) return false;
         UUID uuid = uuidOf(user);
+        if (uuid == null) return false;
         return iess.getUser(uuid).isMuted();
     }
 

@@ -16,11 +16,13 @@ public class Lang {
     public static String COMMAND_NO_PERMISSION = "&4You do not have permission for that command.";
     public static String STAFFCHAT_TOGGLED_ON = "&aYou toggled on staffchat";
     public static String STAFFCHAT_TOGGLED_OFF = "&aYou toggled off staffchat";
+    public static String CONFIG_RELOADED = "&aConfig reloaded!";
 
     private static void init() {
         COMMAND_NO_PERMISSION = getString("command-no-permission", COMMAND_NO_PERMISSION);
         STAFFCHAT_TOGGLED_ON = getString("staffchat-toggled-on", STAFFCHAT_TOGGLED_ON);
         STAFFCHAT_TOGGLED_OFF = getString("staffchat-toggled-off", STAFFCHAT_TOGGLED_OFF);
+        CONFIG_RELOADED = getString("config-reloaded", CONFIG_RELOADED);
     }
 
     // ########################################################
