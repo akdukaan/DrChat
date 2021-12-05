@@ -9,6 +9,8 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import net.ess3.api.MaxMoneyException;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,8 +19,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -166,17 +170,22 @@ public class Util {
     }
 
     public static void sendStaffchatDiscordToMC(Member member, String message, List<Message.Attachment> attachments) {
-        StringBuilder discordToMc = new StringBuilder(Config.DISCORD_TO_MC_FORMAT);
-        discordToMc = new StringBuilder(discordToMc.toString().replace("%name%", member.getUser().getName()));
-        discordToMc = new StringBuilder(discordToMc.toString().replace("%nickname%", member.getEffectiveName()));
-        discordToMc = new StringBuilder(discordToMc.toString().replace("%message%", message));
+        String discordToMc = Config.DISCORD_TO_MC_FORMAT;
+        discordToMc = discordToMc.replace("%name%", member.getUser().getName());
+        discordToMc = discordToMc.replace("%nickname%", member.getEffectiveName());
+        discordToMc = discordToMc.replace("%message%", message);
         if (discordToMc.charAt(discordToMc.length() - 1) != ' ') {
-            discordToMc.append(" ");
+            discordToMc += " ";
         }
+        Component component = componentOf(discordToMc);
         for (Message.Attachment a : attachments) {
-            discordToMc.append(a.getUrl());
+            String contentType = a.getContentType();
+            if (a.getContentType() == null) {
+                contentType = "attachment";
+            }
+            component = component.append(Component.text("<" + contentType + ">").clickEvent(ClickEvent.openUrl(a.getUrl())));
         }
-        Bukkit.broadcast(Util.componentOf(discordToMc.toString()), "drchat.staffchat");
+        Bukkit.broadcast(component, "drchat.staffchat");
     }
 
     public static void sendStaffchatMCToMC(Player player, String message) {
