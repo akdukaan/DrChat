@@ -180,7 +180,7 @@ public class Util {
             discordToMc.append(" ");
         }
         for (Message.Attachment a : attachments) {
-            discordToMc.append("<").append(a.getUrl()).append("> ");
+            discordToMc.append(a.getUrl());
         }
         Bukkit.broadcast(Util.componentOf(discordToMc.toString()), "drchat.staffchat");
     }
