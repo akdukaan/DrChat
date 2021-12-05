@@ -22,6 +22,7 @@ public class Config {
     public static long MUTED_ROLE_ID = 0;
     public static String SWEAR_PUNISHMENT = "ban %player% offensive language";
     public static ConfigurationSection PREFIXES = new YamlConfiguration();
+    public static String MESSAGE_SPLITTER = "> ";
     private static YamlConfiguration config;
 
     private static void init() {
@@ -33,6 +34,7 @@ public class Config {
         MUTED_ROLE_ID = getLong("mute-role-id", MUTED_ROLE_ID);
         SWEAR_PUNISHMENT = getString("command-punishment-for-swears", SWEAR_PUNISHMENT);
         PREFIXES = getYamlConfiguration("prefixes", PREFIXES);
+        MESSAGE_SPLITTER = getString("message-splitter", MESSAGE_SPLITTER);
     }
 
     // ########################################################
