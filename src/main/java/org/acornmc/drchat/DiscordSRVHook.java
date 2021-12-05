@@ -17,13 +17,17 @@ public class DiscordSRVHook {
     public static void discordMute(OfflinePlayer player) {
         Role muteRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(Config.MUTED_ROLE_ID);
         if (muteRole == null) return;
-        DiscordSRV.getPlugin().getMainGuild().addRoleToMember(Util.getMemberID(player), muteRole).queue();
+        String id = Util.getMemberID(player);
+        if (id == null) return;
+        DiscordSRV.getPlugin().getMainGuild().addRoleToMember(id, muteRole).queue();
     }
 
     public static void discordUnmute(OfflinePlayer player) {
         Role muteRole = DiscordSRV.getPlugin().getMainGuild().getRoleById(Config.MUTED_ROLE_ID);
         if (muteRole == null) return;
-        DiscordSRV.getPlugin().getMainGuild().removeRoleFromMember(Util.getMemberID(player), muteRole).queue();
+        String id = Util.getMemberID(player);
+        if (id == null) return;
+        DiscordSRV.getPlugin().getMainGuild().removeRoleFromMember(id, muteRole).queue();
     }
 
     @Subscribe
