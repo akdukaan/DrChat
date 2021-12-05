@@ -22,6 +22,7 @@ public final class DrChat extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new LoginListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
 
         PluginCommand drchatCommand = getCommand("drchat");
         if (drchatCommand != null) {
