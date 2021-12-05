@@ -15,6 +15,7 @@ public class LoginListener implements Listener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
+        if (!Config.HANDLE_LOGIN_EVENTS) return;
         Player player = event.getPlayer();
         if (!player.hasPermission("group.donor")) return;
         if (shouldRemovePrefix(player)) {

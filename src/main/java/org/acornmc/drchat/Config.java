@@ -23,6 +23,7 @@ public class Config {
     public static String SWEAR_PUNISHMENT = "ban %player% offensive language";
     public static ConfigurationSection PREFIXES = new YamlConfiguration();
     public static String MESSAGE_SPLITTER = "> ";
+    public static boolean HANDLE_LOGIN_EVENTS = false;
     private static YamlConfiguration config;
 
     private static void init() {
@@ -35,6 +36,7 @@ public class Config {
         SWEAR_PUNISHMENT = getString("command-punishment-for-swears", SWEAR_PUNISHMENT);
         PREFIXES = getYamlConfiguration("prefixes", PREFIXES);
         MESSAGE_SPLITTER = getString("message-splitter", MESSAGE_SPLITTER);
+        HANDLE_LOGIN_EVENTS = getBoolean("handle-login-events", HANDLE_LOGIN_EVENTS);
     }
 
     // ########################################################
