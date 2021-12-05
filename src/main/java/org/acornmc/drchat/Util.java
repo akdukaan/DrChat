@@ -1,12 +1,13 @@
 package org.acornmc.drchat;
 
-import com.earth2me.essentials.IEssentials;
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.api.Economy;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
-import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
+import net.ess3.api.MaxMoneyException;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -14,23 +15,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.*;
-import java.io.IOException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Util {
     private static Set<UUID> staffchatToggled = new HashSet<>();
+    private static Set<UUID> recentlyRewarded = new HashSet<>();
 
     /**
      * Log a message to the console
@@ -454,5 +448,19 @@ public class Util {
                 .replace("（", "(")
                 .replace("）", ")")
                 .replace("，", ",");
+    }
+
+    public static void tryRewarding(UUID uuid) {
+        if (uuid == null) return;
+        if (recentlyRewarded.contains(uuid)) return;
+        recentlyRewarded.add(uuid);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                recentlyRewarded.remove(uuid);
+            }
+        }.runTaskLater(DrChat.getInstance(), Config.REWARD_INTERVAL);
+
+        VaultHook.giveMoney(uuid, Config.REWARD_AMOUNT);
     }
 }

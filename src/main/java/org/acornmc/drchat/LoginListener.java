@@ -32,7 +32,7 @@ public class LoginListener implements Listener {
 
     public boolean shouldRemoveNickname(Player player) {
         if (hasColoredNick(player) && !player.hasPermission("group.vip")) return true;
-        Essentials ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+        Essentials ess = EssentialsHook.getEssentials();
         if (ess == null) return false;
         User user = ess.getUser(player.getUniqueId());
         if (user == null) return false;
@@ -40,7 +40,7 @@ public class LoginListener implements Listener {
     }
 
     public boolean hasColoredNick(Player player) {
-        Essentials ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+        Essentials ess = EssentialsHook.getEssentials();
         if (ess == null) return false;
         User user = ess.getUser(player.getUniqueId());
         if (user == null) return false;
@@ -60,7 +60,7 @@ public class LoginListener implements Listener {
     }
 
     public void removeNickname(Player player) {
-        Essentials ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+        Essentials ess = EssentialsHook.getEssentials();
         if (ess == null) return;
         ess.getUser(player.getUniqueId()).setNickname(player.getName());
     }

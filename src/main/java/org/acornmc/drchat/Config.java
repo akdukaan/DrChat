@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,6 +25,9 @@ public class Config {
     public static ConfigurationSection PREFIXES = new YamlConfiguration();
     public static String MESSAGE_SPLITTER = "> ";
     public static boolean HANDLE_LOGIN_EVENTS = false;
+    public static boolean HANDLE_DEATH_EVENTS = false;
+    public static int REWARD_INTERVAL = 300;
+    public static double REWARD_AMOUNT = 0.00;
     private static YamlConfiguration config;
 
     private static void init() {
@@ -37,6 +41,9 @@ public class Config {
         PREFIXES = getYamlConfiguration("prefixes", PREFIXES);
         MESSAGE_SPLITTER = getString("message-splitter", MESSAGE_SPLITTER);
         HANDLE_LOGIN_EVENTS = getBoolean("handle-login-events", HANDLE_LOGIN_EVENTS);
+        HANDLE_DEATH_EVENTS = getBoolean("handle-death-events", HANDLE_DEATH_EVENTS);
+        REWARD_INTERVAL = getInt("reward-interval", REWARD_INTERVAL);
+        REWARD_AMOUNT = getDouble("reward-amount", REWARD_AMOUNT);
     }
 
     // ########################################################
@@ -86,6 +93,11 @@ public class Config {
         return config.getInt(path, config.getInt(path));
     }
 
+    private static double getDouble(String path, double def) {
+        config.addDefault(path, def);
+        return config.getDouble(path, config.getDouble(path));
+    }
+
     private static long getLong(String path, long def) {
         config.addDefault(path, def);
         return config.getLong(path, config.getLong(path));
@@ -94,5 +106,12 @@ public class Config {
     private static ConfigurationSection getYamlConfiguration(String path, ConfigurationSection def) {
         config.addDefault(path, def);
         return config.getConfigurationSection(path);
+    }
+
+    private static BigDecimal getBigDecimal(String path, BigDecimal def) {
+        config.addDefault(path, def);
+        String string = config.getString(path, config.getString(path));
+        if (string == null) return new BigDecimal(0);
+        return new BigDecimal(string);
     }
 }
