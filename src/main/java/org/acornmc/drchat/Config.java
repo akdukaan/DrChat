@@ -2,6 +2,7 @@ package org.acornmc.drchat;
 
 import com.google.common.base.Throwables;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -20,6 +21,7 @@ public class Config {
     public static String MC_TO_MC_FORMAT = "&x&e&d&8&0&a&7&l[Staff] &f%name% &7> &f%message%";
     public static long MUTED_ROLE_ID = 0;
     public static String SWEAR_PUNISHMENT = "ban %player% offensive language";
+    public static ConfigurationSection PREFIXES = new YamlConfiguration();
     private static YamlConfiguration config;
 
     private static void init() {
@@ -30,6 +32,7 @@ public class Config {
         MC_TO_MC_FORMAT = getString("mc-to-mc-format", MC_TO_MC_FORMAT);
         MUTED_ROLE_ID = getLong("mute-role-id", MUTED_ROLE_ID);
         SWEAR_PUNISHMENT = getString("command-punishment-for-swears", SWEAR_PUNISHMENT);
+        PREFIXES = getYamlConfiguration("prefixes", PREFIXES);
     }
 
     // ########################################################
@@ -82,5 +85,10 @@ public class Config {
     private static long getLong(String path, long def) {
         config.addDefault(path, def);
         return config.getLong(path, config.getLong(path));
+    }
+
+    private static ConfigurationSection getYamlConfiguration(String path, ConfigurationSection def) {
+        config.addDefault(path, def);
+        return config.getConfigurationSection(path);
     }
 }

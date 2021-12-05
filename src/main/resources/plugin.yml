@@ -18,3 +18,7 @@ commands:
     usage: /<command> message
     permission: drchat.staffchat
     aliases: [h]
+  prefix:
+    description: change prefix
+    usage: /<command> prefix
+    permission: drchat.prefix

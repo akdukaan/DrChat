@@ -21,6 +21,7 @@ public final class DrChat extends JavaPlugin {
         }
 
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new LoginListener(), this);
 
         PluginCommand drchatCommand = getCommand("drchat");
         if (drchatCommand != null) {
@@ -29,6 +30,10 @@ public final class DrChat extends JavaPlugin {
         PluginCommand staffchatCommand = getCommand("staffchat");
         if (staffchatCommand != null) {
             staffchatCommand.setExecutor(new CommandStaffchat());
+        }
+        PluginCommand prefixCommand = getCommand("prefix");
+        if (prefixCommand != null) {
+            prefixCommand.setExecutor(new CommandPrefix());
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
