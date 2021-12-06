@@ -6,7 +6,7 @@
 
     <groupId>org.acornmc</groupId>
     <artifactId>DrChat</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT-${maven.build.timestamp}</version>
     <packaging>jar</packaging>
 
     <name>DrChat</name>
@@ -15,6 +15,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyy.MM.dd-HH:mm:ss</maven.build.timestamp.format>
     </properties>
 
     <build>
