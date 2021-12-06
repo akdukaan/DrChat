@@ -8,6 +8,7 @@ softdepend:
   - DiscordSRV
   - Essentials
   - Litebans
+  - Vault
 commands:
   drchat:
     description: reload drchat
