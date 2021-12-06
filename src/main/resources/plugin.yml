@@ -28,5 +28,7 @@ permissions:
     default: op
   drchat.staffchat:
     default: op
+  drchat.prefix:
+    default: op
   drchat.resetnickonnamechange:
     default: false
