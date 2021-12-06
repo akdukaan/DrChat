@@ -1,8 +1,10 @@
 package org.acornmc.drchat;
 
 import github.scarsz.discordsrv.DiscordSRV;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
 
@@ -49,6 +51,11 @@ public final class DrChat extends JavaPlugin {
             }
         } else {
             Util.log("DiscordSRV not found!");
+        }
+
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            LuckPermsHook.setApi(provider.getProvider());
         }
     }
 

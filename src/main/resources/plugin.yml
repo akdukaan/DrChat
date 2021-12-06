@@ -9,6 +9,7 @@ softdepend:
   - Essentials
   - Litebans
   - Vault
+  - LuckPerms
 commands:
   drchat:
     description: reload drchat
@@ -30,5 +31,7 @@ permissions:
     default: op
   drchat.prefix:
     default: op
+  drchat.earnchatmoney:
+    default: false
   drchat.resetnickonnamechange:
     default: false

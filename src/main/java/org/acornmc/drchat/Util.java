@@ -8,6 +8,7 @@ import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -456,6 +457,7 @@ public class Util {
     public static void tryRewarding(UUID uuid) {
         if (uuid == null) return;
         if (recentlyRewarded.contains(uuid)) return;
+        if (!LuckPermsHook.hasPermission(uuid, "drchat.earnchatmoney")) return;
         recentlyRewarded.add(uuid);
         new BukkitRunnable() {
             @Override
