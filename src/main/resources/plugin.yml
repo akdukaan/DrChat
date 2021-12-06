@@ -33,5 +33,5 @@ permissions:
     default: op
   drchat.earnchatmoney:
     default: false
-  drchat.resetnickonnamechange:
+  drchat.resetnickonrename:
     default: false

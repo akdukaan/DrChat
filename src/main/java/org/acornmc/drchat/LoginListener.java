@@ -12,7 +12,7 @@ public class LoginListener implements Listener {
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        if (!player.hasPermission("drchat.resetnickonnamechange")) return;
+        if (!player.hasPermission("drchat.resetnickonrename")) return;
         Essentials ess = EssentialsHook.getEssentials();
         if (ess == null) return;
         User user = ess.getUser(player.getUniqueId());
