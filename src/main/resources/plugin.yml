@@ -22,3 +22,9 @@ commands:
     description: change prefix
     usage: /<command> prefix
     permission: drchat.prefix
+permissions:
+  drchat.reload:
+    default: op
+  drchat.staffchat:
+    default: op
+

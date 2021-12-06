@@ -15,9 +15,7 @@ public class LoginListener implements Listener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
-        if (!Config.HANDLE_LOGIN_EVENTS) return;
         Player player = event.getPlayer();
-        if (!player.hasPermission("group.donor")) return;
         if (shouldRemovePrefix(player)) {
             removePrefix(player);
         }
@@ -27,11 +25,13 @@ public class LoginListener implements Listener {
     }
 
     public boolean shouldRemovePrefix(Player player) {
-        return !player.hasPermission("group.vip");
+        if (!player.hasPermission("drchat.removeprefixonlogin")) return false;
+        return !player.hasPermission("drchat.removeprefixonloginexempt");
     }
 
     public boolean shouldRemoveNickname(Player player) {
-        if (hasColoredNick(player) && !player.hasPermission("group.vip")) return true;
+        if (!player.hasPermission("drchat.removenickonlogin")) return false;
+        if (hasColoredNick(player) && !player.hasPermission("drchat.removenickonloginexempt")) return true;
         Essentials ess = EssentialsHook.getEssentials();
         if (ess == null) return false;
         User user = ess.getUser(player.getUniqueId());

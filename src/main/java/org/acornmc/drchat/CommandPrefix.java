@@ -36,7 +36,7 @@ public class CommandPrefix implements CommandExecutor {
             }
         }
 
-        sender.sendMessage("§cPermission & regex combination not found");
+        sender.sendMessage("§cInvalid prefix");
         return true;
     }
 
