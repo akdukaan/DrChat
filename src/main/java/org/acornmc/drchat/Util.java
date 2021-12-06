@@ -149,6 +149,8 @@ public class Util {
             string = Util.removeRepeats(string);
         }
 
+        string = removeFancyChat(string);
+
         return string;
     }
 
