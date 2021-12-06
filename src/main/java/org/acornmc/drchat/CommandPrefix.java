@@ -30,13 +30,13 @@ public class CommandPrefix implements CommandExecutor {
                     for (String c : commands) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), c.replace("<player>", sender.getName()).replace("<argument>", args[0]));
                     }
-                    sender.sendMessage("§cYour prefix color has been changed");
+                    Util.send(sender, Lang.CHANGE_PREFIX_COLOR_SUCCESS);
                     return true;
                 }
             }
         }
 
-        sender.sendMessage("§cInvalid prefix");
+        Util.send(sender, Lang.CHANGE_PREFIX_COLOR_FAIL);
         return true;
     }
 

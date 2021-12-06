@@ -17,12 +17,16 @@ public class Lang {
     public static String STAFFCHAT_TOGGLED_ON = "&aYou toggled on staffchat";
     public static String STAFFCHAT_TOGGLED_OFF = "&aYou toggled off staffchat";
     public static String CONFIG_RELOADED = "&aConfig reloaded!";
+    public static String CHANGE_PREFIX_COLOR_SUCCESS = "&cYour prefix color has been changed";
+    public static String CHANGE_PREFIX_COLOR_FAIL = "&cInvalid prefix";
 
     private static void init() {
         COMMAND_NO_PERMISSION = getString("command-no-permission", COMMAND_NO_PERMISSION);
         STAFFCHAT_TOGGLED_ON = getString("staffchat-toggled-on", STAFFCHAT_TOGGLED_ON);
         STAFFCHAT_TOGGLED_OFF = getString("staffchat-toggled-off", STAFFCHAT_TOGGLED_OFF);
         CONFIG_RELOADED = getString("config-reloaded", CONFIG_RELOADED);
+        CHANGE_PREFIX_COLOR_SUCCESS = getString("change-prefix-color-success", CHANGE_PREFIX_COLOR_SUCCESS);
+        CHANGE_PREFIX_COLOR_FAIL = getString("change-prefix-color-fail", CHANGE_PREFIX_COLOR_FAIL);
     }
 
     // ########################################################
