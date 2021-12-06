@@ -133,7 +133,7 @@ public class Util {
     public static boolean containsSwears(String string) {
         List<String> swears = Config.SWEARS;
         for (String swear : swears) {
-            if (string.contains(swear)) {
+            if (string.matches(swear)) {
                 return true;
             }
         }
