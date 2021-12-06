@@ -1,5 +1,6 @@
 package org.acornmc.drchat;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,11 +11,15 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (!Config.HANDLE_DEATH_EVENTS) return;
-        Player killer = event.getPlayer().getKiller();
+        Component deathMessage = event.deathMessage();
+        if (deathMessage == null) return;
+        event.deathMessage(null);
+
         Player killed = event.getPlayer();
-        String message = Util.legacyOf(event.deathMessage());
-        Util.send(killer, message);
-        Util.send(killed, message);
-        event.setCancelled(true);
+        killed.sendMessage(deathMessage);
+        Player killer = killed.getKiller();
+        if (killer != null && !killer.getName().equals(killed.getName())) {
+            killer.sendMessage(deathMessage);
+        }
     }
 }
