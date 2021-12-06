@@ -24,7 +24,6 @@ public class Config {
     public static String SWEAR_PUNISHMENT = "ban %player% offensive language";
     public static ConfigurationSection PREFIXES = new YamlConfiguration();
     public static String MESSAGE_SPLITTER = "> ";
-    public static boolean HANDLE_LOGIN_EVENTS = false;
     public static boolean HANDLE_DEATH_EVENTS = false;
     public static int REWARD_INTERVAL = 300;
     public static double REWARD_AMOUNT = 0.00;
@@ -40,7 +39,6 @@ public class Config {
         SWEAR_PUNISHMENT = getString("command-punishment-for-swears", SWEAR_PUNISHMENT);
         PREFIXES = getYamlConfiguration("prefixes", PREFIXES);
         MESSAGE_SPLITTER = getString("message-splitter", MESSAGE_SPLITTER);
-        HANDLE_LOGIN_EVENTS = getBoolean("handle-login-events", HANDLE_LOGIN_EVENTS);
         HANDLE_DEATH_EVENTS = getBoolean("handle-death-events", HANDLE_DEATH_EVENTS);
         REWARD_INTERVAL = getInt("reward-interval", REWARD_INTERVAL);
         REWARD_AMOUNT = getDouble("reward-amount", REWARD_AMOUNT);
