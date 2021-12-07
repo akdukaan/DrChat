@@ -194,7 +194,6 @@ public class Util {
     }
 
     public static void sendStaffchatMCToDiscord(Player player, String message) {
-        message = colorize(message);
         DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false);
     }
 
