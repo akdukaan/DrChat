@@ -22,6 +22,7 @@ public class Config {
     public static String MC_TO_MC_FORMAT = "&x&e&d&8&0&a&7&l[Staff] &f%name% &7> &f%message%";
     public static long MUTED_ROLE_ID = 0;
     public static String SWEAR_PUNISHMENT = "ban %player% offensive language";
+    public static String FREQUENCY_PUNISHMENT = "mute %player% 10m spam";
     public static ConfigurationSection PREFIXES = new YamlConfiguration();
     public static String MESSAGE_SPLITTER = "> ";
     public static boolean HANDLE_DEATH_EVENTS = false;

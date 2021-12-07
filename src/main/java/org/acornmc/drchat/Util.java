@@ -8,7 +8,6 @@ import github.scarsz.discordsrv.objects.managers.AccountLinkManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -22,8 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Util {
-    private static Set<UUID> staffchatToggled = new HashSet<>();
-    private static Set<UUID> recentlyRewarded = new HashSet<>();
+    private static HashSet<UUID> staffchatToggled = new HashSet<>();
+    private static HashSet<UUID> recentlyRewarded = new HashSet<>();
+    private static HashMap<UUID, Integer> recentlyTalked = new HashMap<>();
 
     /**
      * Log a message to the console
@@ -259,6 +259,32 @@ public class Util {
         if (player.getName() == null) return;
         final String command = Config.SWEAR_PUNISHMENT
                 .replace("%player%", player.getName());
+        Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        Bukkit.getScheduler().runTask(DrChat.getInstance(), runnable);
+    }
+
+    public static boolean isTooFrequent(OfflinePlayer player) {
+        UUID uuid = player.getUniqueId();
+        int numRecentMessages = 0;
+        if (recentlyTalked.containsKey(uuid)) {
+            numRecentMessages = recentlyTalked.get(uuid);
+        }
+        if (numRecentMessages >= 5) return true;
+        recentlyTalked.put(uuid, numRecentMessages + 1);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int newAmount = recentlyTalked.get(uuid) - 1;
+                recentlyTalked.put(uuid, newAmount);
+            }
+        }.runTaskLater(DrChat.getInstance(), 100);
+        return false;
+    }
+
+    public static void punishFreuqncy(OfflinePlayer player) {
+        String playername = player.getName();
+        if (playername == null) return;
+        String command = Config.FREQUENCY_PUNISHMENT.replace("%player%", player.getName());
         Runnable runnable = () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         Bukkit.getScheduler().runTask(DrChat.getInstance(), runnable);
     }
