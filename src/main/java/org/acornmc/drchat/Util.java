@@ -49,7 +49,7 @@ public class Util {
         while (matcher.find()) {
             final String before = string.substring(0, matcher.start());
             final String after = string.substring(matcher.end());
-            ChatColor hexColor = ChatColor.valueOf(matcher.group().substring(1));
+            net.md_5.bungee.api.ChatColor hexColor = net.md_5.bungee.api.ChatColor.of(matcher.group().substring(1));
             string = before + hexColor + after;
             matcher = hexPattern.matcher(string);
         }
@@ -194,7 +194,7 @@ public class Util {
     }
 
     public static void sendStaffchatMCToDiscord(Player player, String message) {
-        DiscordSRV.getPlugin().processChatMessage(player, message, "staff-chat", false);
+        DiscordSRV.getPlugin().processChatMessage(player, colorize(message), "staff-chat", false);
     }
 
     public static void toggleStaffchat(Player player) {
