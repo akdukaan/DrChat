@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -169,15 +169,20 @@ public class Util {
 
     public static void sendStaffchatDiscordToMC(Member member, String message, List<Message.Attachment> attachments) {
         Color topColor = member.getRoles().get(0).getColor();
-        int r = topColor.getRed();
-        int g = topColor.getGreen();
-        int b = topColor.getBlue();
-        String hex = String.format("&#%02x%02x%02x", r, g, b);
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        if (topColor != null) {
+            r = topColor.getRed();
+            g = topColor.getGreen();
+            b = topColor.getBlue();
+        }
+        String topRoleColor = String.format("&#%02x%02x%02x", r, g, b);
         String discordToMc = Config.DISCORD_TO_MC_FORMAT;
         discordToMc = discordToMc.replace("%name%", member.getUser().getName());
         discordToMc = discordToMc.replace("%nickname%", member.getEffectiveName());
         discordToMc = discordToMc.replace("%message%", message);
-        discordToMc = discordToMc.replace("%toprolecolor%", hex);
+        discordToMc = discordToMc.replace("%toprolecolor%", topRoleColor);
         discordToMc = discordToMc.replace("%toprole%", member.getRoles().get(0).getName());
         if (discordToMc.charAt(discordToMc.length() - 1) != ' ') {
             discordToMc += " ";
