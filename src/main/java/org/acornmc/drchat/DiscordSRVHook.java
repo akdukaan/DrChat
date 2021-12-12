@@ -52,8 +52,15 @@ public class DiscordSRVHook {
         // Split the message into parts
         String eventMessage = Util.legacyOf(event.getMinecraftMessage());
         String messageSplitter = Config.MESSAGE_SPLITTER;
-        String messagePart1 = eventMessage.split(messageSplitter, 2)[0];
-        String messagePart2 = eventMessage.split(messageSplitter, 2)[1];
+        String[] splitMessage = eventMessage.split(messageSplitter, 2);
+        String messagePart1 = "";
+        String messagePart2 = eventMessage;
+        if (splitMessage.length == 2) {
+            messagePart1 = eventMessage.split(messageSplitter, 2)[0];
+            messagePart2 = eventMessage.split(messageSplitter, 2)[1];
+        } else {
+            Util.log("Warning: Message splitter does not exist in the message that was sent.");
+        }
 
         // Remove spam
         String modifiedMessage = Util.filterMessage(messagePart2);
