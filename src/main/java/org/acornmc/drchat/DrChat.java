@@ -61,6 +61,7 @@ public final class DrChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        DiscordSRV.api.unsubscribe(new DiscordSRVHook());
     }
 
     public static DrChat getInstance() {
