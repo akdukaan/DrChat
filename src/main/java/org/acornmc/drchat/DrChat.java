@@ -11,6 +11,7 @@ import org.bstats.bukkit.Metrics;
 public final class DrChat extends JavaPlugin {
 
     private static DrChat instance;
+    private DiscordSRVHook DSRVhook;
 
     @Override
     public void onEnable() {
@@ -41,7 +42,7 @@ public final class DrChat extends JavaPlugin {
 
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             Util.log("DiscordSRV found!");
-            DiscordSRV.api.subscribe(new DiscordSRVHook());
+            DiscordSRV.api.subscribe(DSRVhook = new DiscordSRVHook());
             Util.log("DiscordSRV connected!");
             if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 Util.log("Essentials found!");
@@ -61,7 +62,7 @@ public final class DrChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        DiscordSRV.api.unsubscribe(new DiscordSRVHook());
+        DiscordSRV.api.unsubscribe(DSRVhook);
     }
 
     public static DrChat getInstance() {
