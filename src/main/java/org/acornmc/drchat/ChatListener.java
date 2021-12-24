@@ -19,6 +19,12 @@ public class ChatListener implements Listener {
             return;
         }
 
+        if (Util.getFreezeStatus() && !player.hasPermission("drchat.freeze.exempt")) {
+            Util.send(player, Lang.CANT_TALK_NOW);
+            event.setCancelled(true);
+            return;
+        }
+
         // If the player talked, we know they shouldn't be muted on Discord
         DiscordSRVHook.discordUnmute(player);
 

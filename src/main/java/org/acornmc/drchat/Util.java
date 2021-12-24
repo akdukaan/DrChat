@@ -25,6 +25,7 @@ public class Util {
     private static HashSet<UUID> staffchatToggled = new HashSet<>();
     private static HashSet<UUID> recentlyRewarded = new HashSet<>();
     private static HashMap<UUID, Integer> recentlyTalked = new HashMap<>();
+    private static boolean isChatFrozen = false;
 
     /**
      * Log a message to the console
@@ -507,5 +508,21 @@ public class Util {
         }.runTaskLater(DrChat.getInstance(), Config.REWARD_INTERVAL);
 
         VaultHook.giveMoney(uuid, Config.REWARD_AMOUNT);
+    }
+
+    public static void toggleFreeze() {
+        isChatFrozen = !isChatFrozen;
+    }
+
+    public static boolean getFreezeStatus() {
+        return isChatFrozen;
+    }
+
+    public static void sendFreezeStatus(CommandSender sender) {
+        if (isChatFrozen) {
+            send(sender, Lang.CHAT_IS_FROZEN);
+        } else {
+            send(sender, Lang.CHAT_IS_NOT_FROZEN);
+        }
     }
 }

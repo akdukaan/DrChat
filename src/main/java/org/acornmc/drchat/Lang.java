@@ -19,6 +19,9 @@ public class Lang {
     public static String CONFIG_RELOADED = "&aConfig reloaded!";
     public static String CHANGE_PREFIX_COLOR_SUCCESS = "&cYour prefix color has been changed";
     public static String CHANGE_PREFIX_COLOR_FAIL = "&cInvalid prefix";
+    public static String CHAT_IS_FROZEN = "&aChat is now frozen";
+    public static String CHAT_IS_NOT_FROZEN = "&aChat is no longer frozen";
+    public static String CANT_TALK_NOW = "&cYou can't talk right now";
 
     private static void init() {
         COMMAND_NO_PERMISSION = getString("command-no-permission", COMMAND_NO_PERMISSION);
@@ -27,6 +30,9 @@ public class Lang {
         CONFIG_RELOADED = getString("config-reloaded", CONFIG_RELOADED);
         CHANGE_PREFIX_COLOR_SUCCESS = getString("change-prefix-color-success", CHANGE_PREFIX_COLOR_SUCCESS);
         CHANGE_PREFIX_COLOR_FAIL = getString("change-prefix-color-fail", CHANGE_PREFIX_COLOR_FAIL);
+        CHAT_IS_FROZEN = getString("chat-is-frozen", CHAT_IS_FROZEN);
+        CHAT_IS_NOT_FROZEN = getString("chat-is-not-frozen", CHAT_IS_NOT_FROZEN);
+        CANT_TALK_NOW = getString("cant-talk-now", CANT_TALK_NOW);
     }
 
     // ########################################################

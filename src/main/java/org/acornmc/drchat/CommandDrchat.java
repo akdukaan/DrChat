@@ -1,7 +1,6 @@
 package org.acornmc.drchat;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
@@ -24,6 +23,15 @@ public class CommandDrchat implements TabExecutor {
             Util.send(sender, Lang.CONFIG_RELOADED);
             return true;
         }
+        if (args[0].equalsIgnoreCase("freeze")) {
+            if (!sender.hasPermission("drchat.freeze")) {
+                Util.send(sender, Lang.COMMAND_NO_PERMISSION);
+                return true;
+            }
+            Util.toggleFreeze();
+            Util.sendFreezeStatus(sender);
+            return true;
+        }
         return false;
     }
 
@@ -32,6 +40,9 @@ public class CommandDrchat implements TabExecutor {
         List<String> list = new ArrayList<>();
         if (sender.hasPermission("drchat.reload")) {
             list.add("reload");
+        }
+        if (sender.hasPermission("drchat.freeze")) {
+            list.add("freeze");
         }
         return StringUtil.copyPartialMatches(args[args.length - 1], list, new ArrayList<>());
     }

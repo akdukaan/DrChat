@@ -12,9 +12,9 @@ softdepend:
   - LuckPerms
 commands:
   drchat:
-    description: reload drchat
-    usage: /<command> reload
-    permission: drchat.reload
+    description: manage drchat
+    usage: /<command> reload|freeze
+    permission: drchat.command
   staffchat:
     desciption: use staffchat
     usage: /<command> message
@@ -25,8 +25,16 @@ commands:
     usage: /<command> prefix
     permission: drchat.prefix
 permissions:
+  drchat.command:
+    default: op
+  drchat.freeze:
+    default: op
+    children:
+      - drchat.command
   drchat.reload:
     default: op
+    children:
+      - drchat.command
   drchat.staffchat:
     default: op
   drchat.prefix:
