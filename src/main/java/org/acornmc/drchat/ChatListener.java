@@ -22,6 +22,7 @@ public class ChatListener implements Listener {
         if (Util.getFreezeStatus() && !player.hasPermission("drchat.freeze.exempt")) {
             Util.send(player, Lang.CANT_TALK_NOW);
             event.setCancelled(true);
+            Util.log(player.getName() + " tried to say " + event.getMessage());
             return;
         }
 
