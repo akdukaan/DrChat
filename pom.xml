@@ -13,7 +13,7 @@
 
     <description>antispam with DiscordSRV support</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yy.MM.dd.HH.mm</maven.build.timestamp.format>
     </properties>
