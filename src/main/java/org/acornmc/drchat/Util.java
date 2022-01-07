@@ -164,6 +164,7 @@ public class Util {
     }
 
     public static void notifyModified(String author, String message) {
+        message = ChatColor.stripColor(message);
         Bukkit.broadcast(Util.componentOf(colorize("&7" + author + "'s message was modified")), "drchat.notify");
         Bukkit.broadcast(Util.componentOf(colorize("&7Original: " + message)), "drchat.notify");
     }
