@@ -15,7 +15,7 @@
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.build.timestamp.format>yy.MM.dd.HH.mm</maven.build.timestamp.format>
+        <maven.build.timestamp.format>yy.M.d.H.m</maven.build.timestamp.format>
     </properties>
 
     <build>
@@ -99,13 +99,13 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.7</version>
+            <version>2.2.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.24.1-SNAPSHOT</version>
+            <version>1.25.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
