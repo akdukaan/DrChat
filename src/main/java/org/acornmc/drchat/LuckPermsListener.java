@@ -2,6 +2,7 @@ package org.acornmc.drchat;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.event.EventBus;
+import net.luckperms.api.event.node.NodeAddEvent;
 import net.luckperms.api.event.node.NodeRemoveEvent;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
@@ -24,6 +25,8 @@ public class LuckPermsListener {
     public void register() {
         EventBus eventBus = this.luckPerms.getEventBus();
         eventBus.subscribe(this.plugin, NodeRemoveEvent.class, this::onNodeRemove);
+        eventBus.subscribe(this.plugin, NodeAddEvent.class, this::onNodeAdd);
+
     }
 
     private void onNodeRemove(NodeRemoveEvent event) {
@@ -42,6 +45,22 @@ public class LuckPermsListener {
                 // TODO make this a list of commands
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " meta removeprefix 1");
             }
+        }
+    }
+
+    private void onNodeAdd(NodeAddEvent event) {
+        // TODO remove after confirmation of working
+        Util.log("NodeAddEvent was fired");
+        User target = (User) event.getTarget();
+        OfflinePlayer player = getServer().getOfflinePlayer(target.getUniqueId());
+        Node node = event.getNode();
+        if (node instanceof InheritanceNode) {
+            // the player was removed from vip
+            // TODO remove after confirmation of working
+            Util.log("Removing prefix from player");
+            // TODO make this a list of commands
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " meta removeprefix 1");
+
         }
     }
 }
