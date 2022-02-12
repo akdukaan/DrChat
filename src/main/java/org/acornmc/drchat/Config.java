@@ -28,6 +28,11 @@ public class Config {
     public static boolean HANDLE_DEATH_EVENTS = false;
     public static int REWARD_INTERVAL = 300;
     public static double REWARD_AMOUNT = 0.00;
+    public static List<String> COMMANDS_ON_RANKUP = Arrays.asList("lp user %player% meta removeprefix 1");
+    public static List<String> COMMANDS_ON_RANKDOWN = Arrays.asList("lp user %player% meta removeprefix 1");
+    public static List<String> RANKDOWN_TRIGGERS = Arrays.asList("vip", "dragon");
+    public static List<String> RANKUP_TRIGGERS = Arrays.asList("vip", "dragon");
+
     private static YamlConfiguration config;
 
     private static void init() {
@@ -43,6 +48,10 @@ public class Config {
         HANDLE_DEATH_EVENTS = getBoolean("handle-death-events", HANDLE_DEATH_EVENTS);
         REWARD_INTERVAL = getInt("reward-interval", REWARD_INTERVAL);
         REWARD_AMOUNT = getDouble("reward-amount", REWARD_AMOUNT);
+        COMMANDS_ON_RANKUP = getStringList("rankup.commands", COMMANDS_ON_RANKUP);
+        COMMANDS_ON_RANKDOWN = getStringList("rankdown.commands", COMMANDS_ON_RANKDOWN);
+        RANKDOWN_TRIGGERS = getStringList("rankdown.triggers", RANKDOWN_TRIGGERS);
+        RANKUP_TRIGGERS = getStringList("rankup.triggers", RANKUP_TRIGGERS);
     }
 
     // ########################################################

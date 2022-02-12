@@ -35,12 +35,14 @@ public class LuckPermsListener {
         Node node = event.getNode();
         if (node instanceof InheritanceNode) {
             String groupName = ((InheritanceNode) node).getGroupName();
-            // TODO make this a list of strings instead of these
-            if (groupName.equalsIgnoreCase("vip") || groupName.equalsIgnoreCase("dragon")) {
-                // TODO make this a list of commands
-                this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " meta removeprefix 1");
-                });
+            for (String rank : Config.RANKDOWN_TRIGGERS) {
+                if (groupName.equalsIgnoreCase(rank)) {
+                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                        for (String command : Config.COMMANDS_ON_RANKDOWN) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                        }
+                    });
+                }
             }
         }
     }
@@ -50,10 +52,16 @@ public class LuckPermsListener {
         OfflinePlayer player = getServer().getOfflinePlayer(target.getUniqueId());
         Node node = event.getNode();
         if (node instanceof InheritanceNode) {
-            // TODO make this a list of commands
-            this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " meta removeprefix 1");
-            });
+            String groupName = ((InheritanceNode) node).getGroupName();
+            for (String rank : Config.RANKUP_TRIGGERS) {
+                if (groupName.equalsIgnoreCase(rank)) {
+                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
+                        for (String command : Config.COMMANDS_ON_RANKUP) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                        }
+                    });
+                }
+            }
         }
     }
 }
