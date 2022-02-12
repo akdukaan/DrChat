@@ -12,6 +12,7 @@ public final class DrChat extends JavaPlugin {
 
     private static DrChat instance;
     private DiscordSRVHook DSRVhook;
+    private LuckPerms luckPerms;
 
     @Override
     public void onEnable() {
@@ -47,11 +48,21 @@ public final class DrChat extends JavaPlugin {
             if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
                 Util.log("Essentials found!");
                 this.getServer().getPluginManager().registerEvents(new EssentialsHook(), this);
+                Util.log("Essentials connected!");
             } else {
                 Util.log("Essentials not found!");
             }
         } else {
             Util.log("DiscordSRV not found!");
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) {
+            Util.log("LuckPerms found!");
+            luckPerms = getServer().getServicesManager().load(LuckPerms.class);
+            new LuckPermsListener(this, this.luckPerms).register();
+            Util.log("LuckPerms connected!");
+        } else {
+            Util.log("LuckPerms not found!");
         }
 
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
