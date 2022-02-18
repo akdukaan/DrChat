@@ -295,7 +295,7 @@ public class Util {
         return false;
     }
 
-    public static void punishFreuqncy(OfflinePlayer player) {
+    public static void punishFrequency(OfflinePlayer player) {
         String playername = player.getName();
         if (playername == null) return;
         String command = Config.FREQUENCY_PUNISHMENT.replace("%player%", player.getName());
@@ -304,6 +304,7 @@ public class Util {
     }
 
     public static String removeFancyChat(String string) {
+        string = string.replace("\u00AD", "");
         return string
                 .replace("ᵃ", "a")
                 .replace("ᵇ", "b")

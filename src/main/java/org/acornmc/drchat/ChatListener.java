@@ -44,7 +44,7 @@ public class ChatListener implements Listener {
         if (Util.isTooFrequent(player)) {
             event.setCancelled(true);
             Util.send(player, "&4Please don't spam");
-            Util.punishFreuqncy(player);
+            Util.punishFrequency(player);
             return;
         }
 
