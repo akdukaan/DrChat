@@ -17,7 +17,7 @@ import java.util.logging.Level;
 public class Config {
     public static String LANGUAGE_FILE = "lang-en.yml";
     public static boolean ENABLE_BSTATS = true;
-    public static List<String> SWEARS = Arrays.asList(".*(?i)nigger.*", ".*(?i)nigga.*");
+    public static List<String> SWEARS = Arrays.asList("(?i).*n[il1][gq9][gq9][3e]r.*","(?i).*n[il1][gq9][gq9][a4].*", "(?i).*f[4a][gq9][gq9][o0i1l][t7].*");
     public static String DISCORD_TO_MC_FORMAT = "&x&e&d&8&0&a&7&l[Staff] &f%nickname% &9> &f%message%";
     public static String MC_TO_MC_FORMAT = "&x&e&d&8&0&a&7&l[Staff] &f%name% &7> &f%message%";
     public static long MUTED_ROLE_ID = 0;
