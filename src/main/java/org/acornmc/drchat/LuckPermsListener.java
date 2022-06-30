@@ -48,6 +48,7 @@ public class LuckPermsListener {
     }
 
     private void onNodeAdd(NodeAddEvent event) {
+        if (!(event.getTarget() instanceof User)) return;
         User target = (User) event.getTarget();
         OfflinePlayer player = getServer().getOfflinePlayer(target.getUniqueId());
         Node node = event.getNode();
