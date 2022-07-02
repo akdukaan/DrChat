@@ -39,7 +39,9 @@ public class LuckPermsListener {
                 if (groupName.equalsIgnoreCase(rank)) {
                     this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
                         for (String command : Config.COMMANDS_ON_RANKDOWN) {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                            if (player.getName() != null) {
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                            }
                         }
                     });
                 }
