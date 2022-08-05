@@ -74,13 +74,15 @@ public class DiscordSRVHook {
             return;
         }
 
-        // Either reward or notify modified
-        if (modifiedMessage.equals(messagePart2)) {
-            Util.tryRewarding(Util.uuidOf(user));
-        } else {
+        // Notify modified messages if bad
+        if (!modifiedMessage.equals(messagePart2)) {
             String username = Util.usernameOf(event.getAuthor());
             Util.notifyModified(username, messagePart2);
             event.setProcessedMessage(messagePart1 + messageSplitter + modifiedMessage);
+            return;
         }
+
+        // Reward
+        Util.tryRewarding(Util.uuidOf(user));
     }
 }
