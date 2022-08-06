@@ -22,7 +22,7 @@ commands:
     aliases: [h]
   prefix:
     description: change prefix
-    usage: /<command> prefix
+    usage: /<command>
     permission: drchat.prefix
 permissions:
   drchat.command:
