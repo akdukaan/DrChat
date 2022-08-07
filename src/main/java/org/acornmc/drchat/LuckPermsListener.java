@@ -30,7 +30,7 @@ public class LuckPermsListener {
     }
 
     private void onNodeRemove(NodeRemoveEvent event) {
-        User target = (User) event.getTarget();
+        if (!(event.getTarget() instanceof User target)) return;
         OfflinePlayer player = getServer().getOfflinePlayer(target.getUniqueId());
         Node node = event.getNode();
         if (node instanceof InheritanceNode) {
