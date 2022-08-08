@@ -31,6 +31,8 @@ permissions:
     default: op
     children:
       - drchat.command
+  drchat.freeze.exempt:
+    default: op
   drchat.reload:
     default: op
     children:
