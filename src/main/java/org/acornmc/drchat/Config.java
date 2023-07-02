@@ -37,17 +37,30 @@ public class Config {
 
     private static void init() {
         LANGUAGE_FILE = getString("language-file", LANGUAGE_FILE);
-        ENABLE_BSTATS = getBoolean("enable-bstats", ENABLE_BSTATS);
-        SWEARS = getStringList("swears", SWEARS);
+
+        // Setup
         DISCORD_TO_MC_FORMAT = getString("discord-to-mc-format", DISCORD_TO_MC_FORMAT);
         MC_TO_MC_FORMAT = getString("mc-to-mc-format", MC_TO_MC_FORMAT);
-        MUTED_ROLE_ID = getLong("mute-role-id", MUTED_ROLE_ID);
-        SWEAR_PUNISHMENT = getString("command-punishment-for-swears", SWEAR_PUNISHMENT);
-        PREFIXES = getYamlConfiguration("prefixes", PREFIXES);
         MESSAGE_SPLITTER = getString("message-splitter", MESSAGE_SPLITTER);
-        HANDLE_DEATH_EVENTS = getBoolean("handle-death-events", HANDLE_DEATH_EVENTS);
+
+        // Mute Sync
+        MUTED_ROLE_ID = getLong("mute-role-id", MUTED_ROLE_ID);
+
+        // Chat filter
+        SWEARS = getStringList("swears", SWEARS);
+        SWEAR_PUNISHMENT = getString("command-punishment-for-swears", SWEAR_PUNISHMENT);
+
+        // Custom prefixes
+        PREFIXES = getYamlConfiguration("prefixes", PREFIXES);
+
+        // Money
         REWARD_INTERVAL = getInt("reward-interval", REWARD_INTERVAL);
         REWARD_AMOUNT = getDouble("reward-amount", REWARD_AMOUNT);
+
+        // Death
+        HANDLE_DEATH_EVENTS = getBoolean("handle-death-events", HANDLE_DEATH_EVENTS);
+
+        // Rankup
         COMMANDS_ON_RANKUP = getStringList("rankup.commands", COMMANDS_ON_RANKUP);
         COMMANDS_ON_RANKDOWN = getStringList("rankdown.commands", COMMANDS_ON_RANKDOWN);
         RANKDOWN_TRIGGERS = getStringList("rankdown.triggers", RANKDOWN_TRIGGERS);

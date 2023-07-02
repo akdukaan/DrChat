@@ -20,9 +20,7 @@ public final class DrChat extends JavaPlugin {
         Config.reload(this);
         Lang.reload(this);
 
-        if (Config.ENABLE_BSTATS) {
-            new Metrics(this, 8683);
-        }
+        new Metrics(this, 8683);
 
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new LoginListener(), this);

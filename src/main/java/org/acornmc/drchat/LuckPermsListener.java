@@ -4,7 +4,6 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.node.NodeAddEvent;
 import net.luckperms.api.event.node.NodeRemoveEvent;
-import net.luckperms.api.model.PermissionHolder;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.InheritanceNode;
@@ -27,7 +26,6 @@ public class LuckPermsListener {
         EventBus eventBus = this.luckPerms.getEventBus();
         eventBus.subscribe(this.plugin, NodeRemoveEvent.class, this::onNodeRemove);
         eventBus.subscribe(this.plugin, NodeAddEvent.class, this::onNodeAdd);
-
     }
 
     private void onNodeRemove(NodeRemoveEvent event) {
