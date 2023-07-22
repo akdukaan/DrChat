@@ -249,6 +249,7 @@ public class Util {
 
     public static String getMemberID(OfflinePlayer player) {
         AccountLinkManager alm = DiscordSRV.getPlugin().getAccountLinkManager();
+        if (alm == null) return null;
         UUID uuid = player.getUniqueId();
         return alm.getDiscordId(uuid);
     }
